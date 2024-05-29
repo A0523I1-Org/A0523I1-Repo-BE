@@ -26,6 +26,7 @@ public class LandingController {
     IFloorService iFloorService; 
 
 
+
     @GetMapping
     List<LandingResponseDTO> getListAllLanding() {
         return iLandingService.showListLanding();
