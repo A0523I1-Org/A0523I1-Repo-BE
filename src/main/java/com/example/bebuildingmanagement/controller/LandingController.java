@@ -28,6 +28,7 @@ public class LandingController {
     IFloorService iFloorService;
 
 
+
     @GetMapping
     public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "15") int size) {
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
