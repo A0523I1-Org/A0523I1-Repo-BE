@@ -28,7 +28,7 @@ public class LandingController {
 
 
 
-    @GetMapping
+    @GetMapping("")
     List<LandingResponseDTO> getListAllLanding() {
         return iLandingService.showListLanding();
     }
