@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +24,14 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
     ILandingService iLandingService;
-    IFloorService iFloorService; 
+    IFloorService iFloorService;
 
 
     @GetMapping
-    List<LandingResponseDTO> getListAllLanding() {
-        return iLandingService.showListLanding();
+    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam("page") int page, @RequestParam("size") int size) {
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page,size);
+        return ResponseEntity.ok(landingResponseDTOPage);
     }
-
     @PostMapping
     ApiResponseDTO<LandingResponseDTO> createLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
