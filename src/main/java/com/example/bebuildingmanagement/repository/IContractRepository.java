@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface IContractRepository extends JpaRepository<Contract, Long> {
 
+
 }
