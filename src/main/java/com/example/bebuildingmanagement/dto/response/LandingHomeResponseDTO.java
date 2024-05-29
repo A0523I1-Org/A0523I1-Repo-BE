@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.dto.response;
 
-import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.area.NotBlankArea;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,16 +9,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LandingResponseDTO {
+public class LandingHomeResponseDTO {
 
-    Long id;
-    String code;
-    String type;
     double area;
-    String status;
+
+    String description;
     double feePerMonth;
     double feeManager;
+    String firebaseUrl;
+    String type;
     String floor;
-
 
 }
