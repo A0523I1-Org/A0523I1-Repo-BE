@@ -23,7 +23,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
     ILandingService iLandingService;
-    IFloorService iFloorService;
+    IFloorService iFloorService; 
 
 
     @GetMapping
