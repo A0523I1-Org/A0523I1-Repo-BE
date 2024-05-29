@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.service.implement;
 
+import com.example.bebuildingmanagement.dto.request.ContractRequestDTO;
 import com.example.bebuildingmanagement.repository.IContractRepository;
 import com.example.bebuildingmanagement.service.interfaces.IContractService;
 import lombok.AccessLevel;
@@ -14,4 +15,18 @@ public class ContractServiceImpl implements IContractService {
     IContractRepository iContractRepository;
 
 
+    @Override
+    public ContractRequestDTO contractById(Long id) {
+        return iContractRepository.contractById(id);
+    }
+
+    @Override
+    public void updateContractById(ContractRequestDTO contractRequestDTO, Long id) {
+
+    }
+
+    @Override
+    public void deleteContractById(Long id) {
+
+    }
 }
