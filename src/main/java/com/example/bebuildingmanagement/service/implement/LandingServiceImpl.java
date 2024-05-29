@@ -20,12 +20,9 @@ import java.util.stream.Collectors;
 public class LandingServiceImpl implements ILandingService {
     ILandingRepository iLandingRepository;
     ModelMapper modelMapper;
-
     @Override
-    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
-        iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class));
-
-        return null;
+    public LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO) {
+        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)),LandingResponseDTO.class) ;
     }
 
     @Override

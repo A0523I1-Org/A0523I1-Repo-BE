@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LandingRequestDTO {
-
     Long id;
     String code;
     String type;
@@ -18,6 +17,6 @@ public class LandingRequestDTO {
     String description;
     double feePerMonth;
     double feeManager;
+    FloorRequestDTO floor;
     String firebaseUrl;
-    LandingRequestDTO floor;
 }

@@ -1,6 +1,5 @@
 package com.example.bebuildingmanagement.dto.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,4 +11,5 @@ import lombok.experimental.FieldDefaults;
 public class FloorRequestDTO {
     Long id;
     String name;
+
 }
