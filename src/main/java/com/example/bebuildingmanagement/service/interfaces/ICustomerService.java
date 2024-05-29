@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ICustomerService {
-    Page<CustomerResponseDTO> findAll(Pageable pageable);
+    Page<CustomerResponseDTO> getAllCustomer(Pageable pageable);
 }

@@ -16,17 +16,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/customer")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin("*")
 public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
+
     @GetMapping("/list")
     public ResponseEntity<Iterable<CustomerResponseDTO>> getAllCustomer(@RequestParam("page") Optional<Integer> page) {
-        Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<CustomerResponseDTO> customerResponseDTOs = iCustomerService.findAll(pageable);
-        return new ResponseEntity<>(customerResponseDTOs.getContent(), HttpStatus.OK);
+
+
+        if (page.orElse(0) < 0) {
+            System.out.println(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Pageable pageable = PageRequest.of(page.orElse(0), 6);
+        Page<CustomerResponseDTO> customerDTOPage = iCustomerService.getAllCustomer(pageable);
+
+        if (customerDTOPage.getContent().isEmpty()) {
+            System.out.println(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
+        }
+
+
+//        return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
     }
 }

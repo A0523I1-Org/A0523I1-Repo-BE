@@ -24,9 +24,10 @@ public class CustomerServiceImpl implements ICustomerService {
     ModelMapper modelMapper;
 
     @Override
-    public Page<CustomerResponseDTO> findAll(Pageable pageable) {
+    public Page<CustomerResponseDTO> getAllCustomer(Pageable pageable) {
         Page<Customer> customers = iCustomerRepository.findAll(pageable);
-        Page<CustomerResponseDTO> customerResponseDTOs =customers.map(customer -> modelMapper.map(customers, CustomerResponseDTO.class));
+        Page<CustomerResponseDTO> customerResponseDTOs = customers.map(customer -> modelMapper.map(customer, CustomerResponseDTO.class));
         return customerResponseDTOs;
     }
+
 }

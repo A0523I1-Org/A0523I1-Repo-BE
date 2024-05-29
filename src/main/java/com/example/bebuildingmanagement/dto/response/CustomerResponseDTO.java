@@ -21,4 +21,6 @@ public class CustomerResponseDTO {
     String website;
     String companyName;
     String idCard;
+
+
 }
