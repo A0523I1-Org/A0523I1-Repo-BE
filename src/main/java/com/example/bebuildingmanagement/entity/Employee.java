@@ -20,7 +20,6 @@ public class Employee {
 
     String code;
     String name;
-
     Date dob;
     String gender;
     String address;
