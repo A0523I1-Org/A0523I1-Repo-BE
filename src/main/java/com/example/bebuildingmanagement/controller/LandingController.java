@@ -32,12 +32,12 @@ public class LandingController {
         return iLandingService.showListLanding();
     }
 
+
     @PostMapping
     ApiResponseDTO<LandingResponseDTO> createLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
         apiResponseDTO.setResult(iLandingService.createAndUpdateLanding(landingRequestDTO));
         return apiResponseDTO;
-
     }
 
     @GetMapping("/listFloor")
