@@ -2,12 +2,13 @@ package com.example.bebuildingmanagement.service.interfaces;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface ILandingService {
     LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO);
-    List<LandingResponseDTO> showListLanding();
+    Page<LandingResponseDTO> findAll (int page, int size);
     LandingResponseDTO findLanding(Long id);
     void deleteLanding(Long id);
 }
