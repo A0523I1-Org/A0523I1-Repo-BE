@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.dto.response;
 
-import com.example.bebuildingmanagement.dto.request.FloorRequestDTO;
+import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LandingResponseDTO {
+
     Long id;
     String code;
     String type;
@@ -18,6 +19,6 @@ public class LandingResponseDTO {
     String description;
     double feePerMonth;
     double feeManager;
-    FloorRequestDTO floor;
     String firebaseUrl;
+    LandingRequestDTO floor;
 }
