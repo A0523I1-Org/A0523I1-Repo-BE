@@ -1,6 +1,4 @@
 package com.example.bebuildingmanagement.service.implement.contract;
-
-
 import com.example.bebuildingmanagement.dto.request.contract.ContractNewRequestDTO;
 import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
 import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDTO;
@@ -14,7 +12,8 @@ import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.IEmployeeRepository;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 import com.example.bebuildingmanagement.service.interfaces.mail.IMailService;
-import com.example.utils.Const;
+import com.example.bebuildingmanagement.utils.Const;
+
 import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

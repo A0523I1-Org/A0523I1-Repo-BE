@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.bebuildingmanagement.utils;
 
 public class Const {
     public final static  class SEND_MAIL_SUBJECT {
