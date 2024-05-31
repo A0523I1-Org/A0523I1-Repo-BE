@@ -28,8 +28,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 
 
-
-
 public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
@@ -61,7 +59,9 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            iCustomerService.create(customerRequestDTO);
+            iCustomerService.createCustomers(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(),
+                    customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(),
+                    customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard());
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -70,16 +70,22 @@ public class CustomerController {
 
 
     @PutMapping("/{id}")
+<<<<<<< HEAD
     public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id,BindingResult bindingResult){
         if(customer == null){
+=======
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id) {
+        if (customer == null) {
+>>>>>>> cd7e6d939a2956e8469a177a7dca750a09250ae1
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        iCustomerService.edit(customer.getName(),customer.getDob(),customer.getGender(),customer.getAddress(),customer.getEmail(), customer.getPhone(), customer.getWebsite(),customer.getCompanyName(),customer.getIdCard(),id);
-        return new ResponseEntity<>("Update Suceess",HttpStatus.OK);
+        iCustomerService.edit(customer.getName(), customer.getDob(), customer.getGender(), customer.getAddress(), customer.getEmail(), customer.getPhone(), customer.getWebsite(), customer.getCompanyName(), customer.getIdCard(), id);
+        return new ResponseEntity<>("Update Suceess", HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable long id){
+    public ResponseEntity<?> deleteCustomer(@PathVariable long id) {
         iCustomerService.delete(id);
-        return new ResponseEntity<>("Deleted",HttpStatus.OK);
+        return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 }

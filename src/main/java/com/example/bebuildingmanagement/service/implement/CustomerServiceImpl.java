@@ -45,12 +45,9 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void create(CustomerRequestDTO customerRequestDTO) {
-        Customer customer = modelMapper.map(customerRequestDTO, Customer.class);
-        iCustomerRepository.save(customer);
+    public void createCustomers(String name, Date dob, String gender, String address, String email, String phone, String website, String companyName, String idCard) {
+        iCustomerRepository.createCustomers(name,dob,gender,address,phone,website,email,companyName,idCard);
     }
-
-
 
     @Override
     public void edit(String name, Date dob, String gender, String address, String email, String phone, String website, String companyName, String idCard, long id) {
