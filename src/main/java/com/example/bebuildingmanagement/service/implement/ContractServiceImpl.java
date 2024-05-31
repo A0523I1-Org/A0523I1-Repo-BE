@@ -4,6 +4,7 @@ package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.ContractRequestDTO;
 
 import com.example.bebuildingmanagement.dto.response.ContractResponseDTO;
+import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 
 import com.example.bebuildingmanagement.repository.IContractRepository;
@@ -17,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,18 +27,25 @@ public class ContractServiceImpl implements IContractService {
 
 
     @Override
-    public ContractRequestDTO contractById(Long id) {
-        return iContractRepository.contractById(id);
+    public ContractDetailsProjection contractById(Long id) {
+        return iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
     }
 
     @Override
-    public void updateContractById(ContractRequestDTO contractRequestDTO, Long id) {
+    public void updateContractById(ContractRequestDTO contractDTO, Long id) {
+         iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
+
+         iContractRepository.updateContractById(contractDTO.getContent(),
+                 contractDTO.getDeposit(),contractDTO.getDescription(),contractDTO.getStartDate(),contractDTO.getEndDate(),
+                 contractDTO.getFirebaseUrl(), contractDTO.getTaxCode(),contractDTO.getTerm(),id);
 
     }
 
     @Override
     public void deleteContractById(Long id) {
+            iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
 
+            iContractRepository.deleteContractById(id);
     }
 
         public Page<ContractResponseDTO> getContracts (Optional<Integer> page) {
