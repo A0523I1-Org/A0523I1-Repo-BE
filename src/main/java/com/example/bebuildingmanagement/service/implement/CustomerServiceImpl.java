@@ -1,17 +1,41 @@
 package com.example.bebuildingmanagement.service.implement;
 
+import com.example.bebuildingmanagement.entity.Customer;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerServiceImpl implements ICustomerService {
+    @Autowired
     ICustomerRepository iCustomerRepository;
+
+
+
+
+    @Override
+    public void edit(String name, Date dob, String gender, String address, String email, String phone, String website, String companyName, String idCard, long id) {
+        iCustomerRepository.updateCustomer(name,dob,gender,address,email,phone,website,companyName,idCard,id);
+    }
+
+    @Override
+    public void delete( long id) {
+        iCustomerRepository.deleteCustomerId(id);
+    }
+
+    @Override
+    public Customer findById(long id) {
+        return iCustomerRepository.findById(id).orElse(null);
+    }
 
 
 }
