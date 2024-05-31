@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.dto.request;
 
+import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.exception.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.area.NotBlankArea;
 import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.MaxLengthLanding;
@@ -34,5 +35,5 @@ public class LandingRequestDTO {
     double feePerMonth;
     double feeManager;
     String firebaseUrl;
-    FloorRequestDTO floor;
+    Long floor;
 }

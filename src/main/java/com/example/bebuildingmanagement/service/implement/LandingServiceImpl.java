@@ -31,7 +31,7 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
-        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
+        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO,Landing.class)),LandingResponseDTO.class);
     }
 
     @Override
@@ -40,7 +40,9 @@ public class LandingServiceImpl implements ILandingService {
         if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
             throw new CustomValidationException("Mã mặt bằng đã tồn tại");
         }
-    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
+
+        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
+    }
 
     @Override
     public Page<LandingResponseDTO> findAll(int page, int size) {
@@ -82,9 +84,12 @@ public class LandingServiceImpl implements ILandingService {
             throw new ConstraintViolationException(formatViolations);
         }
 
-    @Override
-    public void deleteLanding(Long id) {
-        iLandingRepository.deleteById(id);
 
     }
+
+
+
+
+
+
 }
