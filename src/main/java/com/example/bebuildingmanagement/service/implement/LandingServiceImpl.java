@@ -35,8 +35,8 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
-        Floor floor = floorRepository.findById(landingRequestDTO.getFloor())
-                .orElseThrow(() -> new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor()));
+        Floor floor = floorRepository.findFloorById(landingRequestDTO.getFloor());
+//                .orElseThrow(() -> new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor()));
         landing.setFloor(floor);
         iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
                 ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
