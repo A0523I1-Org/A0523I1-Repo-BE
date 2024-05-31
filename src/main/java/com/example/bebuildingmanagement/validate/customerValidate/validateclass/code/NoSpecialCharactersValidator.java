@@ -1,5 +1,5 @@
-package com.example.bebuildingmanagement.exception.customerValidate.validateclass.code;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.NoSpecialCharacters;
+package com.example.bebuildingmanagement.validate.customerValidate.validateclass.code;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.NoSpecialCharacters;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 public class NoSpecialCharactersValidator implements ConstraintValidator<NoSpecialCharacters,String> {

@@ -16,9 +16,7 @@ public class LandingResponseDTO {
     String type;
     double area;
     String status;
-    String description;
     double feePerMonth;
     double feeManager;
-    String firebaseUrl;
-    FloorResponseDTO floor;
+    String floor;
 }

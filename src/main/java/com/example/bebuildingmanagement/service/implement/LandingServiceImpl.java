@@ -4,7 +4,7 @@ import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
-import com.example.bebuildingmanagement.exception.customerValidate.validateclass.code.ValidationGroups;
+import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
 import jakarta.validation.Validator;
@@ -48,18 +48,18 @@ public class LandingServiceImpl implements ILandingService {
     public Page<LandingResponseDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Landing> listLanding = iLandingRepository.findAll(pageable);
+        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
 
-        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
+//        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
 
-        return landingResponseDTOPage;
+        return listLanding;
     }
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
         return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
     }
-    public void validateLandingRequest(LandingRequestDTO landingRequest) {
+    private void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);
         if (!mandatoryViolations.isEmpty()) {
