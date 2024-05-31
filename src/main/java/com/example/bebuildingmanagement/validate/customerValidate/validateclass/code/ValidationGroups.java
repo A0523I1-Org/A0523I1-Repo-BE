@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.exception.customerValidate.validateclass.code;
+package com.example.bebuildingmanagement.validate.customerValidate.validateclass.code;
 
 
 import lombok.Builder;

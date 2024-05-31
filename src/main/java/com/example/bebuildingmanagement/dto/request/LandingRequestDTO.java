@@ -1,10 +1,10 @@
 package com.example.bebuildingmanagement.dto.request;
 
-import com.example.bebuildingmanagement.exception.customerValidate.validateclass.code.ValidationGroups;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.area.NotBlankArea;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.MaxLengthLanding;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.MinLength;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.NoSpecialCharacters;
+import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.area.NotBlankArea;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.MaxLengthLanding;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.MinLength;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.NoSpecialCharacters;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;

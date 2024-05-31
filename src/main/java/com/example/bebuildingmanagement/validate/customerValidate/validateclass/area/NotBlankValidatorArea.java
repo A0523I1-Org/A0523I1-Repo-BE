@@ -1,6 +1,6 @@
-package com.example.bebuildingmanagement.exception.customerValidate.validateclass.area;
+package com.example.bebuildingmanagement.validate.customerValidate.validateclass.area;
 
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.area.NotBlankArea;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.area.NotBlankArea;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

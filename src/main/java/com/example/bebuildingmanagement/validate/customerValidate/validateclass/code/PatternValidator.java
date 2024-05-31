@@ -1,5 +1,5 @@
-package com.example.bebuildingmanagement.exception.customerValidate.validateclass.code;
-import com.example.bebuildingmanagement.exception.customerValidate.validateinterface.code.Pattern;
+package com.example.bebuildingmanagement.validate.customerValidate.validateclass.code;
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.Pattern;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

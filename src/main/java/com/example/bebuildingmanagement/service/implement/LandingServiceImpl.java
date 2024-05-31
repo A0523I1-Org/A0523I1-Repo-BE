@@ -44,6 +44,7 @@ public class LandingServiceImpl implements ILandingService {
         LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
         return response;
     }
+
     @Override
     public LandingResponseDTO updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
@@ -58,11 +59,11 @@ public class LandingServiceImpl implements ILandingService {
     public Page<LandingResponseDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Landing> listLanding = iLandingRepository.findAll(pageable);
+        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
 
-        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
+//        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
 
-        return landingResponseDTOPage;
+        return listLanding;
     }
 
     @Override
@@ -102,6 +103,10 @@ public class LandingServiceImpl implements ILandingService {
 
 
     }
+
+
+
+
 
 
 }
