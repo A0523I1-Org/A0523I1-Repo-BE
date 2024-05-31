@@ -25,7 +25,7 @@ public class LandingServiceImpl implements ILandingService {
     ModelMapper modelMapper;
 
     @Override
-    public LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO) {
+    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
     }
 

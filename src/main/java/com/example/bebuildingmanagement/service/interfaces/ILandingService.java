@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ILandingService {
-    LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO);
+    LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO);
     Page<LandingResponseDTO> findAll (int page, int size);
     void deleteLanding(Long id);
 }
