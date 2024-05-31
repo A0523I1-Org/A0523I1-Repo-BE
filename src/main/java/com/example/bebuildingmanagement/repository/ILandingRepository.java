@@ -13,10 +13,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
     boolean existsByCode(String code);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE landing SET is_deleted = 1 WHERE id = ?1", nativeQuery = true)
+    void deleteLanding(Long id);
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
+    @Query(value = "SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
             "FROM Landing ld " +
-            "JOIN ld.floor fl ")
+            "JOIN ld.floor fl ",nativeQuery = true)
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
     @Override
     Page<Landing> findAll(Pageable pageable);

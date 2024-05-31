@@ -33,6 +33,11 @@ public class LandingController {
         return ResponseEntity.ok(landingResponseDTOPage);
     }
 
+    @DeleteMapping("/deleteLanding/{id}")
+    public ResponseEntity<Void> deleteLanding(@PathVariable Long id) {
+        iLandingService.deleteLanding(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @PutMapping("/{id}")
     public ApiResponseDTO<LandingResponseDTO> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {

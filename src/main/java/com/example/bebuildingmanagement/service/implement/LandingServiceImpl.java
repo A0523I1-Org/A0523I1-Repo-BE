@@ -5,10 +5,10 @@ import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
-import com.example.bebuildingmanagement.exception.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.repository.IFloorRepository;
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,9 @@ public class LandingServiceImpl implements ILandingService {
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
         Floor floor = floorRepository.findFloorById(landingRequestDTO.getFloor());
-//                .orElseThrow(() -> new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor()));
+        if (floor == null) {
+            throw new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor());
+        }
         landing.setFloor(floor);
         iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
                 ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
@@ -68,7 +70,7 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public void deleteLanding(Long id) {
-
+        iLandingRepository.deleteLanding(id);
     }
 
     @Override

@@ -34,5 +34,6 @@ public class LandingRequestDTO {
     double feePerMonth;
     double feeManager;
     String firebaseUrl;
+
     Long floor;
 }
