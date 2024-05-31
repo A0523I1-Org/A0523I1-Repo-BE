@@ -6,6 +6,7 @@ import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
 import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDTO;
 import com.example.bebuildingmanagement.dto.response.mail.DataMailDTO;
 import com.example.bebuildingmanagement.entity.*;
+import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
@@ -37,20 +38,30 @@ public class ContractServiceImpl implements IContractService {
     IMailService iMailService;
     ICustomerRepository iCustomerRepository;
 
-
+    //anh lq
     @Override
-    public ContractRequestDTO contractById(Long id) {
-        return iContractRepository.contractById(id);
+    public ContractDetailsProjection contractById(Long id) {
+        return iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
     }
 
+
+
+
     @Override
-    public void updateContractById(ContractRequestDTO contractRequestDTO, Long id) {
+    public void updateContractById(ContractRequestDTO contractDTO, Long id) {
+        iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
+
+        iContractRepository.updateContractById(contractDTO.getContent(),
+                contractDTO.getDeposit(),contractDTO.getDescription(),contractDTO.getStartDate(),contractDTO.getEndDate(),
+                contractDTO.getFirebaseUrl(), contractDTO.getTaxCode(),contractDTO.getTerm(),id);
 
     }
-
+//anh lq
     @Override
     public void deleteContractById(Long id) {
+        iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
 
+        iContractRepository.deleteContractById(id);
     }
 
         public Page<ContractResponseDTO> getContracts (Optional<Integer> page) {
