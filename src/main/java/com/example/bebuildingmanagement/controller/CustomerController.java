@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
+import com.example.bebuildingmanagement.entity.Customer;
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,7 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin("*")
 
-import com.example.bebuildingmanagement.entity.Customer;
-import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 
 
 public class CustomerController {
@@ -74,7 +70,7 @@ public class CustomerController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer,@PathVariable long id){
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id){
         if(customer == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
