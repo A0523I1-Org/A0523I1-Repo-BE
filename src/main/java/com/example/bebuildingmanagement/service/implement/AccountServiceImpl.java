@@ -1,5 +1,7 @@
 package com.example.bebuildingmanagement.service.implement;
 
+import com.example.bebuildingmanagement.dto.request.ChangePasswordRequest;
+import com.example.bebuildingmanagement.dto.response.ChangePasswordResponse;
 import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
@@ -13,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountServiceImpl implements IAccountService {
     IAccountRepository iAccountRepository;
-
+    PasswordEncoder passwordEncoder;
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -39,21 +42,33 @@ public class AccountServiceImpl implements IAccountService {
 
     @PreAuthorize("hasAuthority('USER')")
     @Override
-    public AccountResponse getMyInfo() {
+    public AccountResponse getCurrentAccount() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
         Account account = iAccountRepository.findByUsername(name).orElseThrow();
 
-        /* Test get role
-        log.info(account.getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(Collectors.joining(", ")));
-        */
-
         AccountResponse accountResponse = new AccountResponse();
         accountResponse.setUsername(account.getUsername());
         return accountResponse;
     }
+
+    @Override
+    public ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest) {
+        AccountResponse accountResponse = getCurrentAccount();
+        Account account = iAccountRepository.findByUsername(accountResponse.getUsername()).orElseThrow();
+
+        if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
+            account.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            iAccountRepository.save(account);
+            return ChangePasswordResponse.builder()
+                    .message("Đổi mật khẩu thành công.")
+                    .build();
+        }
+        return ChangePasswordResponse.builder()
+                .message("Đổi mật khẩu thất bại.")
+                .build();
+    }
+
+
 }

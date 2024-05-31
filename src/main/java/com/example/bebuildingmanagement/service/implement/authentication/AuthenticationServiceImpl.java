@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     IRoleRepository iRoleRepository;
 
     /* Hiện tại đang để chỉ có admin mới có quyền tạo tài khoản */
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public AuthenticationResponse register(RegisterRequest request) {
 
         // check if user already exist. if exist than authenticate the user

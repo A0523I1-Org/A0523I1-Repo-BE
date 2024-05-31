@@ -37,7 +37,7 @@ public class SecurityConfig {
     private CustomLogoutHandler logoutHandler;
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/login/**", "/refresh_token/**"
+            "/login/**", "/refresh_token/**", "/register/**"
     };
 
     @Bean
@@ -70,14 +70,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-
 }
