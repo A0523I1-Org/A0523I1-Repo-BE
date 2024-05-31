@@ -13,7 +13,10 @@ import java.util.Date;
 public interface ICustomerService {
     Page<CustomerResponseDTO> getAllCustomer(Pageable pageable);
 
-    void create(CustomerRequestDTO customerRequestDTO);
+    void createCustomers(String name, Date dob,String gender,String address,String email,
+                         String phone, String website, String companyName,String idCard);
+
+
 
     void edit(String name, Date dob,String gender,String address,String email,
               String phone, String website, String companyName,String idCard,long id);
