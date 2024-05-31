@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.dto.response;
+package com.example.bebuildingmanagement.dto.response.contract;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.dto.request;
+package com.example.bebuildingmanagement.dto.request.contract;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -22,4 +22,8 @@ public class ContractRequestDTO {
     private String firebaseUrl;
     private String taxCode;
     private int term;
+    Long employeeId;
+    Long landingId;
+    Long customerId;
+
 }
