@@ -25,6 +25,7 @@ public class Contract {
     double currentFee;
     String description;
     double deposit;
+
     String firebaseUrl;
 
     @Column(columnDefinition="LONGTEXT")
