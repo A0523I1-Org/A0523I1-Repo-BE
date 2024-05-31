@@ -33,26 +33,14 @@ public class LandingServiceImpl implements ILandingService {
     Validator validator;
 
     @Override
-//    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
-//        Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
-//        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription(), landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(), landing.getFloor().getId(), landing.getFirebaseUrl());
-//        LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
-//        return response;
-//    }
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
-
-        // Fetch Floor entity from database using floorId from DTO
         Floor floor = floorRepository.findById(landingRequestDTO.getFloor())
                 .orElseThrow(() -> new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor()));
-
-        // Set the floor entity to the landing object
         landing.setFloor(floor);
-
-        // Save landing using the repository
-        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription(), landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(), landing.getFloor().getId(), landing.getFirebaseUrl());
-
-        // Map the saved landing entity to the response DTO
+        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
+                ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
+                ,landing.getFloor().getId(), landing.getFirebaseUrl());
         LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
         return response;
     }
