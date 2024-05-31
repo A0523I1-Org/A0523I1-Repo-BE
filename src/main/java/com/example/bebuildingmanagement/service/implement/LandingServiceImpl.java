@@ -41,11 +41,6 @@ public class LandingServiceImpl implements ILandingService {
     }
 
     @Override
-    public LandingResponseDTO findLanding(Long id) {
-        return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
-    }
-
-    @Override
     public void deleteLanding(Long id) {
         iLandingRepository.deleteById(id);
 

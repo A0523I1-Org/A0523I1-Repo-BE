@@ -9,6 +9,5 @@ import java.util.List;
 public interface ILandingService {
     LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO);
     Page<LandingResponseDTO> findAll (int page, int size);
-    LandingResponseDTO findLanding(Long id);
     void deleteLanding(Long id);
 }
