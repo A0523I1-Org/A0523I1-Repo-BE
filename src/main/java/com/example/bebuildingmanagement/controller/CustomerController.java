@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
+import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
@@ -9,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -29,20 +33,33 @@ public class CustomerController {
 
 
         if (page.orElse(0) < 0) {
-            System.out.println(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Pageable pageable = PageRequest.of(page.orElse(0), 6);
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
         Page<CustomerResponseDTO> customerDTOPage = iCustomerService.getAllCustomer(pageable);
 
         if (customerDTOPage.getContent().isEmpty()) {
-            System.out.println(HttpStatus.NO_CONTENT);
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+            System.out.println(HttpStatus.OK);
             return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
         }
-
-
-//        return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<CustomerRequestDTO> createCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, BindingResult bindingResult) {
+        new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            iCustomerService.create(customerRequestDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

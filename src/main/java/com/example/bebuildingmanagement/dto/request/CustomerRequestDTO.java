@@ -1,6 +1,6 @@
-package com.example.bebuildingmanagement.dto.response;
+package com.example.bebuildingmanagement.dto.request;
 
-import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerResponseDTO implements Validator {
+public class CustomerRequestDTO implements Validator {
     Long id;
     @NotBlank(message = "Tên khách hàng không được để rỗng")
     String name;
@@ -41,7 +41,6 @@ public class CustomerResponseDTO implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        CustomerResponseDTO customerResponseDTO = (CustomerResponseDTO) target;
-
+        CustomerRequestDTO customerRequestDTO = (CustomerRequestDTO) target;
     }
 }
