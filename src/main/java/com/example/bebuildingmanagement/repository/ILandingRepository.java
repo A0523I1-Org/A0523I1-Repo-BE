@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
-    @Query("")
-    void createNewLanding(Landing landing);
 }
