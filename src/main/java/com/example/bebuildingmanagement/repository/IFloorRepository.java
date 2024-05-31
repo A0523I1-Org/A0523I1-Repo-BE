@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface IFloorRepository extends JpaRepository<Floor, Long> {
-    @Query(value = "select id,name from floor where id = ?1",nativeQuery = true)
+    @Query(value = "select id,name,is_deleted from floor where id = ?1",nativeQuery = true)
     Floor findFloorById(Long id);
     @Query(value = "select id,name from floor",nativeQuery = true)
     List<Floor> findAllFloor();

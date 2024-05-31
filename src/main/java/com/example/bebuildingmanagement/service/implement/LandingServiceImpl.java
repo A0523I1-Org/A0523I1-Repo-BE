@@ -53,7 +53,6 @@ public class LandingServiceImpl implements ILandingService {
         if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
             throw new CustomValidationException("Mã mặt bằng đã tồn tại");
         }
-
         return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
     }
 
