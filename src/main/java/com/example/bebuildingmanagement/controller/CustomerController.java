@@ -70,7 +70,7 @@ public class CustomerController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id){
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id,BindingResult bindingResult){
         if(customer == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -82,5 +82,4 @@ public class CustomerController {
         iCustomerService.delete(id);
         return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
-
 }

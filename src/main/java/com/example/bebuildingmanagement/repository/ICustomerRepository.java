@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.repository;
 
-import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
+
 import com.example.bebuildingmanagement.entity.Customer;
 
 import org.springframework.data.domain.Page;
@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +24,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     Page<Customer> getAllCustomer(Pageable pageable);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id",nativeQuery = true)
+     @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id",nativeQuery = true)
     void updateCustomer(@Param("name") String name,
                         @Param("dob") Date dob,
                         @Param("gender") String gender,
