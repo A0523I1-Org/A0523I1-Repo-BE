@@ -29,8 +29,21 @@ public class LandingController {
 
     @GetMapping
     public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam("page") int page, @RequestParam("size") int size) {
-        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page,size);
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
         return ResponseEntity.ok(landingResponseDTOPage);
+    }
+
+
+    @PutMapping("/{id}")
+    public ApiResponseDTO<LandingResponseDTO> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+        landingRequestDTO.setId(id);
+        LandingResponseDTO result = iLandingService.updateLanding(landingRequestDTO);
+
+        ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
+        apiResponseDTO.setResult(result);
+
+        return apiResponseDTO;
+
     }
 
     @GetMapping("/listFloor")
@@ -38,6 +51,7 @@ public class LandingController {
         List<FloorResponseDTO> floorResponseDTOList = iFloorService.getFloor();
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
     }
+
 
     @PostMapping("/createLanding")
     public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {

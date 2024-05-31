@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
+    boolean existsByCode(String code);
     @Override
     Page<Landing> findAll(Pageable pageable);
 }
