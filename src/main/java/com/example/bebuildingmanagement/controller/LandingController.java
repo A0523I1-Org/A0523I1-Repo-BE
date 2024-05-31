@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +33,6 @@ public class LandingController {
         return ResponseEntity.ok(landingResponseDTOPage);
     }
 
-    @PostMapping
-    ApiResponseDTO<LandingResponseDTO> createLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
-        ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
-        apiResponseDTO.setResult(iLandingService.createAndUpdateLanding(landingRequestDTO));
-        return apiResponseDTO;
-
-    }
-
     @GetMapping("/listFloor")
     ResponseEntity<List<FloorResponseDTO>> getListAllFloor() {
         List<FloorResponseDTO> floorResponseDTOList = iFloorService.getFloor();
@@ -47,7 +40,7 @@ public class LandingController {
     }
 
     @PostMapping("/createLanding")
-    public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Validated LandingRequestDTO landingRequestDTO) {
+    public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         ApiResponseDTO<LandingResponseDTO> apiResponseDTO;
         try {
             LandingResponseDTO result = iLandingService.createAndUpdateLanding(landingRequestDTO);
