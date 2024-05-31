@@ -2,9 +2,11 @@ package com.example.bebuildingmanagement.service.implement;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
+import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
 import com.example.bebuildingmanagement.exception.customerValidate.validateclass.code.ValidationGroups;
+import com.example.bebuildingmanagement.repository.IFloorRepository;
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
 import jakarta.validation.Validator;
@@ -26,14 +28,34 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingServiceImpl implements ILandingService {
     ILandingRepository iLandingRepository;
+    IFloorRepository floorRepository;
     ModelMapper modelMapper;
     Validator validator;
 
     @Override
+//    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
+//        Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
+//        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription(), landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(), landing.getFloor().getId(), landing.getFirebaseUrl());
+//        LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
+//        return response;
+//    }
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
-        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO,Landing.class)),LandingResponseDTO.class);
-    }
+        Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
 
+        // Fetch Floor entity from database using floorId from DTO
+        Floor floor = floorRepository.findById(landingRequestDTO.getFloor())
+                .orElseThrow(() -> new RuntimeException("Floor not found with id: " + landingRequestDTO.getFloor()));
+
+        // Set the floor entity to the landing object
+        landing.setFloor(floor);
+
+        // Save landing using the repository
+        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription(), landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(), landing.getFloor().getId(), landing.getFirebaseUrl());
+
+        // Map the saved landing entity to the response DTO
+        LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
+        return response;
+    }
     @Override
     public LandingResponseDTO updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
@@ -56,9 +78,15 @@ public class LandingServiceImpl implements ILandingService {
     }
 
     @Override
+    public void deleteLanding(Long id) {
+
+    }
+
+    @Override
     public LandingResponseDTO findLanding(Long id) {
         return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
     }
+
     public void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);
@@ -86,10 +114,6 @@ public class LandingServiceImpl implements ILandingService {
 
 
     }
-
-
-
-
 
 
 }
