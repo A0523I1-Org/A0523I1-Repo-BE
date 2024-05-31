@@ -9,6 +9,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,26 +23,26 @@ import java.util.stream.Collectors;
 public class LandingServiceImpl implements ILandingService {
     ILandingRepository iLandingRepository;
     ModelMapper modelMapper;
+
     @Override
     public LandingResponseDTO createAndUpdateLanding(LandingRequestDTO landingRequestDTO) {
-        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)),LandingResponseDTO.class) ;
+        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
     }
 
     @Override
-    public List<LandingResponseDTO> showListLanding() {
-        List<Landing> listLanding = iLandingRepository.findAll();
-        List<LandingResponseDTO> landingResponseDTOList = listLanding.stream()
-                .map(listNew -> modelMapper.map
-                        (listNew, LandingResponseDTO.class))
-                .collect(Collectors.toList());
-        System.out.println(landingResponseDTOList);
+    public Page<LandingResponseDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
 
-        return landingResponseDTOList;
+        Page<Landing> listLanding = iLandingRepository.findAll(pageable);
+
+        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
+
+        return landingResponseDTOPage;
     }
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
-        return modelMapper.map(iLandingRepository.findById(id),LandingResponseDTO.class);
+        return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
     }
 
     @Override
