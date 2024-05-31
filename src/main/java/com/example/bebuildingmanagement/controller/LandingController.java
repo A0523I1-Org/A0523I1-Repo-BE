@@ -57,7 +57,7 @@ public class LandingController {
     public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         ApiResponseDTO<LandingResponseDTO> apiResponseDTO;
         try {
-            LandingResponseDTO result = iLandingService.createAndUpdateLanding(landingRequestDTO);
+            LandingResponseDTO result = iLandingService.createLanding(landingRequestDTO);
             if (result != null) {
                 apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
                         .code(HttpStatus.OK.value())

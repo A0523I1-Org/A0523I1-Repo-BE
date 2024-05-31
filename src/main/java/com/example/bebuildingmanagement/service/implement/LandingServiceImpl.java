@@ -30,6 +30,11 @@ public class LandingServiceImpl implements ILandingService {
     Validator validator;
 
     @Override
+    public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
+        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO,Landing.class)),LandingResponseDTO.class);
+    }
+
+    @Override
     public LandingResponseDTO updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
         if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
