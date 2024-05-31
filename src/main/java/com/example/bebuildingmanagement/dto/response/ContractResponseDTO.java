@@ -3,13 +3,19 @@ package com.example.bebuildingmanagement.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+import java.util.Date;
+
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FloorResponseDTO {
-    Long id;
-    String name;
+public class ContractResponseDTO  {
+    Date startDate;
+    Date endDate;
+    String customerName;
+    String landingCode;
+
 
 }

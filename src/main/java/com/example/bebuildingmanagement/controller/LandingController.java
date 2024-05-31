@@ -53,4 +53,30 @@ public class LandingController {
     }
 
 
+    @PostMapping("/createLanding")
+    public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+        ApiResponseDTO<LandingResponseDTO> apiResponseDTO;
+        try {
+            LandingResponseDTO result = iLandingService.createAndUpdateLanding(landingRequestDTO);
+            if (result != null) {
+                apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("Thêm mới mặt bằng thành công.")
+                        .result(result)
+                        .build();
+            } else {
+                apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
+                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message("Thêm mới mặt bằng không thành công.")
+                        .build();
+            }
+        } catch (Exception e) {
+            apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .message("Lỗi: " + e.getMessage())
+                    .build();
+        }
+        return apiResponseDTO;
+    }
+
 }
