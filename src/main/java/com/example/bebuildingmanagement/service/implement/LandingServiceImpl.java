@@ -69,6 +69,10 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public void deleteLanding(Long id) {
+        Landing landing = iLandingRepository.findLandingById(id);
+        if (landing == null){
+            throw new CustomValidationException("Id không tồn tại");
+        }
         iLandingRepository.deleteLanding(id);
     }
 

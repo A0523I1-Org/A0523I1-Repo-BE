@@ -24,6 +24,8 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
     @Override
     Page<Landing> findAll(Pageable pageable);
+    @Query(value = "select id,code,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url from landing where id = ?1", nativeQuery = true)
+    Landing findLandingById(Long id);
     @Modifying
     @Transactional
     @Query(value = "insert into landing(code,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url) value(?1,?2,?3,?4,?5,?6,?7,?8)",nativeQuery = true)

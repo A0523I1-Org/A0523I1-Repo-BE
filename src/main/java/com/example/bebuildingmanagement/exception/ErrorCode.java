@@ -15,6 +15,8 @@ public enum ErrorCode {
     CODE_LANDING_MAX(1005,"Mã mặt bằng phải có tối nhất 25 ký tự"),
     CODE_LANDING_AVAILABLE(1006 , "Mã mặt bằng đã tồn tại."),
 
+    TYPE_LANDING_BLANK(1006,"Vui lòng nhập mã mặt bằng"),
+
     AREA_LANDING_BLANK(7,"Vui lòng nhập diện tích."),
     AREA_LANDING_REAL_NUMBER(8,"Vui lòng nhập diện tích lớn hơn 0."),
     AREA_LANDING_SPECIAL_CHARACTERS(9,"Diện tích phải là số và không được có ký tự đặc biệt."),
