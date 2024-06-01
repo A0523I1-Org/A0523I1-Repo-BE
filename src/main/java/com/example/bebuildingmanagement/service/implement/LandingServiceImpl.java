@@ -6,6 +6,7 @@ import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
 import com.example.bebuildingmanagement.repository.IFloorRepository;
+import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
 import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
@@ -53,7 +54,9 @@ public class LandingServiceImpl implements ILandingService {
         if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
             throw new CustomValidationException("Mã mặt bằng đã tồn tại");
         }
-        return modelMapper.map(iLandingRepository.save(modelMapper.map(landingRequestDTO, Landing.class)), LandingResponseDTO.class);
+
+
+;       iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(),landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
 
     @Override
@@ -80,8 +83,7 @@ public class LandingServiceImpl implements ILandingService {
     public LandingResponseDTO findLanding(Long id) {
         return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
     }
-
-    public void validateLandingRequest(LandingRequestDTO landingRequest) {
+    private void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);
         if (!mandatoryViolations.isEmpty()) {

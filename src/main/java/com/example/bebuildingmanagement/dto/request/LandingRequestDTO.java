@@ -18,12 +18,15 @@ import org.hibernate.annotations.NotFound;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LandingRequestDTO {
+
     Long id;
     @NotBlank(message = "CODE_LANDING_BLANK", groups = ValidationGroups.MandatoryChecks.class)
     @MinLength(value = 5, message = "CODE_LANDING_AT_LEAST", groups = ValidationGroups.LengthChecks.class)
     @NoSpecialCharacters(message = "CODE_LANDING_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     @Pattern(regexp = "^MB\\d{3}$", message = "CODE_LANDING_FORMAT", groups = ValidationGroups.FormatChecks.class)
     @MaxLengthLanding(value = 25, message = "CODE_LANDING_MAX", groups = ValidationGroups.LengthChecks.class)
+
+
     String code;
     @NotBlankType(message = "TYPE_LANDING_BLANK")
     String type;
@@ -34,6 +37,5 @@ public class LandingRequestDTO {
     double feePerMonth;
     double feeManager;
     String firebaseUrl;
-
     Long floor;
 }
