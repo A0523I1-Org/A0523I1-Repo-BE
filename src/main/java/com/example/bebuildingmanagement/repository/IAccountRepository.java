@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface IAccountRepository extends JpaRepository<Account, Long> {
-    // lay username account
+    // hoài lấy username account
     Account findByUsername(String username);
 }

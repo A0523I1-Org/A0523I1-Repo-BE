@@ -46,16 +46,25 @@ public class ContractController {
 
 
     @PostMapping("")
-    public ResponseEntity<?> createContract(@RequestBody ContractNewRequestDTO contractNewRequestDTO){
+    public ResponseEntity<ApiResponse> createContract(@RequestBody @Valid ContractNewRequestDTO contractNewRequestDTO,
+                                                      @RequestParam("confirmPassword") String confirmPassword){
+        //lay mật khẩu đang đăng nhập để xác nhận :
+        String password = "a123456" ;
+        if (!confirmPassword.equals(password)){
+            throw new RuntimeException("mật khẩu xác nhận không đúng !");
+        }
         iContractService.createContract(contractNewRequestDTO);
-        return  new ResponseEntity<>(HttpStatus.CREATED);
+        ApiResponse response = ApiResponse.builder()
+                .message("Thêm mới hợp đồng thành công !")
+                .status(HttpStatus.CREATED.value())
+                .timestamp(System.currentTimeMillis())
+                .build();
+        return  new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
 
     @GetMapping("/{contractId}")
     public ResponseEntity<ContractDetailsProjection> getContractById(@PathVariable("contractId") long contractId){
-
-
         ContractDetailsProjection contractDTO = iContractService.contractById(contractId);
         return new ResponseEntity<>(contractDTO,HttpStatus.OK);
     }

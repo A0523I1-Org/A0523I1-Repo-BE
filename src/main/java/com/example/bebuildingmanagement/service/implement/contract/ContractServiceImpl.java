@@ -6,6 +6,7 @@ import com.example.bebuildingmanagement.dto.response.mail.DataMailDTO;
 import com.example.bebuildingmanagement.entity.*;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
+import com.example.bebuildingmanagement.projections.contract.IEmployeeProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
@@ -44,8 +45,6 @@ public class ContractServiceImpl implements IContractService {
     }
 
 
-
-
     @Override
     public void updateContractById(ContractRequestDTO contractDTO, Long id) {
         iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
@@ -64,7 +63,7 @@ public class ContractServiceImpl implements IContractService {
     }
 
         public Page<ContractResponseDTO> getContracts (Optional<Integer> page) {
-
+            // lấy username đang đăng nhập :
             String username = "TranThiB";
             // lay thong tin account:
             Account account = iAccountRepository.findByUsername(username);
@@ -76,17 +75,17 @@ public class ContractServiceImpl implements IContractService {
             for (Role role: account.getRoles()
                  ) {
                 if (role.getName().equals("ADMIN")){
-                    // lay tat ca danh sach
+                    // lấy tất cả danh sách hợp đồng
                     contractProjections = iContractRepository.getContracts(pageable);
                     break;
 
                 }else {
-                    // lay danh sach nhan vien da tao :
+                    // chỉ lấy ra danh sách nhân viên đã tạo hợp đồng :
                     contractProjections = iContractRepository.getContractByAccountId(pageable,username);
 
                 }
             }
-            //convert ve DTO:
+            //convert về DTO:
             contractResponseDTOS = contractProjections.map(
                     contractProjection -> {
                         ContractResponseDTO contractResponseDTO = ContractResponseDTO.builder()
@@ -105,37 +104,48 @@ public class ContractServiceImpl implements IContractService {
 
     @Override
     public void createContract(ContractNewRequestDTO contractNewRequestDTO) {
-        String username = "TranThiB";
-        Long employeeId = iEmployeeRepository.getIdEmployeeByUsername(username);
+        // Kiểm tra xem mặt bang đã làm hợp đồng chưa .
         if (iContractRepository.existsByLandingId(contractNewRequestDTO.getLandingId())){
             throw new  RuntimeException("Mặt bằng này đã làm hợp đồng,  chọn mặt bằng khác !");
         }
+        // lấy username đang đăng nhập
+        String username = "TranThiB";
+        // lấy 1 số dữ liệu employee để send mail và insert employeeId vào contract;
+        IEmployeeProjection employee = iEmployeeRepository.getEmployeeByUsername(username) ;
 
-
+        // đẩy dữ liệu lên repo để thực hiện query insert :
          iContractRepository.createContract(
                 contractNewRequestDTO.getTerm(),contractNewRequestDTO.getStartDate(),
                 contractNewRequestDTO.getEndDate(),contractNewRequestDTO.getTaxCode(),
                 contractNewRequestDTO.getCurrentFee(),contractNewRequestDTO.getDescription(),
                 contractNewRequestDTO.getDeposit(),contractNewRequestDTO.getFirebaseUrl(),
                 contractNewRequestDTO.getContent(),contractNewRequestDTO.getLandingId(),
-                contractNewRequestDTO.getCustomerId(),employeeId
+                contractNewRequestDTO.getCustomerId(),employee.getId()
         ) ;
 
         // gui mail :
 
-            Customer customer = iCustomerRepository.findById(contractNewRequestDTO.getCustomerId()).get();
+            Customer customer = iCustomerRepository.findById(contractNewRequestDTO.getCustomerId())
+                    .orElseThrow(()-> new RuntimeException("Không tìm thấy khách hàng !"));
             DataMailDTO dataMail = new DataMailDTO();
             dataMail.setToEmail(customer.getEmail());
             dataMail.setSubject(Const.SEND_MAIL_SUBJECT.CLIENT_REGISTER);
-
+            // trả dữ liệu ve thymelef để hiên thị
             Map<String,Object> props = new HashMap<>();
-            props.put("name",customer.getName());
-            props.put("username",customer.getEmail());
+            props.put("customerName",customer.getName());
+            props.put("startDate",contractNewRequestDTO.getStartDate());
+            props.put("endDate",contractNewRequestDTO.getEndDate());
+            props.put("term",contractNewRequestDTO.getTerm());
+            props.put("employeeName",employee.getName());
+            props.put("phone",employee.getPhone());
+            props.put("email",employee.getEmail());
+
+
             dataMail.setProps(props);
         try {
             iMailService.sendMail(dataMail,Const.TEMPLATE_FILE_NAME.CLIENT_REGISTER);
         } catch (MessagingException e) {
-            throw new RuntimeException("Gui mail that bai !");
+            throw new RuntimeException("Gửi mail thất bại !");
         }
 
 

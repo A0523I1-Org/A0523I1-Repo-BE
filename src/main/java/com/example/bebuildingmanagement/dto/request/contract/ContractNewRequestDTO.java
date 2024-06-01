@@ -1,5 +1,9 @@
 package com.example.bebuildingmanagement.dto.request.contract;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContractNewRequestDTO {
+     
      int term;
      Date startDate;
      Date endDate;
