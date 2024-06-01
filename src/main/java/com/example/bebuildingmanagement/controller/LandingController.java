@@ -28,21 +28,20 @@ public class LandingController {
 
 
     @GetMapping
-    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "5") int size) {
+    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "15") int size) {
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
         return ResponseEntity.ok(landingResponseDTOPage);
     }
 
 
     @PutMapping("/{id}")
-    public ApiResponseDTO<LandingResponseDTO> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+    public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
-        LandingResponseDTO result = iLandingService.updateLanding(landingRequestDTO);
+         iLandingService.updateLanding(landingRequestDTO);
 
-        ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
-        apiResponseDTO.setResult(result);
+         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
 
-        return apiResponseDTO;
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
 
     }
 
