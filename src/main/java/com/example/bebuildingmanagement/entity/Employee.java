@@ -27,7 +27,6 @@ public class Employee {
     String phone;
     String email;
     Date workDate;
-    String position;
     String firebaseUrl;
 
 

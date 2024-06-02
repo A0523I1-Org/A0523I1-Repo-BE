@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,6 +21,9 @@ public class Role {
 
     String name;
     String description;
+
+    @ManyToMany(mappedBy = "roles")
+    Set<Account> accounts = new HashSet<>();
 
     @ManyToMany
     Set<Permission> permissions;
