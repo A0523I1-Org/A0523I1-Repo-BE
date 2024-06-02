@@ -1,4 +1,6 @@
 package com.example.bebuildingmanagement.service.interfaces;
 
-public interface ISalaryRankService {
+import com.example.bebuildingmanagement.entity.SalaryRank;
+
+public interface ISalaryRankService extends IService<SalaryRank>{
 }
