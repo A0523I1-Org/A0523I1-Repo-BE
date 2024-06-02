@@ -12,4 +12,8 @@ public class ValidationGroups {
 
     public interface SpecialCharacterChecks extends Default{
     }
+    public interface MandatoryChecksArea extends Default{
+
+    }
+    public interface MandatoryChecksFeeManager extends Default{}
 }

@@ -1,19 +1,16 @@
 package com.example.bebuildingmanagement.validate.customerValidate.validateclass.area;
 
-import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.area.NotBlankArea;
-
+import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.area.AreaGreater;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class NotBlankValidatorArea implements ConstraintValidator<NotBlankArea,Double> {
+public class AreaGreaterValidator  implements ConstraintValidator<AreaGreater, Double> {
     @Override
-    public void initialize(NotBlankArea constraintAnnotation) {
+    public void initialize(AreaGreater constraintAnnotation) {
     }
 
     @Override
     public boolean isValid(Double value, ConstraintValidatorContext context) {
-        return value != null;
+        return value != null && value > 0;
     }
-
-
 }

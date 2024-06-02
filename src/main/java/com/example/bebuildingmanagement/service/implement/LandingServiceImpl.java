@@ -37,9 +37,9 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
-            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
-        }
+//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
+//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
+//        }
 
 
 ;       iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(),landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
@@ -85,6 +85,13 @@ public class LandingServiceImpl implements ILandingService {
         if (!formatViolations.isEmpty()) {
             throw new ConstraintViolationException(formatViolations);
         }
+
+
+        Set<ConstraintViolation<LandingRequestDTO>> formatViolationsFeeManager = validator.validate(landingRequest, ValidationGroups.MandatoryChecksFeeManager.class);
+        if (!formatViolationsFeeManager.isEmpty()) {
+            throw new ConstraintViolationException(formatViolationsFeeManager);
+        }
+
 
 
     }
