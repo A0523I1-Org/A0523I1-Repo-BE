@@ -51,13 +51,12 @@ public class AccountServiceImpl implements IAccountService {
         // Chuyển đổi AccountReqDTO thành entity Account
         Account account = modelMapper.map(accountReqDTO, Account.class);
 
-        // Khởi tạo roles nếu null
-        if (account.getRoles() == null) {
-            account.setRoles(new HashSet<>());
-        }
-        Role role = iRoleRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        account.getRoles().add(role);
+        //Bổ sung dữ liệu mặc định
+        HashSet<Role> roles = new HashSet<>();
+        iRoleRepository.findById(2L).ifPresent(roles::add);
+        account.setRoles(roles);
+        account.setActive(true);
+
 
         // Thiết lập mối quan hệ giữa employee và account
         employee.setAccount(account);
