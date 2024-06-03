@@ -45,7 +45,7 @@ public class FloorServiceImpl implements IFloorService {
 
     @Override
     public FloorResponseDTO findFloor(Long id) {
-        Optional<Floor> floor=iFloorRepository.findById(id);
+        Floor floor=iFloorRepository.findFloorById(id);
         FloorResponseDTO floorResponseDTO=modelMapper.map(floor,FloorResponseDTO.class);
 
         return floorResponseDTO;
