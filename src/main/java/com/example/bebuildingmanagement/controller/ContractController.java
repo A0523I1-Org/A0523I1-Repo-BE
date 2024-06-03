@@ -7,23 +7,19 @@ import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDT
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 
 
-import com.example.bebuildingmanagement.dto.response.ApiResponse;
-import com.example.bebuildingmanagement.dto.response.ContractDetailDTO;
+import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 
-import jakarta.servlet.http.PushBuilder;
 import jakarta.validation.Valid;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -53,9 +49,9 @@ public class ContractController {
 
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> createContract(@RequestBody ContractNewRequestDTO contractNewRequestDTO,
-                                                      @RequestParam("confirmPassword") String confirmPassword,
-                                                      BindingResult bindingResult
+    public ResponseEntity<ApiResponseDTO> createContract(@RequestBody ContractNewRequestDTO contractNewRequestDTO,
+                                                         @RequestParam("confirmPassword") String confirmPassword,
+                                                         BindingResult bindingResult
                                                       ){
         //lay mật khẩu đang đăng nhập để xác nhận :
         String password = "a123456" ;
@@ -68,7 +64,7 @@ public class ContractController {
             throw new RuntimeException(bindingResult.getFieldError().getDefaultMessage());
         }
         iContractService.createContract(contractNewRequestDTO);
-        ApiResponse response = ApiResponse.builder()
+        ApiResponseDTO response = ApiResponseDTO.builder()
                 .message("Thêm mới hợp đồng thành công !")
                 .status(HttpStatus.CREATED.value())
                 .timestamp(System.currentTimeMillis())
@@ -84,15 +80,15 @@ public class ContractController {
     }
 
     @DeleteMapping("/{contractId}")
-    public ResponseEntity<ApiResponse> deleteContractById(@PathVariable("contractId") Long contractId){
+    public ResponseEntity<ApiResponseDTO> deleteContractById(@PathVariable("contractId") Long contractId){
         iContractService.deleteContractById(contractId);
-        ApiResponse response = ApiResponse.builder().message("Contract deleted successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
+        ApiResponseDTO response = ApiResponseDTO.builder().message("Contract deleted successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     @PutMapping("/{contractId}")
-    public ResponseEntity<ApiResponse> updateContractById(@PathVariable("contractId") long contractId, @RequestBody @Valid ContractRequestDTO contractRequestDTO){
+    public ResponseEntity<ApiResponseDTO> updateContractById(@PathVariable("contractId") long contractId, @RequestBody @Valid ContractRequestDTO contractRequestDTO){
         iContractService.updateContractById(contractRequestDTO,contractId);
-        ApiResponse response = ApiResponse.builder().message("Contract updated successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
+        ApiResponseDTO response = ApiResponseDTO.builder().message("Contract updated successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

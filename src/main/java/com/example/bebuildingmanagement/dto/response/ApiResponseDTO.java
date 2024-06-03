@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ApiResponse {
+public class ApiResponseDTO {
     private String message;
     private int status;
     private long timestamp;

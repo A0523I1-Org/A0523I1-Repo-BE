@@ -81,7 +81,7 @@ public class ContractServiceImpl implements IContractService {
 
                 }else {
                     // chỉ lấy ra danh sách nhân viên đã tạo hợp đồng :
-                    contractProjections = iContractRepository.getContractByAccountId(pageable,username);
+                    contractProjections = iContractRepository.getContractByEmployeeUsername(pageable,username);
 
                 }
             }
