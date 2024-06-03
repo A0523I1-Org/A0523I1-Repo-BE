@@ -71,11 +71,11 @@ public class CustomerController {
 
     @PutMapping("/{id}")
 
-    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
+    public ResponseEntity<CustomerRequestDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
         new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
         try {
             iCustomerService.edit(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(), customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(), customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard(), id);
-            return new ResponseEntity<>("Update Suceess", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
