@@ -70,17 +70,16 @@ public class CustomerController {
 
 
     @PutMapping("/{id}")
-<<<<<<< HEAD
-    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id,BindingResult bindingResult){
-        if(customer == null){
-=======
-    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customer, @PathVariable long id) {
-        if (customer == null) {
->>>>>>> cd7e6d939a2956e8469a177a7dca750a09250ae1
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
+        new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
+        try {
+            iCustomerService.edit(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(), customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(), customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard(), id);
+            return new ResponseEntity<>("Update Suceess", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        iCustomerService.edit(customer.getName(), customer.getDob(), customer.getGender(), customer.getAddress(), customer.getEmail(), customer.getPhone(), customer.getWebsite(), customer.getCompanyName(), customer.getIdCard(), id);
-        return new ResponseEntity<>("Update Suceess", HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{id}")

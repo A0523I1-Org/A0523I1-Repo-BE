@@ -24,9 +24,6 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
 
     @Modifying
     @Transactional
-<<<<<<< HEAD
-     @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id",nativeQuery = true)
-=======
     @Query(value = "insert into Customer (name,dob,gender,address,email,phone,website,company_name,id_card)" + "values (?,?,?,?,?,?,?,?,?)", nativeQuery = true)
     void createCustomers(@Param("name") String name , @Param("dob") Date dob,@Param("gender") String gender,@Param("address") String address,
                          @Param("phone")String phone, @Param("website") String website,@Param("email") String email,
@@ -34,7 +31,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id", nativeQuery = true)
->>>>>>> cd7e6d939a2956e8469a177a7dca750a09250ae1
+
     void updateCustomer(@Param("name") String name,
                         @Param("dob") Date dob,
                         @Param("gender") String gender,
