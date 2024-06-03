@@ -33,11 +33,6 @@ public class LandingController {
         return ResponseEntity.ok(landingResponseDTOPage);
     }
 
-    @DeleteMapping("/deleteLanding/{id}")
-    public ResponseEntity<Void> deleteLanding(@PathVariable Long id) {
-        iLandingService.deleteLanding(id);
-        return ResponseEntity.noContent().build();
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
@@ -58,29 +53,20 @@ public class LandingController {
 
 
     @PostMapping("/createLanding")
-    public ApiResponseDTO<LandingResponseDTO> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
-        ApiResponseDTO<LandingResponseDTO> apiResponseDTO;
-        try {
-            LandingResponseDTO result = iLandingService.createLanding(landingRequestDTO);
-            if (result != null) {
-                apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
-                        .code(HttpStatus.OK.value())
-                        .message("Thêm mới mặt bằng thành công.")
-                        .result(result)
-                        .build();
-            } else {
-                apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
-                        .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message("Thêm mới mặt bằng không thành công.")
-                        .build();
-            }
-        } catch (Exception e) {
-            apiResponseDTO = ApiResponseDTO.<LandingResponseDTO>builder()
-                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("Lỗi: " + e.getMessage())
-                    .build();
-        }
-        return apiResponseDTO;
+    public ResponseEntity<ApiResponseDTO<Void>> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+        iLandingService.createLanding(landingRequestDTO);
+
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Thêm mặt bằng thành công").build();
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteLanding/{id}")
+    public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
+        iLandingService.deleteLanding(id);
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
 
 

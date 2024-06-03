@@ -35,6 +35,7 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
+        validateLandingRequest(landingRequestDTO);
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
         Floor floor = floorRepository.findFloorById(landingRequestDTO.getFloor());
         if (floor == null) {
@@ -49,7 +50,7 @@ public class LandingServiceImpl implements ILandingService {
     }
 
     @Override
-    public LandingResponseDTO updateLanding(LandingRequestDTO landingRequestDTO) {
+    public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
 //        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
 //            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
@@ -74,9 +75,9 @@ public class LandingServiceImpl implements ILandingService {
     public void deleteLanding(Long id) {
         Landing landing = iLandingRepository.findLandingById(id);
         if (landing == null){
-            throw new CustomValidationException("Id không tồn tại");
+            throw new CustomValidationException("Mặt bằng không tồn tại");
         }
-        iLandingRepository.deleteLanding(id);
+        iLandingRepository.deleteLandingById(id);
     }
 
     @Override

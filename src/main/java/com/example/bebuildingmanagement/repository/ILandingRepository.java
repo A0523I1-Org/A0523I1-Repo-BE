@@ -20,8 +20,8 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     boolean existsByCode(String code);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE landing SET is_deleted = 1 WHERE id = ?1", nativeQuery = true)
-    void deleteLanding(Long id);
+    @Query(value = "UPDATE landing SET is_deleted = 1, is_available = 0 WHERE id = ?1", nativeQuery = true)
+    void deleteLandingById(Long id);
 
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
             "FROM Landing ld " +
@@ -39,7 +39,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
     @Override
     Page<Landing> findAll(Pageable pageable);
-    @Query(value = "select id,code,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url from landing where id = ?1", nativeQuery = true)
+    @Query(value = "select id,code,type,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url,is_deleted,is_available from landing where id = ?1", nativeQuery = true)
     Landing findLandingById(Long id);
     @Modifying
     @Transactional
