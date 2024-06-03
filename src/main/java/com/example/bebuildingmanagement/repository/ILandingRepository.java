@@ -43,6 +43,6 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     Landing findLandingById(Long id);
     @Modifying
     @Transactional
-    @Query(value = "insert into landing(code,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url) value(?1,?2,?3,?4,?5,?6,?7,?8)",nativeQuery = true)
-    void createLanding(String codeLanding, double area, String description, double feePerMonth, double feeManager,String status, Long idFloor, String firebaseUrl);
+    @Query(value = "insert into landing(code,area,description,fee_per_month,fee_manager,status,type,floor_id,firebase_url) value(?1,?2,?3,?4,?5,?6,?7,?8,?9)",nativeQuery = true)
+    void createLanding(String codeLanding, double area, String description, double feePerMonth, double feeManager,String status,String type, Long idFloor, String firebaseUrl);
 }

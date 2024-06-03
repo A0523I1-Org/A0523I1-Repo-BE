@@ -43,7 +43,7 @@ public class LandingServiceImpl implements ILandingService {
         }
         landing.setFloor(floor);
         iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
-                ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
+                ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(),landing.getType()
                 ,landing.getFloor().getId(), landing.getFirebaseUrl());
         LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
         return response;
