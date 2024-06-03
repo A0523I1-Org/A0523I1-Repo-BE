@@ -4,6 +4,7 @@ import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
 import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDTO;
 import com.example.bebuildingmanagement.dto.response.mail.DataMailDTO;
 import com.example.bebuildingmanagement.entity.*;
+import com.example.bebuildingmanagement.exception.ResourceNotFoundException;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
@@ -40,7 +41,7 @@ public class ContractServiceImpl implements IContractService {
     //anh lq
     @Override
     public ContractDetailsProjection contractById(Long id) {
-        return iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
+        return iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
     }
 
 
@@ -58,7 +59,7 @@ public class ContractServiceImpl implements IContractService {
 //anh lq
     @Override
     public void deleteContractById(Long id) {
-        iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
+        iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
 
         iContractRepository.deleteContractById(id);
     }

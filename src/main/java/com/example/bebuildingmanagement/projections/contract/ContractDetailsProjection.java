@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.projections.contract;
 import java.util.Date;
 
 public interface ContractDetailsProjection {
+    Long getId();
     String getCode();
     String getCustomerName();
     String getEmployeeName();

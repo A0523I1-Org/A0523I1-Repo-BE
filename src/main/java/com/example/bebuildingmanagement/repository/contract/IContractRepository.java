@@ -34,7 +34,7 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
 //            " join Customer cus on cont.customer.id = cus.id " +
 //            " join Employee emp on cont.employee.id = emp.id " +
 //            " where cont.id = ?1 ")
-    @Query(value = "SELECT land.code as code,cus.name as customerName,emp.name as employeeName,cont.content as content,cont.deposit as deposit,cont.description as description,cont.start_date as startDate, land.fee_per_month as FeePerMouth,cont.end_date as endDate,cont.firebase_url as firebaseUrl,cont.tax_code as taxCode,cont.term  as term" +
+    @Query(value = "SELECT cont.id,land.code as code,cus.name as customerName,emp.name as employeeName,cont.content as content,cont.deposit as deposit,cont.description as description,cont.start_date as startDate, land.fee_per_month as FeePerMouth,cont.end_date as endDate,cont.firebase_url as firebaseUrl,cont.tax_code as taxCode,cont.term  as term" +
             " FROM Contract cont " +
             " join landing land on cont.landing_id = land.id " +
             " join customer cus on cont.customer_id = cus.id " +
