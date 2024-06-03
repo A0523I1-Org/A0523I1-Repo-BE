@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.exception;
 
 
+
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -60,13 +61,26 @@ public class GlobalExceptionHandler {
         ApiResponseDTO response = ApiResponseDTO.builder().message(messege).status(HttpStatus.NOT_FOUND.value()).build();
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
+//    @ExceptionHandler(value = RuntimeException.class)
+//    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
+//        ApiResponseDTO response = ApiResponseDTO.builder()
+//                .message(exception.getMessage())
+//                .status(HttpStatus.BAD_REQUEST.value())
+//                .timestamp(System.currentTimeMillis())
+//                .build();
+//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+//    }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
 
+        ApiResponseDTO response = ApiResponseDTO.builder()
+                .message(exception.getFieldError().getDefaultMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(System.currentTimeMillis())
+                .build();
 
-
-
-
-
-
-
+        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
 }
+
