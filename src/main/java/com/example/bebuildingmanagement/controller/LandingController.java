@@ -1,7 +1,7 @@
 package com.example.bebuildingmanagement.controller;
 
 
-import com.example.bebuildingmanagement.dto.request.ApiResponseDTO;
+import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
