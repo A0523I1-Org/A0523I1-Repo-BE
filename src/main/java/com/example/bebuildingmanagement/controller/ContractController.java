@@ -8,6 +8,7 @@ import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDT
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
+import com.example.bebuildingmanagement.utils.Const;
 import jakarta.servlet.http.PushBuilder;
 
 
@@ -42,11 +43,11 @@ public class ContractController {
     @GetMapping("")
     public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page) {
         if (page.isEmpty()) {
-            throw new RuntimeException("Vui lòng nhập page !");
+            throw new RuntimeException(Const.ERROR_MESSAGE.PAGE_IS_EMPTY);
 
         }
         if (page.get() < 0) {
-            throw new RuntimeException("Chỉ mục trang không được nhỏ hơn 0");
+            throw new RuntimeException(Const.SUCCESS_MESSAGE.PAGE_NOT_NEGATIVE);
         }
         Page<ContractResponseDTO> contracts = iContractService.getContracts(page);
 
@@ -62,7 +63,7 @@ public class ContractController {
         //lay mật khẩu đang đăng nhập để xác nhận :
         String password = "a123456";
         if (!confirmPassword.equals(password)) {
-            throw new RuntimeException("mật khẩu xác nhận không đúng !");
+            throw new RuntimeException(Const.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
         }
         // check validate
         contractNewRequestDTO.validate(contractNewRequestDTO, bindingResult);
@@ -71,7 +72,7 @@ public class ContractController {
         }
         iContractService.createContract(contractNewRequestDTO);
         ApiResponseDTO response = ApiResponseDTO.builder()
-                .message("Thêm mới hợp đồng thành công !")
+                .message(Const.SUCCESS_MESSAGE.ADD_NEW_CONTRACT)
                 .status(HttpStatus.CREATED.value())
                 .timestamp(System.currentTimeMillis())
                 .build();

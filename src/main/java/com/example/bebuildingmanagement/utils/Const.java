@@ -44,10 +44,10 @@ public class Const {
                 "where c.is_deleted = 0 ";
         public final static String INSERT_CONTRACT = "INSERT INTO contract( " +
                 " term, start_date, end_date ," +
-                " tax_code,current_fee,description," +
+                " tax_code,current_fee," +
                 " deposit,firebase_url,content," +
                 " landing_id, customer_id, employee_id )" +
-                " VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12)";
+                " VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)";
         public final static String UPDATE_CONTRACT = " UPDATE contract SET content = :content, deposit = :deposit, description = :description, start_date = :startDate,end_date = :endDate, firebase_url =  :firebaseUrl,tax_code = :taxCode,term = :term WHERE id = :id ";
         public final static String DELETE_CONTRACT =  " UPDATE contract SET is_deleted = 1 WHERE id = ?1 ";
         public final static String SELECT_CONTRACT_BY_ID = "SELECT cont.id,land.code as code,cus.name as customerName,emp.name as employeeName,cont.content as content,cont.deposit as deposit,cont.description as description,cont.start_date as startDate, land.fee_per_month as FeePerMouth,cont.end_date as endDate,cont.firebase_url as firebaseUrl,cont.tax_code as taxCode,cont.term  as term" +
@@ -68,5 +68,44 @@ public class Const {
                 " on e.account_id = a.id " +
                 " where username = ?1 ";
     }
+    public final static class ERROR_MESSAGE {
+        public final static String TERM_NOT_BLANK = "Vui lòng nhập kì hạn ! " ;
+        public final static String TERM_MIN = "Kì hạn thuê tối thiểu 1 tháng !" ;
+        public final static String TERM_MAX = "Kì hạn thuê tối đa không quá 10 năm !" ;
+        public final static String TAX_CODE_NOT_BLANK = "Vui lòng nhập mã số thuế !";
+        public final static String TAX_CODE_FORMAT = "Vui lòng nhập đúng định dạng mã số thuế ! (10 chữ số)";
+        public final static String CURRENT_FEE_NOT_BLANK = "Phí hiện tại của mặt bằng không xác định !";
+        public final static String CURRENT_FEE_ILLEGAL = "Phí hiện tại của mặt bằng không hợp lệ !";
+        public final static String DEPOSIT_NOT_BLANK = "Vui lòng nhập tiền đặt cọc ! ";
+        public final static String DEPOSIT_ILLEGAL = "Tiền đặt cọc không hợp lệ";
+        public final static String DEPOSIT_MIN = "Tiền đặt cọc tối thiểu bằng 10% so với tổng tiền (currentFee*term) ! ";
+        public final static String FIREBASE_NOT_BLANK = "Vui lòng cung cấp ảnh H/Đ !";
+        public final static String FIREBASE_FORMAT = "Chỉ được cung cấp file ảnh đúng định dạng (https://xxx/xx/xx.jpg) (jpg hoặc gif hoặc png) !";
+        public final static String CONTENT_NOT_BLANK = "Vui lòng nhập nội dung H/Đ !";
+        public final static String CONTENT_MIN = "Vui lòng nhập nội dung tối thiểu 50 kí tự !";
+        public final static String LANDING_NOT_BLANK = "Vui lòng cung cấp mặt bằng !";
+        public final static String LANDING_ILLEGAL = "Mặt bằng không hợp lệ ! ";
+        public final static String CUSTOMER_NOT_BLANK = "Vui lòng chọn khách hàng !";
+        public static final String CUSTOMER_NOT_FOUND = "Không tìm thấy khách hàng ! ";
+        public static final String START_DATE_NOT_BLANK ="Vui lòng chọn ngày bắt đầu !" ;
 
+        public static final String START_DATE_AFTER = "Ngày bắt đầu phải sau hoặc bằng ngày hiện tại (ngày tương lai) !";
+        public static final String START_DATE_FORMAT = "Vui lòng nhập ngày bắt đầu đúng định dạng (yyyy-MM-dd)!";
+        public static final String END_DATE_NOT_BLANK = "Vui lòng chọn ngày kết thúc !";
+        public static final String END_DATE_COMPARED_TO_TERM = "Ngày kết thúc phải sau ngày bắt đầu bằng đúng số tháng của kì hạn !";
+        public static final String END_DATE_FORMAT = "Vui lòng nhập ngày kết thúc đúng định dạng (yyyy-MM-dd)!";
+        public static final String LANDING_ALREADY_EXIST = "Mặt bằng này đã làm hợp đồng,  chọn mặt bằng khác !";
+        public static final String CUSTOMER_NOT_FOUNT = "Không tìm thấy khách hàng !";
+        public static final String MAIL_SENDING_FAILED = "Gửi mail thất bại !";
+        public static final String CONFIRM_PASSWORD_FALSE = "Mật khẩu xác nhận không đúng !";
+        public static final String PAGE_IS_EMPTY = "Vui lòng nhập page !";
+    }
+
+    public final static class SUCCESS_MESSAGE {
+        public static final String ADD_NEW_CONTRACT = "Thêm mới hợp đồng thành công !";
+
+        public static final String PAGE_NOT_NEGATIVE = "Giá trị page không được nhỏ hơn 0 !";
+    }
 }
+
+

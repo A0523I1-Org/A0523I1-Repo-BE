@@ -107,7 +107,7 @@ public class ContractServiceImpl implements IContractService {
     public void createContract(ContractNewRequestDTO contractNewRequestDTO) {
         // Kiểm tra xem mặt bang đã làm hợp đồng chưa .
         if (iContractRepository.existsByLandingId(contractNewRequestDTO.getLandingId())){
-            throw new  RuntimeException("Mặt bằng này đã làm hợp đồng,  chọn mặt bằng khác !");
+            throw new  RuntimeException(Const.ERROR_MESSAGE.LANDING_ALREADY_EXIST);
         }
         // lấy username đang đăng nhập
         String username = "TranThiB";
@@ -118,7 +118,7 @@ public class ContractServiceImpl implements IContractService {
          iContractRepository.createContract(
                 contractNewRequestDTO.getTerm(),contractNewRequestDTO.getStartDate(),
                 contractNewRequestDTO.getEndDate(),contractNewRequestDTO.getTaxCode(),
-                contractNewRequestDTO.getCurrentFee(),contractNewRequestDTO.getDescription(),
+                contractNewRequestDTO.getCurrentFee(),
                 contractNewRequestDTO.getDeposit(),contractNewRequestDTO.getFirebaseUrl(),
                 contractNewRequestDTO.getContent(),contractNewRequestDTO.getLandingId(),
                 contractNewRequestDTO.getCustomerId(),employee.getId()
@@ -127,7 +127,7 @@ public class ContractServiceImpl implements IContractService {
         // gui mail :
 
             Customer customer = iCustomerRepository.findById(contractNewRequestDTO.getCustomerId())
-                    .orElseThrow(()-> new RuntimeException("Không tìm thấy khách hàng !"));
+                    .orElseThrow(()-> new RuntimeException(Const.ERROR_MESSAGE.CUSTOMER_NOT_FOUNT));
             DataMailDTO dataMail = new DataMailDTO();
             dataMail.setToEmail(customer.getEmail());
             dataMail.setSubject(Const.SEND_MAIL_SUBJECT.CLIENT_REGISTER);
@@ -146,7 +146,7 @@ public class ContractServiceImpl implements IContractService {
         try {
             iMailService.sendMail(dataMail,Const.TEMPLATE_FILE_NAME.CLIENT_REGISTER);
         } catch (MessagingException e) {
-            throw new RuntimeException("Gửi mail thất bại !");
+            throw new RuntimeException(Const.ERROR_MESSAGE.MAIL_SENDING_FAILED);
         }
 
 

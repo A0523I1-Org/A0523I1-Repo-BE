@@ -47,7 +47,11 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
             nativeQuery = true,
             countQuery = Const.CONTRACT_QUERY.COUNT_CONTRACT
     )
+
+
     Page<IContractProjection> getContractByEmployeeUsername(Pageable pageable,String accountId);
+
+
     
     @Query(value = Const.CONTRACT_QUERY.SELECT_ALL_CONTRACT,
             nativeQuery = true,
@@ -55,13 +59,14 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     )
     Page<IContractProjection> getContracts(Pageable pageable);
 
+
     @Modifying
     @Transactional
     @Query(value = Const.CONTRACT_QUERY.INSERT_CONTRACT,
             nativeQuery = true
     )
     void createContract(int term,Date startDate,Date endDate,String taxCode,
-                            double currentFee,String description,double deposit,
+                            double currentFee,double deposit,
                             String firebaseUrl,String content,Long landingId,
                             Long customerId,Long employeeId) ;
 
