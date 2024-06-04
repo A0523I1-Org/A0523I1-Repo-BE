@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/landing")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
