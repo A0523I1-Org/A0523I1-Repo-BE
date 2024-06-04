@@ -37,9 +37,24 @@ public class LandingServiceImpl implements ILandingService {
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
-        iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
-                ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus(),landing.getType()
-                ,landing.getFloor().getId(), landing.getFirebaseUrl());
+        if (landingRequestDTO.getFloor() != null) {
+            Floor floor = floorRepository.findById(landingRequestDTO.getFloor())
+                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy tầng với id: " + landingRequestDTO.getFloor()));
+            landing.setFloor(floor);
+        } else {
+            throw new IllegalArgumentException("Tầng không được null");
+        }
+        iLandingRepository.createLanding(
+                landing.getCode(),
+                landing.getArea(),
+                landing.getDescription(),
+                landing.getFeePerMonth(),
+                landing.getFeeManager(),
+                landing.getStatus(),
+                landing.getType(),
+                landing.getFloor().getId(),
+                landing.getFirebaseUrl()
+        );
         LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
         return response;
     }
@@ -47,22 +62,13 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
-//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
-//        }
-
-
 ;       iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(),landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
 
     @Override
     public Page<LandingResponseDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-
         Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-
-//        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
-
         return listLanding;
     }
 
