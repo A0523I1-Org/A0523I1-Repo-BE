@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 public class LandingHomeResponseDTO {
 
     double area;
-
     String description;
     double feePerMonth;
     double feeManager;
