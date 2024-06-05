@@ -28,15 +28,20 @@ public class LandingController {
 
 
     @GetMapping
-    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam("page") int page, @RequestParam("size") int size) {
-        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page,size);
+    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "15") int size) {
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
         return ResponseEntity.ok(landingResponseDTOPage);
     }
-    @PostMapping
-    ApiResponseDTO<LandingResponseDTO> createLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
-        ApiResponseDTO<LandingResponseDTO> apiResponseDTO = new ApiResponseDTO<>();
-        apiResponseDTO.setResult(iLandingService.createAndUpdateLanding(landingRequestDTO));
-        return apiResponseDTO;
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+        landingRequestDTO.setId(id);
+         iLandingService.updateLanding(landingRequestDTO);
+
+         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
 
     }
 
@@ -44,6 +49,24 @@ public class LandingController {
     ResponseEntity<List<FloorResponseDTO>> getListAllFloor() {
         List<FloorResponseDTO> floorResponseDTOList = iFloorService.getFloor();
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/createLanding")
+    public ResponseEntity<ApiResponseDTO<Void>> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
+        iLandingService.createLanding(landingRequestDTO);
+
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Thêm mặt bằng thành công").build();
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteLanding/{id}")
+    public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
+        iLandingService.deleteLanding(id);
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
 
 
