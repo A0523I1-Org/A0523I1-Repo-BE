@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Builder
@@ -23,5 +21,4 @@ public class AccountReqDTO {
     @Size(max = 30, message = "Password must not exceed 30 characters")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Password must contain only letters and numbers")
     String password; // Thường thì mật khẩu nên được mã hóa trước khi lưu
-    boolean isActive;
 }
