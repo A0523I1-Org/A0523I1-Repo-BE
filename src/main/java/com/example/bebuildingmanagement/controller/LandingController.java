@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/landing")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
     ILandingService iLandingService;
