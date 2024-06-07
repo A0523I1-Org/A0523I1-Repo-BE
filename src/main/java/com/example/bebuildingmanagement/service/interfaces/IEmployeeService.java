@@ -7,13 +7,15 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface IEmployeeService extends IService<Employee>{
+public interface IEmployeeService {
     Page<Employee> findAll(Pageable pageable);
 
-    boolean delete(Long id);
+    void deleteEmployee(Long id);
 
     Employee findById(Long id);
 
-    void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO);
+    void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) throws Exception;
+
+    List<Employee> findAll();
 
 }

@@ -20,4 +20,9 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             ":#{#employeeReqDTO.department},:#{#employeeReqDTO.salaryRank});", nativeQuery = true)
     void addEmployeeByQuery(@Param("employeeReqDTO") EmployeeReqDTO employeeReqDTO);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update employee set is_deleted = 1 where id = ?1", nativeQuery = true)
+    void deleteEmployeeByQuery( Long id);
+
 }

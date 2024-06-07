@@ -20,36 +20,35 @@ import java.util.List;
 public class EmployeeServiceImpl implements IEmployeeService {
     @Autowired
     IEmployeeRepository iEmployeeRepository;
+
     @Override
     public Page<Employee> findAll(Pageable pageable) {
         return null;
     }
 
-//    @Override
-//    public void save(Employee employee) {
-//
-//    }
-
     @Override
-    public boolean delete(Long id) {
-        if (iEmployeeRepository.existsById(id)) {
-            iEmployeeRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteEmployee(Long id) {
+        iEmployeeRepository.deleteEmployeeByQuery(id);
     }
+
     @Override
     public Employee findById(Long id) {
         return iEmployeeRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
-        iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
+    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) throws Exception {
+        try {
+            iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
+
+        } catch (Exception e) {
+            throw new Exception();
+        }
     }
 
     @Override
     public List<Employee> findAll() {
         return iEmployeeRepository.findAll();
     }
+
 }
