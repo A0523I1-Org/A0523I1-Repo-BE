@@ -37,13 +37,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) throws Exception {
-        try {
-            iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
-
-        } catch (Exception e) {
-            throw new Exception();
-        }
+    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO){
+        EmployeeReqDTO emp = employeeReqDTO;
+        Long number = iEmployeeRepository.getMaxId() +1;
+        String code = "O.E-" + String.format("%04d", number);
+        emp.setCode(code);
+        iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
     }
 
     @Override

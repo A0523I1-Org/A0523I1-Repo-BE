@@ -14,7 +14,7 @@ public interface IEmployeeService {
 
     Employee findById(Long id);
 
-    void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) throws Exception;
+    void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO);
 
     List<Employee> findAll();
 

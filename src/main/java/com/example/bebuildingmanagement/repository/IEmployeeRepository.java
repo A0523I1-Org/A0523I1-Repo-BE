@@ -25,4 +25,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "update employee set is_deleted = 1 where id = ?1", nativeQuery = true)
     void deleteEmployeeByQuery( Long id);
 
+    @Query(value = "SELECT COUNT(*) FROM employee", nativeQuery = true)
+    Long getMaxId();
 }
