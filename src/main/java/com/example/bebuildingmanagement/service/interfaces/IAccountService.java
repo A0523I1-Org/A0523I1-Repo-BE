@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.service.interfaces;
 
 import com.example.bebuildingmanagement.dto.request.AccountReqDTO;
+import com.example.bebuildingmanagement.dto.response.AccountResDTO;
 
 public interface IAccountService {
     String createEmployeeAccount(Long id, AccountReqDTO accountReqDTO);

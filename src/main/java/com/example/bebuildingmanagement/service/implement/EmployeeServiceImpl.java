@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
     IEmployeeRepository iEmployeeRepository;
 
     @Override
-    public Page<EmployeeResDTO> findAllEmployees(Pageable pageable) {
-        Page<Employee> employeePage = iEmployeeRepository.findAll(pageable);
+    public Page<EmployeeResDTO> searchEmployees(String code, String name, Date dob, Date dobFrom, Date dobTo, String gender,
+                                                String address, String phone, String email, Date workDate, Date workDateFrom,
+                                                Date workDateTo, Long departmentId, Long salaryRankId, String accountUsername,
+                                                Pageable pageable) {
+        Page<Employee> employeePage = iEmployeeRepository.search(
+                code, name, dob, dobFrom, dobTo, gender, address, phone, email, workDate, workDateFrom, workDateTo, departmentId, salaryRankId, accountUsername, pageable);
         Page<EmployeeResDTO> employeeResDTOPage = employeePage.map(employee -> modelMapper.map(employee, EmployeeResDTO.class));
+//        System.out.println("Search Parameters: " + code + ", " + name + ", " + gender + ", " + address + ", " + phone + ", " + email);
+//        System.out.println("Search Results: " + employeePage.getContent());
         return employeeResDTOPage;
     }
 

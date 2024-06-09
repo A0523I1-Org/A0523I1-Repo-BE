@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.service.implement;
 
+import com.example.bebuildingmanagement.configuration.SecurityConfig;
 import com.example.bebuildingmanagement.dto.request.AccountReqDTO;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Employee;
@@ -13,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -26,6 +27,9 @@ import java.util.Set;
 public class AccountServiceImpl implements IAccountService {
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     IAccountRepository iAccountRepository;
@@ -49,6 +53,8 @@ public class AccountServiceImpl implements IAccountService {
         }
 
         // Chuyển đổi AccountReqDTO thành entity Account
+        String encryptedPassword = passwordEncoder.encode(accountReqDTO.getPassword());
+        accountReqDTO.setPassword(encryptedPassword);
         Account account = modelMapper.map(accountReqDTO, Account.class);
 
         //Bổ sung dữ liệu mặc định
@@ -56,7 +62,6 @@ public class AccountServiceImpl implements IAccountService {
         iRoleRepository.findById(2L).ifPresent(roles::add);
         account.setRoles(roles);
         account.setActive(true);
-
 
         // Thiết lập mối quan hệ giữa employee và account
         employee.setAccount(account);

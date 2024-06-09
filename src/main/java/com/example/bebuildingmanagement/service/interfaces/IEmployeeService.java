@@ -5,9 +5,17 @@ import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
+
 public interface IEmployeeService {
-    Page<EmployeeResDTO> findAllEmployees(Pageable pageable);
+    Page<EmployeeResDTO> searchEmployees(String code, String name, Date dob, Date dobFrom, Date dobTo, String gender,
+                                         String address, String phone, String email, Date workDate, Date workDateFrom,
+                                         Date workDateTo, Long departmentId, Long salaryRankId, String accountUsername,
+                                         Pageable pageable);
+
     EmployeeResDTO saveEmployee(EmployeeReqDTO employeeReqDTO);
+
     EmployeeResDTO findEmployeeById(Long id);
+
     void deleteEmployee(Long id);
 }
