@@ -41,4 +41,13 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> findEmployeeById(@PathVariable Long id) {
+        Employee employee = employeeService.findById(id);
+        if (employee == null) {
+            return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+    }
 }
