@@ -9,18 +9,17 @@ import org.springframework.data.domain.Pageable;
 import java.util.Date;
 
 
-
 public interface ICustomerService {
     Page<CustomerResponseDTO> getAllCustomer(Pageable pageable);
 
-    void createCustomers(String name, Date dob,String gender,String address,String email,
-                         String phone, String website, String companyName,String idCard);
+    void createCustomers(String name, Date dob, String gender, String address, String email,
+                         String phone, String website, String companyName, String idCard);
 
+    void edit(String name, Date dob, String gender, String address, String email,
+              String phone, String website, String companyName, String idCard, long id);
 
-
-    void edit(String name, Date dob,String gender,String address,String email,
-              String phone, String website, String companyName,String idCard,long id);
     void delete(long id);
+
     Customer findById(long id);
 
     Page<CustomerResponseDTO> searchByName(Pageable pageable, String name);
