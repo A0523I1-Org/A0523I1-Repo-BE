@@ -87,4 +87,26 @@ public class CustomerController {
         iCustomerService.delete(id);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<CustomerResponseDTO>> handleSearch(@RequestParam("page") Optional<Integer> page,@Param("name")String name){
+        if (page.orElse(0) < 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (name == null || name.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
+        Page<CustomerResponseDTO> customerDTOPage = iCustomerService.searchByName(pageable,name);
+
+        if (customerDTOPage.getContent().isEmpty()) {
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            System.out.println(HttpStatus.OK);
+            return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
+        }
+    }
 }

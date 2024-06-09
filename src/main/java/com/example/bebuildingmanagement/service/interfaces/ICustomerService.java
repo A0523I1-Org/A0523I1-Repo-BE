@@ -23,6 +23,6 @@ public interface ICustomerService {
     void delete(long id);
     Customer findById(long id);
 
-
+    Page<CustomerResponseDTO> searchByName(Pageable pageable, String name);
 
 }

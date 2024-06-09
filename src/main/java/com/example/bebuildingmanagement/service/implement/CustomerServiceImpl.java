@@ -59,5 +59,12 @@ public class CustomerServiceImpl implements ICustomerService {
         return iCustomerRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public Page<CustomerResponseDTO> searchByName(Pageable pageable, String name) {
+        Page<Customer> customers = iCustomerRepository.searchByName(pageable, name);
+        Page<CustomerResponseDTO> customerResponseDTOs = customers.map(customer -> modelMapper.map(customer, CustomerResponseDTO.class));
+        return customerResponseDTOs;
+    }
+
 
 }

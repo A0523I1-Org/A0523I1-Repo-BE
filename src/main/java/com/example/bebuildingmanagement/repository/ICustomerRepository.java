@@ -4,6 +4,7 @@ package com.example.bebuildingmanagement.repository;
 import com.example.bebuildingmanagement.entity.Customer;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,12 +14,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
 
 @Repository
 public interface ICustomerRepository extends JpaRepository<Customer, Long> {
+    @Transactional
     @Query(value = "select id,dob,gender, name, phone,id_card, email,address,website,company_name,is_deleted from customer where is_deleted = 0;", nativeQuery = true)
     Page<Customer> getAllCustomer(Pageable pageable);
 
@@ -52,5 +57,13 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Transactional
     @Query(value = "select * FROM  Customer  where id=:id", nativeQuery = true)
     Customer findCustomerId(@Param("id") long id);
+
+    @Transactional
+    @Query(value = "select * FROM  Customer where name like %:name%", nativeQuery = true)
+    Page<Customer> searchByName(Pageable pageable, @Param("name") String name);
+
+
+
+
 
 }
