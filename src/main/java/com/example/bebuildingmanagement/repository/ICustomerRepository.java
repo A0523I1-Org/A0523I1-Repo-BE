@@ -30,13 +30,13 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Modifying
     @Transactional
     @Query(value = "insert into Customer (name,dob,gender,address,email,phone,website,company_name,id_card)" + "values (?,?,?,?,?,?,?,?,?)", nativeQuery = true)
-    void createCustomers(@Param("name") String name , @Param("dob") Date dob,@Param("gender") String gender,@Param("address") String address,
-                         @Param("phone")String phone, @Param("website") String website,@Param("email") String email,
+    void createCustomers(@Param("name") String name, @Param("dob") Date dob, @Param("gender") String gender, @Param("address") String address,
+                         @Param("phone") String phone, @Param("website") String website, @Param("email") String email,
                          @Param("companyName") String companyName, @Param("idCard") String idCard);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id", nativeQuery = true)
-
     void updateCustomer(@Param("name") String name,
                         @Param("dob") Date dob,
                         @Param("gender") String gender,
@@ -61,9 +61,5 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Transactional
     @Query(value = "select * FROM  Customer where name like %:name%", nativeQuery = true)
     Page<Customer> searchByName(Pageable pageable, @Param("name") String name);
-
-
-
-
 
 }

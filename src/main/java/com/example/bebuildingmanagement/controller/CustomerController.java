@@ -32,11 +32,8 @@ public class CustomerController {
     @Autowired
     private ICustomerService iCustomerService;
 
-
     @GetMapping("/list")
     public ResponseEntity<Iterable<CustomerResponseDTO>> getAllCustomer(@RequestParam("page") Optional<Integer> page) {
-
-
         if (page.orElse(0) < 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -47,7 +44,6 @@ public class CustomerController {
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            System.out.println(HttpStatus.OK);
             return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
         }
     }
@@ -68,9 +64,7 @@ public class CustomerController {
         }
     }
 
-
     @PutMapping("/{id}")
-
     public ResponseEntity<CustomerRequestDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
         new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
         try {
@@ -89,23 +83,20 @@ public class CustomerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Iterable<CustomerResponseDTO>> handleSearch(@RequestParam("page") Optional<Integer> page,@Param("name")String name){
+    public ResponseEntity<Iterable<CustomerResponseDTO>> handleSearch(@RequestParam("page") Optional<Integer> page, @RequestParam("name") String name) {
         if (page.orElse(0) < 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         if (name == null || name.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
+        
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<CustomerResponseDTO> customerDTOPage = iCustomerService.searchByName(pageable,name);
+        Page<CustomerResponseDTO> customerDTOPage = iCustomerService.searchByName(pageable, name);
 
         if (customerDTOPage.getContent().isEmpty()) {
-
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            System.out.println(HttpStatus.OK);
             return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
         }
     }
