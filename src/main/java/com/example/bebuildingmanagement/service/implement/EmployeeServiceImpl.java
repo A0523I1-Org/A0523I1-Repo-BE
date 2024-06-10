@@ -31,8 +31,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
         Employee employee = iEmployeeRepository.findByAccount(account);
 
         return EmployeeDTO.builder()
+                .userName(employee.getAccount().getUsername())
                 .name(employee.getName())
-                .dob(employee.getDob())
+                .dob(employee.getDob().toString())
                 .gender(employee.getGender())
                 .address(employee.getAddress())
                 .phone(employee.getPhone())

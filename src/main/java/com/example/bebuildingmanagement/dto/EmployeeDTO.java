@@ -21,8 +21,9 @@ import java.util.Date;
 public class EmployeeDTO {
     Long id;
     String code;
+    String userName;
     String name;
-    Date dob;
+    String dob;
     String gender;
     String address;
     String phone;
