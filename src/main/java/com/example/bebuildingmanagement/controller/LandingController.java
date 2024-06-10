@@ -62,7 +62,7 @@ public class LandingController {
         return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteLanding/{id}")
+    @PutMapping("/deleteLanding/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();

@@ -12,6 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
@@ -25,7 +27,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
             "FROM Landing ld " +
-            "JOIN ld.floor fl ")
+            "JOIN ld.floor fl " + "where ld.isAvailable = true and ld.isDeleted = false")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
 
     @Modifying
@@ -35,7 +37,6 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     void updateLanding(@Param("code") String code,@Param("type") String type,@Param("area") double area,@Param("status") String status
                                     ,@Param("description")String description,@Param("feePerMonth") double feePerMonth,@Param("feeManager") double feeManager,@Param("firebaseUrl") String firebaseUrl,@Param("floorId") Long floorId,
                        @Param("id") Long id);
-
 
     @Override
     Page<Landing> findAll(Pageable pageable);

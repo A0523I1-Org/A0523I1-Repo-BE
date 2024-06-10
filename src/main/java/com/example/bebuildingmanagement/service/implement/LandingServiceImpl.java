@@ -10,6 +10,7 @@ import com.example.bebuildingmanagement.validate.customerValidate.validateclass.
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
 import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -85,6 +88,8 @@ public class LandingServiceImpl implements ILandingService {
     public LandingResponseDTO findLanding(Long id) {
         return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
     }
+
+
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);
