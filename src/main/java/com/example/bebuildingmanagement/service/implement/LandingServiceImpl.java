@@ -37,6 +37,16 @@ public class LandingServiceImpl implements ILandingService {
     Validator validator;
 
     @Override
+    public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding) {
+        Pageable pageable = PageRequest.of(page, size);
+        typeLanding = "%" + typeLanding + "%";
+        codeLanding = "%" + codeLanding + "%";
+        statusLanding = "%" + statusLanding + "%";
+        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding);
+
+    }
+
+    @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
@@ -65,20 +75,31 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-;       iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(),landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
+//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
+//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
+//        }
+
+
+        ;
+        iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(), landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
 
-    @Override
-    public Page<LandingResponseDTO> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-        return listLanding;
-    }
+//    @Override
+//    public Page<LandingResponseDTO> findAll(int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
+//
+////        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
+//
+//        return listLanding;
+//    }
+
 
     @Override
     public void deleteLanding(Long id) {
         Landing landing = iLandingRepository.findLandingById(id);
-        if (landing == null){
+        if (landing == null) {
             throw new CustomValidationException("Mặt bằng không tồn tại");
         }
         iLandingRepository.deleteLandingById(id);
@@ -86,9 +107,8 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
-        return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
+        return iLandingRepository.findLanding(id);
     }
-
 
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
 

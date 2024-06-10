@@ -23,26 +23,40 @@ import java.util.List;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin("*")
 public class LandingController {
     ILandingService iLandingService;
     IFloorService iFloorService;
 
 
+//    @GetMapping
+//    public ResponseEntity<Iterable<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "3") int size) {
+//            Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
+//        return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
+//    }
+
     @GetMapping
-    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "15") int size) {
-        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
-        return ResponseEntity.ok(landingResponseDTOPage);
+    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(value = "statusLanding", required = false) String statusLanding,
+            @RequestParam(value = "codeLanding", required = false) String codeLanding,
+            @RequestParam(value = "areaLanding", required = false) Double areaLanding,
+            @RequestParam(value = "typeLanding", required = false) String typeLanding) {
+
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding);
+        return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
 
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
-         iLandingService.updateLanding(landingRequestDTO);
+        iLandingService.updateLanding(landingRequestDTO);
 
-         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
 
-        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
 
     }
 
@@ -52,6 +66,12 @@ public class LandingController {
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    ResponseEntity<LandingResponseDTO> findLanding(@PathVariable("id") Long id) {
+        LandingResponseDTO landingResponseDTO = iLandingService.findLanding(id);
+        return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
+    }
+
 
     @PostMapping("/createLanding")
     public ResponseEntity<ApiResponseDTO<Void>> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {
@@ -59,7 +79,7 @@ public class LandingController {
 
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Thêm mặt bằng thành công").build();
 
-        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
     }
 
     @PutMapping("/deleteLanding/{id}")
@@ -67,9 +87,8 @@ public class LandingController {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
 
-        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
     }
-
 
 
 }

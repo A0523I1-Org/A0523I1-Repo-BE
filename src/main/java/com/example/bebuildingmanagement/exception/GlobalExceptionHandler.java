@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiResponseDTO> handleRuntimeException(RuntimeException exception) {
         ApiResponseDTO apiResponse = new ApiResponseDTO();
-        apiResponse.setCode(ErrorCode.CODE_LANDING_AVAILABLE.getCode());
+        apiResponse.setCode(HttpStatus.BAD_REQUEST.value());
         apiResponse.setMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
