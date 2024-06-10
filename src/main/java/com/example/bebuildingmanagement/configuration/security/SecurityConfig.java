@@ -1,9 +1,6 @@
 package com.example.bebuildingmanagement.configuration.security;
-
-
-import com.example.bebuildingmanagement.configuration.security.CustomLogoutHandler;
-import com.example.bebuildingmanagement.configuration.security.JwtAuthenticationFilter;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +29,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private IAccountService iAccountService;
+    private DataSource dataSource;
+    @Resource
+    private UserDetailsService userDetailsService;
+
+//    @Autowired
+//    private IAccountService iAccountService;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -48,10 +54,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req->req.requestMatchers(PUBLIC_ENDPOINTS)
                                 .permitAll()
-//                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
                                 .anyRequest()
                                 .authenticated()
-                ).userDetailsService(iAccountService)
+                ).userDetailsService(userDetailsService)
                 .sessionManagement(session->session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -60,14 +65,39 @@ public class SecurityConfig {
                                         (request, response, accessDeniedException)->response.setStatus(403)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l->l
+//                .formLogin(login -> login
+//                        .loginPage("/login")
+//                        .permitAll()
+//                )
+                .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
+                        .logoutSuccessHandler((request, response, authentication)
+                                -> SecurityContextHolder.clearContext()
                         ))
+                .rememberMe(remember -> remember
+                                .userDetailsService(userDetailsService)
+//                    .tokenRepository(persistentTokenRepository())
+//                        .key("uniqueAndSecret")
+//                        .tokenValiditySeconds(7 * 24 * 60 * 60)
+//                        .rememberMeCookieName("custom-remember-me-cookie")
+//                        .useSecureCookie(true) // Set secure flag for HTTPS only
+                )
                 .build();
 
     }
+
+//    @Bean
+//    public PersistentTokenRepository persistentTokenRepository() {
+//        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+//        tokenRepository.setDataSource(dataSource);
+//        return tokenRepository;
+//    }
+
+//    @Bean
+//    public PersistentTokenRepository persistentTokenRepository() {
+//        return new InMemoryTokenRepositoryImpl(); // Use your persistent token repository implementation here
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

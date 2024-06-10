@@ -20,15 +20,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -50,7 +51,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
         // check if user already exist. if exist than authenticate the user
         if(iAccountRepository.findByUsername(request.getUsername()).isPresent()) {
-            return new AuthenticationResponse(null, null,"User already exist");
+            return AuthenticationResponse.builder()
+                    .message("User already exist")
+                    .build();
         }
 
         Account account = new Account();
@@ -72,23 +75,28 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     /*====================================== AUTHENTICATION METHODS ======================================*/
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
+         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
-        );
+        ).isAuthenticated();
 
+         //1
+         Account user = iAccountRepository.findByUsername(request.getUsername()).orElseThrow();
+         Set<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()); ;
+         String accessToken = jwtServiceImpl.generateAccessToken(user);
+         String refreshToken = jwtServiceImpl.generateRefreshToken(user);
 
-        Account user = iAccountRepository.findByUsername(request.getUsername()).orElseThrow();
+         revokeAllTokenByUser(user);
+         saveUserToken(accessToken, refreshToken, user);
+         return AuthenticationResponse.builder()
+                 .accessToken(accessToken)
+                 .refreshToken(refreshToken)
+                 .roles(roles)
+                 .message("Đăng nhập thành công.")
+                 .build();
 
-        String accessToken = jwtServiceImpl.generateAccessToken(user);
-        String refreshToken = jwtServiceImpl.generateRefreshToken(user);
-
-        revokeAllTokenByUser(user);
-        saveUserToken(accessToken, refreshToken, user);
-
-        return new AuthenticationResponse(accessToken, refreshToken, "Đăng nhập thành công.");
     }
     private void revokeAllTokenByUser(Account user) {
         List<Token> validTokens = iTokenRepository.findAllAccessTokensByUser(user.getId());
@@ -140,7 +148,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             revokeAllTokenByUser(user);
             saveUserToken(accessToken, refreshToken, user);
 
-            return new ResponseEntity(new AuthenticationResponse(accessToken, refreshToken, "New token generated"), HttpStatus.OK);
+            return new ResponseEntity(AuthenticationResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .message( "New token generated")
+                    .build(), HttpStatus.OK);
         }
 
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
