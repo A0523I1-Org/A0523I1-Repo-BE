@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,6 +35,16 @@ public class LandingServiceImpl implements ILandingService {
     Validator validator;
 
     @Override
+    public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding) {
+        Pageable pageable = PageRequest.of(page, size);
+        typeLanding = "%" + typeLanding + "%";
+        codeLanding = "%" + codeLanding + "%";
+        statusLanding = "%" + statusLanding + "%";
+        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding);
+
+    }
+
+    @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
         Landing landing = modelMapper.map(landingRequestDTO, Landing.class);
@@ -43,8 +54,8 @@ public class LandingServiceImpl implements ILandingService {
         }
         landing.setFloor(floor);
         iLandingRepository.createLanding(landing.getCode(), landing.getArea(), landing.getDescription()
-                ,landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
-                ,landing.getFloor().getId(), landing.getFirebaseUrl());
+                , landing.getFeePerMonth(), landing.getFeeManager(), landing.getStatus()
+                , landing.getType(), landing.getFloor().getId(), landing.getFirebaseUrl());
         LandingResponseDTO response = modelMapper.map(landing, LandingResponseDTO.class);
         return response;
     }
@@ -57,24 +68,26 @@ public class LandingServiceImpl implements ILandingService {
 //        }
 
 
-;       iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(),landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
+        ;
+        iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(), landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
 
-    @Override
-    public Page<LandingResponseDTO> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+//    @Override
+//    public Page<LandingResponseDTO> findAll(int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
+//
+////        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
+//
+//        return listLanding;
+//    }
 
-        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-
-//        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
-
-        return listLanding;
-    }
 
     @Override
     public void deleteLanding(Long id) {
         Landing landing = iLandingRepository.findLandingById(id);
-        if (landing == null){
+        if (landing == null) {
             throw new CustomValidationException("Mặt bằng không tồn tại");
         }
         iLandingRepository.deleteLandingById(id);
@@ -82,8 +95,9 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
-        return modelMapper.map(iLandingRepository.findById(id), LandingResponseDTO.class);
+        return iLandingRepository.findLanding(id);
     }
+
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);
@@ -116,12 +130,7 @@ public class LandingServiceImpl implements ILandingService {
         }
 
 
-
     }
-
-
-
-
 
 
 }

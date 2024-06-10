@@ -12,12 +12,31 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
 
 
     boolean existsByCode(String code);
+
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name) " +
+            "FROM Landing ld " +
+            "JOIN ld.floor fl " +
+            "WHERE ld.status like :statusLanding " +
+            "AND ld.code LIKE :codeLanding " +
+            "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
+            "AND ld.type LIKE :typeLanding")
+    Page<LandingResponseDTO> findListAllLanding(Pageable pageable,
+                                                @Param("statusLanding") String statusLanding,
+                                                @Param("codeLanding") String codeLanding,
+                                                @Param("areaLanding") Double areaLanding,
+                                                @Param("typeLanding") String typeLanding);
+
+
+
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE landing SET is_deleted = 1, is_available = 0 WHERE id = ?1", nativeQuery = true)
@@ -27,6 +46,14 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
             "FROM Landing ld " +
             "JOIN ld.floor fl ")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
+
+
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
+            "FROM Landing ld " +
+            "JOIN ld.floor fl "+
+    "where ld.id=?1")
+    LandingResponseDTO findLanding(Long id);
+
 
     @Modifying
     @Transactional
@@ -41,8 +68,9 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     Page<Landing> findAll(Pageable pageable);
     @Query(value = "select id,code,type,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url,is_deleted,is_available from landing where id = ?1", nativeQuery = true)
     Landing findLandingById(Long id);
+
     @Modifying
     @Transactional
-    @Query(value = "insert into landing(code,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url) value(?1,?2,?3,?4,?5,?6,?7,?8)",nativeQuery = true)
-    void createLanding(String codeLanding, double area, String description, double feePerMonth, double feeManager,String status, Long idFloor, String firebaseUrl);
+    @Query(value = "insert into landing(code,area,description,fee_per_month,fee_manager,status,type,floor_id,firebase_url) value(?1,?2,?3,?4,?5,?6,?7,?8,?9)",nativeQuery = true)
+    void createLanding(String codeLanding, double area, String description, double feePerMonth, double feeManager,String status,String type,Long idFloor, String firebaseUrl);
 }

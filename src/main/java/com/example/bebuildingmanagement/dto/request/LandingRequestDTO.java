@@ -39,7 +39,6 @@ public class LandingRequestDTO {
     String code;
 
 
-
     @NotBlankType(message = "TYPE_NOT_BLANK", groups = ValidationGroups.MandatoryChecks.class)
     String type;
 
@@ -52,10 +51,9 @@ public class LandingRequestDTO {
     String status;
 
 
-    @NoSpecialCharactersDescription(message = "DESCRIPTION_NO_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+//    @NoSpecialCharactersDescription(message = "DESCRIPTION_NO_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     @MaxLengthDescription(value = 200, message = "DESCRIPTION_MAX_LENGTH", groups = ValidationGroups.LengthChecks.class)
     String description;
-
 
 
     @FeePerMonthNotBlank(message = "FEEPERMONTH_LANDING_NOTBLANK", groups = ValidationGroups.MandatoryChecks.class)

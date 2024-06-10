@@ -1,5 +1,6 @@
-package com.example.bebuildingmanagement.dto.request;
+package com.example.bebuildingmanagement.dto.response;
 
+import com.example.bebuildingmanagement.dto.request.FieldErrorDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
