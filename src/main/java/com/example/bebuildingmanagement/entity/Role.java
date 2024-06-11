@@ -21,9 +21,6 @@ public class Role {
     String name;
     String description;
 
-//    @ManyToMany(mappedBy = "roles")
-//    Set<Account> accounts = new HashSet<>();
-
     @ManyToMany
     Set<Permission> permissions;
 }

@@ -1,6 +1,5 @@
 package com.example.bebuildingmanagement.service.implement;
 
-import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.IEmployeeRepository;
@@ -10,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,22 +38,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeeResDTOPage;
     }
 
-    @Override
-    public EmployeeResDTO saveEmployee(EmployeeReqDTO employeeReqDTO) {
-        Employee employee = modelMapper.map(employeeReqDTO, Employee.class);
-        iEmployeeRepository.save(employee);
-        return modelMapper.map(employee, EmployeeResDTO.class);
-    }
+//    @Override
+//    public EmployeeResDTO saveEmployee(EmployeeReqDTO employeeReqDTO) {
+//        Employee employee = modelMapper.map(employeeReqDTO, Employee.class);
+//        iEmployeeRepository.save(employee);
+//        return modelMapper.map(employee, EmployeeResDTO.class);
+//    }
 
     @Override
     public EmployeeResDTO findEmployeeById(Long id) {
         Employee employee = iEmployeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return modelMapper.map(employee, EmployeeResDTO.class);
-    }
-
-    @Override
-    public void deleteEmployee(Long id) {
-        iEmployeeRepository.deleteById(id);
     }
 }

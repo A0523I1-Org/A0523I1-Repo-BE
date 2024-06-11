@@ -46,7 +46,11 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("salaryRankId") Long salaryRankId,
             @Param("accountUsername") String accountUsername,
             Pageable pageable);
+
+    @Query("SELECT e FROM Employee e WHERE e.id = ?1")
+    Employee findEmployeeById(Long id);
+
     @Modifying
-    @Query("update Employee e set e.isDeleted = true where e.id = :id")
-    void deleteById(@Param("id") Long id);
+    @Query(value = "UPDATE employees SET account_id = :accountId WHERE id = :employeeId", nativeQuery = true)
+    void updateEmployeeAccount(Long employeeId, Long accountId);
 }

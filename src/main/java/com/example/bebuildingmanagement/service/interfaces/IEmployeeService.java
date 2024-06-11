@@ -13,9 +13,5 @@ public interface IEmployeeService {
                                          Date workDateTo, Long departmentId, Long salaryRankId, String accountUsername,
                                          Pageable pageable);
 
-    EmployeeResDTO saveEmployee(EmployeeReqDTO employeeReqDTO);
-
     EmployeeResDTO findEmployeeById(Long id);
-
-    void deleteEmployee(Long id);
 }
