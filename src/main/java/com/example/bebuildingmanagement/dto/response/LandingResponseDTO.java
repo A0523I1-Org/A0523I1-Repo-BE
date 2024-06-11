@@ -19,5 +19,5 @@ public class LandingResponseDTO {
     double feePerMonth;
     double feeManager;
     String floor;
-
+    String firebaseUrl;
 }

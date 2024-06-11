@@ -21,13 +21,13 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
     boolean existsByCode(String code);
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name) " +
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl " +
             "WHERE ld.status like :statusLanding " +
             "AND ld.code LIKE :codeLanding " +
             "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
-            "AND ld.type LIKE :typeLanding")
+            "AND ld.type LIKE :typeLanding" + " and ld.isAvailable = true and ld.isDeleted = false")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable,
                                                 @Param("statusLanding") String statusLanding,
                                                 @Param("codeLanding") String codeLanding,
@@ -42,13 +42,13 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     @Query(value = "UPDATE landing SET is_deleted = 1, is_available = 0 WHERE id = ?1", nativeQuery = true)
     void deleteLandingById(Long id);
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name,ld.firebaseUrl) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl " + "where ld.isAvailable = true and ld.isDeleted = false")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
 
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name,ld.firebaseUrl) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl "+
     "where ld.id=?1")
