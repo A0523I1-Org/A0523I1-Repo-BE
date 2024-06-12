@@ -47,6 +47,15 @@ public class CustomerController {
             return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findCustomerById(@PathVariable("id") long id) {
+        try {
+            Customer customer = iCustomerService.findById(id);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("/create")
     public ResponseEntity<CustomerRequestDTO> createCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, BindingResult bindingResult) {
@@ -75,6 +84,7 @@ public class CustomerController {
         }
 
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable long id) {
