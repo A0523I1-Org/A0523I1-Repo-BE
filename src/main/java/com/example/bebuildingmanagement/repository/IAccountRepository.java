@@ -2,6 +2,9 @@ package com.example.bebuildingmanagement.repository;
 
 import com.example.bebuildingmanagement.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,4 +13,8 @@ import java.util.Optional;
 public interface IAccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByUsername(String username);
+
+    @Modifying
+    @Query(value = "UPDATE Account SET password = :newPassword WHERE username = :username", nativeQuery = true)
+    int updatePasswordByUsername(@Param("username") String username, @Param("newPassword") String newPassword);
 }
