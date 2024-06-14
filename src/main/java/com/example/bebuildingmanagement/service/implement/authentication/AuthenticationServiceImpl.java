@@ -25,10 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -75,24 +72,24 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     /*====================================== AUTHENTICATION METHODS ======================================*/
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-         authenticationManager.authenticate(
+         boolean isAuthenticated = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         ).isAuthenticated();
 
-         //1
          Account user = iAccountRepository.findByUsername(request.getUsername()).orElseThrow();
-         Set<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()); ;
          String accessToken = jwtServiceImpl.generateAccessToken(user);
          String refreshToken = jwtServiceImpl.generateRefreshToken(user);
+         List<String> roles = user.getRoles().stream().map(Role::getName).toList();
 
          revokeAllTokenByUser(user);
          saveUserToken(accessToken, refreshToken, user);
          return AuthenticationResponse.builder()
                  .accessToken(accessToken)
                  .refreshToken(refreshToken)
+                 .isAuthenticated(isAuthenticated)
                  .roles(roles)
                  .message("Đăng nhập thành công.")
                  .build();
@@ -157,4 +154,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
+
+
 }

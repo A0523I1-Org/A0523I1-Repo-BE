@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,5 +24,9 @@ public class AuthenticationResponse {
     @JsonProperty("message")
     String message;
 
-    Set<String> roles;
+    @JsonProperty("authenticated")
+    boolean isAuthenticated;
+
+    @JsonProperty("roles")
+    List<String> roles;
 }

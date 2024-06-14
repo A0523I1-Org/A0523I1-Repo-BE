@@ -17,24 +17,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private DataSource dataSource;
     @Resource
     private UserDetailsService userDetailsService;
-
-//    @Autowired
-//    private IAccountService iAccountService;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -56,7 +47,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).userDetailsService(userDetailsService)
+                )
+                .userDetailsService(userDetailsService)
                 .sessionManagement(session->session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -65,42 +57,21 @@ public class SecurityConfig {
                                         (request, response, accessDeniedException)->response.setStatus(403)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-//                .formLogin(login -> login
-//                        .loginPage("/login")
-//                        .permitAll()
-//                )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication)
                                 -> SecurityContextHolder.clearContext()
                         ))
-                .rememberMe(remember -> remember
-                                .userDetailsService(userDetailsService)
-//                    .tokenRepository(persistentTokenRepository())
-//                        .key("uniqueAndSecret")
-//                        .tokenValiditySeconds(7 * 24 * 60 * 60)
-//                        .rememberMeCookieName("custom-remember-me-cookie")
-//                        .useSecureCookie(true) // Set secure flag for HTTPS only
-                )
                 .build();
 
     }
-
-//    @Bean
-//    public PersistentTokenRepository persistentTokenRepository() {
-//        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-//        tokenRepository.setDataSource(dataSource);
-//        return tokenRepository;
-//    }
-
-//    @Bean
-//    public PersistentTokenRepository persistentTokenRepository() {
-//        return new InMemoryTokenRepositoryImpl(); // Use your persistent token repository implementation here
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
 }

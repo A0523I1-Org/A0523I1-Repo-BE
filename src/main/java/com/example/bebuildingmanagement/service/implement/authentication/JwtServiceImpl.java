@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.service.implement.authentication;
 
 import com.example.bebuildingmanagement.entity.Account;
+import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import com.example.bebuildingmanagement.service.interfaces.authentication.IJWTService;
 import io.jsonwebtoken.Claims;
@@ -14,9 +15,11 @@ import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.StringJoiner;
 import java.util.function.Function;
 
 
@@ -89,7 +92,6 @@ public class JwtServiceImpl implements IJWTService {
                 .getPayload();
     }
 
-
     public String generateAccessToken(Account user) {
         return generateToken(user, accessTokenExpire);
     }
@@ -104,6 +106,7 @@ public class JwtServiceImpl implements IJWTService {
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expireTime ))
+                .claim("scope", buildScope(user))
                 .signWith(getSignerKey())
                 .compact();
 
@@ -114,4 +117,25 @@ public class JwtServiceImpl implements IJWTService {
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    // custom scope roles with prefix ROLE_ (default : SCOPE_)
+    private String buildScope(Account user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+
+        if (!CollectionUtils.isEmpty(user.getRoles()))
+            user.getRoles().forEach(role -> {
+                stringJoiner.add("ROLE_" + role.getName());
+                if (!CollectionUtils.isEmpty(role.getPermissions()))
+                    role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
+            });
+
+        return stringJoiner.toString();
+    }
+
+    public String[] getRolesFromToken(String token) {
+        Claims claims = extractAllClaims(token);
+        String scope = (String) claims.get("scope");
+        return scope.split(" ");
+    }
+
 }

@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.function.Function;
 
 public interface IJWTService {
-    public String extractUsername(String token);
-    public boolean isValid(String token, UserDetails user);
-    public boolean isValidRefreshToken(String token, Account user);
-    public <T> T extractClaim(String token, Function<Claims, T> resolver);
-    public String generateAccessToken(Account user);
-    public String generateRefreshToken(Account user);
+    String extractUsername(String token);
+    boolean isValid(String token, UserDetails user);
+    boolean isValidRefreshToken(String token, Account user);
+    <T> T extractClaim(String token, Function<Claims, T> resolver);
+    String generateAccessToken(Account user);
+    String generateRefreshToken(Account user);
+
+    String[] getRolesFromToken(String token);
 }

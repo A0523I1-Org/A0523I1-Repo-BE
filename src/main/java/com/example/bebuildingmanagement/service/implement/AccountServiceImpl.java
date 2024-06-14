@@ -28,8 +28,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountServiceImpl implements IAccountService {
+
     IAccountRepository iAccountRepository;
     PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -60,7 +62,8 @@ public class AccountServiceImpl implements IAccountService {
 
         if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
             account.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-            iAccountRepository.save(account);
+//            iAccountRepository.save(account);
+            iAccountRepository.updatePassword(account.getUsername(), account.getPassword());
             return ChangePasswordResponse.builder()
                     .message("Đổi mật khẩu thành công.")
                     .build();
