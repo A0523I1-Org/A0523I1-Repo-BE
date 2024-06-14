@@ -17,19 +17,15 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String code;
     String name;
-
     Date dob;
     String gender;
     String address;
     String phone;
     String email;
     Date workDate;
-    String position;
     String firebaseUrl;
-
 
     @Column(columnDefinition = "boolean default false")
     boolean isDeleted;
@@ -45,5 +41,4 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "account_id")
     Account account;
-
 }

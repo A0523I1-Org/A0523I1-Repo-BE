@@ -15,12 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DepartmentServiceImpl implements IDepartmentService {
-
     @Autowired
     IDepartmentRepository iDepartmentRepository;
 
     @Override
     public List<Department> getAllDepartments() {
+    public List<Department> findAll() {
         return iDepartmentRepository.findAll();
     }
 }
