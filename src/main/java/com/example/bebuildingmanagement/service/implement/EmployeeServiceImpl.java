@@ -11,8 +11,8 @@ import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +25,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public EmployeeDTO getCurrentEmployeeInfo() {
-
+        // Lấy thông tin tài khoản hiện tại
         AccountResponse accountResponse = iAccountService.getCurrentAccount();
         Account account = iAccountRepository.findByUsername(accountResponse.getUsername()).orElseThrow();
-        Employee employee = iEmployeeRepository.findByAccount(account);
 
+        // Sử dụng truy vấn thuần đã được định nghĩa trong repository
+        Employee employee = iEmployeeRepository.findByAccount(account.getId());
+
+        // Trả về EmployeeDTO
         return EmployeeDTO.builder()
                 .userName(employee.getAccount().getUsername())
                 .name(employee.getName())
@@ -39,6 +42,5 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 .phone(employee.getPhone())
                 .email(employee.getEmail())
                 .build();
-
     }
 }
