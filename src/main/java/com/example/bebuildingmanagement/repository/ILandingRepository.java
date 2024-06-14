@@ -44,10 +44,6 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     @Query(value = "UPDATE landing SET is_deleted = 1, is_available = 0 WHERE id = ?1", nativeQuery = true)
     void deleteLandingById(Long id);
 
-//    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name) " +
-//            "FROM Landing ld " +
-//            "JOIN ld.floor fl " + "where ld.isAvailable = true and ld.isDeleted = false")
-//    Page<LandingResponseDTO> findListAllLanding(Pageable pageable);
 
 
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
@@ -66,8 +62,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
                        @Param("id") Long id);
 
 
-    @Override
-    Page<Landing> findAll(Pageable pageable);
+
 
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
             "FROM Landing ld " +
