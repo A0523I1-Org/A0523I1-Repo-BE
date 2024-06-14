@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.repository;
 
+import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;

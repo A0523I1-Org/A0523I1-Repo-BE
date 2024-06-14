@@ -1,8 +1,8 @@
 package com.example.bebuildingmanagement.controller;
 
 
-import com.example.bebuildingmanagement.dto.request.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
+import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.IFloorService;
@@ -28,12 +28,19 @@ public class LandingController {
 
 
     @GetMapping
-    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "15") int size) {
-        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
-        return ResponseEntity.ok(landingResponseDTOPage);
+    public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(value = "statusLanding", required = false) String statusLanding,
+            @RequestParam(value = "codeLanding", required = false) String codeLanding,
+            @RequestParam(value = "areaLanding", required = false) Double areaLanding,
+            @RequestParam(value = "typeLanding", required = false) String typeLanding,
+            @RequestParam(value = "floorLanding", required = false) String floorLanding) {
+
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+        return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
-
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
