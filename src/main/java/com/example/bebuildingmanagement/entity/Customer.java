@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -20,7 +21,7 @@ public class Customer {
     Long id;
     String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date dob;
+    LocalDate dob;
     String gender;
     String address;
     String email;
