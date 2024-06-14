@@ -4,6 +4,8 @@ import com.example.bebuildingmanagement.entity.SalaryRank;
 
 import java.util.List;
 
+public interface ISalaryRankService {
+    List<SalaryRank> getAllSalaryRanks();
 public interface ISalaryRankService{
     List<SalaryRank> findAll();
 }

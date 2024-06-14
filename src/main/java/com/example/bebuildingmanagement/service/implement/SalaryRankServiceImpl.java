@@ -19,6 +19,7 @@ public class SalaryRankServiceImpl implements ISalaryRankService {
     ISalaryRankRepository iSalaryRankRepository;
 
     @Override
+    public List<SalaryRank> getAllSalaryRanks() {
     public List<SalaryRank> findAll() {
         return iSalaryRankRepository.findAll();
     }
