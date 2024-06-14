@@ -107,6 +107,7 @@ public class LandingServiceImpl implements ILandingService {
         iLandingRepository.deleteLandingById(id);
     }
 
+
     @Override
     public LandingResponseDTO findLanding(Long id) {
         return iLandingRepository.findLanding(id);

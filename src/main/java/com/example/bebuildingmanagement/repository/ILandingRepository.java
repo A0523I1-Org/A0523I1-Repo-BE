@@ -69,6 +69,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     @Override
     Page<Landing> findAll(Pageable pageable);
 
+
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl " +
