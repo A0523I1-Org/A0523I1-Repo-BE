@@ -100,7 +100,7 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public void deleteLanding(Long id) {
-        Landing landing = iLandingRepository.findLandingById(id);
+        LandingResponseDTO landing = iLandingRepository.findLanding(id);
         if (landing == null) {
             throw new CustomValidationException("Mặt bằng không tồn tại");
         }

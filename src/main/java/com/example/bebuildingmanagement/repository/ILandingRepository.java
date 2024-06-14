@@ -21,20 +21,20 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
     boolean existsByCode(String code);
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name) " +
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl " +
             "WHERE ld.status like :statusLanding " +
             "AND ld.code LIKE :codeLanding " +
             "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
             "AND ld.type LIKE :typeLanding" +
-            " AND fl.name like :floorLanding" +
-            " AND ld.type LIKE :typeLanding" + " and ld.isAvailable = true and ld.isDeleted = false")
+            " AND fl.name like :floorLanding" + " and ld.isDeleted = false " + "and ld.isAvailable= true ")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable,
                                                 @Param("statusLanding") String statusLanding,
                                                 @Param("codeLanding") String codeLanding,
                                                 @Param("areaLanding") Double areaLanding,
-                                                @Param("typeLanding") String typeLanding);
+                                                @Param("typeLanding") String typeLanding,
+                                                @Param("floorLanding") String floorLanding);
 
 
 
@@ -53,7 +53,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
             "FROM Landing ld " +
             "JOIN ld.floor fl " +
-            "where ld.id=?1")
+            " where ld.id=?1")
     LandingResponseDTO findLanding(Long id);
 
 
@@ -68,8 +68,12 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
     @Override
     Page<Landing> findAll(Pageable pageable);
-    @Query(value = "select id,code,type,area,description,fee_per_month,fee_manager,status,floor_id,firebase_url,is_deleted,is_available from landing where id = ?1", nativeQuery = true)
-    Landing findLandingById(Long id);
+
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
+            "FROM Landing ld " +
+            "JOIN ld.floor fl " +
+            " where ld.code=?1")
+    LandingResponseDTO findLandingByCode(String code);
 
     @Modifying
     @Transactional
