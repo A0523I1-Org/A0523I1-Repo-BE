@@ -135,6 +135,8 @@ public class ContractConst {
     public final static class SUCCESS_MESSAGE {
         public static final String ADD_NEW_CONTRACT = "Thêm mới hợp đồng thành công !";
 
+
+        
         public static final String PAGE_NOT_NEGATIVE = "Giá trị page không được nhỏ hơn 0 !";
     }
 }
