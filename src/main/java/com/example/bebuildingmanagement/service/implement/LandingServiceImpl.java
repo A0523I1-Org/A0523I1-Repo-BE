@@ -110,6 +110,11 @@ public class LandingServiceImpl implements ILandingService {
         return iLandingRepository.findLanding(id);
     }
 
+    @Override
+    public LandingResponseDTO findLandingByCode(String code) {
+        return iLandingRepository.findLandingByCode(code);
+    }
+
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
 
         Set<ConstraintViolation<LandingRequestDTO>> mandatoryViolations = validator.validate(landingRequest, ValidationGroups.MandatoryChecks.class);

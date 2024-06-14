@@ -71,6 +71,12 @@ public class LandingController {
         return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("{code}")
+    ResponseEntity<LandingResponseDTO> findLandingByCode(@PathVariable("code") String code) {
+        LandingResponseDTO landingResponseDTO = iLandingService.findLandingByCode(code);
+        return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
+    }
+
 
     @PostMapping("/createLanding")
     public ResponseEntity<ApiResponseDTO<Void>> createNewLanding(@RequestBody @Valid LandingRequestDTO landingRequestDTO) {

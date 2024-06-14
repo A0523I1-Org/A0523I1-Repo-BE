@@ -22,5 +22,6 @@ public interface ILandingService {
     void deleteLanding(Long id);
 
     LandingResponseDTO findLanding(Long id);
+    LandingResponseDTO findLandingByCode(String code);
 
 }

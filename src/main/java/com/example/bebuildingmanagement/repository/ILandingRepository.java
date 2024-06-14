@@ -54,6 +54,12 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
     "where ld.id=?1")
     LandingResponseDTO findLanding(Long id);
 
+    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager,  fl.name,ld.firebaseUrl) " +
+            "FROM Landing ld " +
+            "JOIN ld.floor fl "+
+            "where ld.code = ?1")
+    LandingResponseDTO findLandingByCode(String code);
+
 
     @Modifying
     @Transactional
