@@ -25,7 +25,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,17 +45,17 @@ public class ContractServiceImpl implements IContractService {
     //anh lq
     @Override
     public ContractDetailsProjection contractById(Long id) {
-        return iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
+
+      return  iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
     }
 
 
     @Override
     public void updateContractById(ContractRequestDTO contractDTO, Long id) {
         iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
-
-        iContractRepository.updateContractById(contractDTO.getContent(),
-                contractDTO.getDeposit(),contractDTO.getDescription(),contractDTO.getStartDate(),contractDTO.getEndDate(),
-                contractDTO.getFirebaseUrl(), contractDTO.getTaxCode(),contractDTO.getTerm(),id);
+        iContractRepository.updateContractById(
+                contractDTO.getContent(), contractDTO.getDeposit(), contractDTO.getStartDate(),contractDTO.getEndDate(),
+                contractDTO.getFireBaseUrl(), contractDTO.getTaxCode(),contractDTO.getTerm(),contractDTO.getCurrentFee(),id);
 
     }
 //anh lq
