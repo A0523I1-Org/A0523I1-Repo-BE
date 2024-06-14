@@ -21,7 +21,7 @@ public class Customer {
     Long id;
     String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate dob;
+    Date dob;
     String gender;
     String address;
     String email;

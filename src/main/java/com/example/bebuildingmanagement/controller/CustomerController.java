@@ -45,9 +45,10 @@ public class CustomerController {
             return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
-    @GetMapping("/detail/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findCustomerById(@PathVariable long id) {
         try {
+            
             Customer customer = iCustomerService.findByIdCustomer(id);
             return new ResponseEntity<>(customer, HttpStatus.OK);
         } catch (Exception e) {
