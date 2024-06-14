@@ -3,7 +3,6 @@ package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.AccountReqDTO;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Employee;
-import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.IEmployeeRepository;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
@@ -16,12 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountServiceImpl implements IAccountService {
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -56,11 +55,5 @@ public class AccountServiceImpl implements IAccountService {
         } else {
             return "Employee account created failed";
         }
-    @Autowired
-    IAccountRepository iAccountRepository;
-
-    @Override
-    public List<Account> findAll() {
-        return iAccountRepository.findAll();
     }
 }
