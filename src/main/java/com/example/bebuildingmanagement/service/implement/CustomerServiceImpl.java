@@ -55,8 +55,8 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public Customer findById(long id) {
-        return iCustomerRepository.findById(id).orElse(null);
+    public Customer findByIdCustomer(long id) {
+        return iCustomerRepository.findCustomerId(id);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.bebuildingmanagement.service.interfaces;
 
-import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 import com.example.bebuildingmanagement.entity.Customer;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,7 @@ public interface ICustomerService {
 
     void delete(long id);
 
-    Customer findById(long id);
+    Customer findByIdCustomer(long id);
 
     Page<CustomerResponseDTO> searchByName(Pageable pageable, String name);
 

@@ -12,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -47,10 +45,10 @@ public class CustomerController {
             return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findCustomerById(@PathVariable("id") long id) {
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> findCustomerById(@PathVariable long id) {
         try {
-            Customer customer = iCustomerService.findById(id);
+            Customer customer = iCustomerService.findByIdCustomer(id);
             return new ResponseEntity<>(customer, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
