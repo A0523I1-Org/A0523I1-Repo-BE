@@ -15,7 +15,7 @@ public interface ILandingService {
 
     LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO);
 
-    Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding);
+    Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding,String floorLanding);
 
 //    Page<LandingResponseDTO> findAll(int page, int size);
 
