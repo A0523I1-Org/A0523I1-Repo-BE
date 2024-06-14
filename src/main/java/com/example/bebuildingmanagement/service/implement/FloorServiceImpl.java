@@ -36,7 +36,7 @@ public class FloorServiceImpl implements IFloorService {
     @Override
     public List<FloorResponseDTO> getFloor() {
 
-        List<Floor> listFloor=iFloorRepository.findAll();
+        List<Floor> listFloor=iFloorRepository.findAllFloor();
 
         List<FloorResponseDTO>floorResponseDTOS= listFloor.stream().map(listNew -> modelMapper.map(listNew,FloorResponseDTO.class)).collect(Collectors.toList());
 
@@ -45,7 +45,7 @@ public class FloorServiceImpl implements IFloorService {
 
     @Override
     public FloorResponseDTO findFloor(Long id) {
-        Optional<Floor> floor=iFloorRepository.findById(id);
+        Floor floor=iFloorRepository.findFloorById(id);
         FloorResponseDTO floorResponseDTO=modelMapper.map(floor,FloorResponseDTO.class);
 
         return floorResponseDTO;

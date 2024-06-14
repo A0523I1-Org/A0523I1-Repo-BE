@@ -4,7 +4,6 @@ package com.example.bebuildingmanagement.controller;
 import com.example.bebuildingmanagement.dto.request.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
-import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.IFloorService;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
@@ -22,12 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/landing")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
     ILandingService iLandingService;
     IFloorService iFloorService;
-
 
 
     @GetMapping
@@ -35,7 +32,6 @@ public class LandingController {
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
         return ResponseEntity.ok(landingResponseDTOPage);
     }
-
 
 
     @PutMapping("/{id}")
@@ -53,6 +49,18 @@ public class LandingController {
     ResponseEntity<List<FloorResponseDTO>> getListAllFloor() {
         List<FloorResponseDTO> floorResponseDTOList = iFloorService.getFloor();
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<LandingResponseDTO> findLanding(@PathVariable("id") Long id) {
+        LandingResponseDTO landingResponseDTO = iLandingService.findLanding(id);
+        return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/code/{code}")
+    ResponseEntity<LandingResponseDTO> findLandingByCode(@PathVariable("code") String code) {
+        LandingResponseDTO landingResponseDTO = iLandingService.findLandingByCode(code);
+        return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
     }
 
 
