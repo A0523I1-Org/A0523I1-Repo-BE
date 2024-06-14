@@ -20,5 +20,5 @@ public class AccountReqDTO {
     @NotBlank(message = "Password is mandatory")
     @Size(max = 30, message = "Password must not exceed 30 characters")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Password must contain only letters and numbers")
-    String password; // Thường thì mật khẩu nên được mã hóa trước khi lưu
+    String password; // Mật khẩu nên được mã hóa trước khi lưu
 }

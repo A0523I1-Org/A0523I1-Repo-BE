@@ -20,7 +20,7 @@ public class AccountController {
     @Autowired
     IAccountService iAccountService;
 
-//    Sử dụng @Valid để tự động kiểm tra tính hợp lệ của các trường trong DTO. Nếu có bất kỳ vi phạm nào, một MethodArgumentNotValidException sẽ được ném ra.
+    //    Sử dụng @Valid để tự động kiểm tra tính hợp lệ của các trường trong DTO. Nếu có bất kỳ vi phạm nào, một MethodArgumentNotValidException sẽ được ném ra.
     @PostMapping("/employee/{id}")
     public ResponseEntity<String> createEmployeeAccount(@PathVariable Long id, @Valid @RequestBody AccountReqDTO accountReqDTO) {
         String result = iAccountService.createEmployeeAccount(id, accountReqDTO);

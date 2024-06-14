@@ -11,13 +11,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//
-//    public static String encodePassword(String password) {
-//        return encoder.encode(password);
-//    }
-//
-//    public static boolean checkPassword(String rawPassword, String encodePassword) {
-//        return encoder.matches(rawPassword, encodePassword);
-//    }
 }

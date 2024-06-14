@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
+import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
@@ -26,6 +27,7 @@ public class EmployeeController {
     @Autowired
     IEmployeeService iEmployeeService;
 
+    //VUNV
     @GetMapping("")
     public ResponseEntity<Page<EmployeeResDTO>> searchEmployees(
             @RequestParam(value = "code", required = false) String code,
@@ -69,15 +71,29 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<EmployeeResDTO> createEmployee(@RequestBody EmployeeReqDTO employeeReqDTO) {
-//        EmployeeResDTO createdEmployee = iEmployeeService.saveEmployee(employeeReqDTO);
-//        return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResDTO> getEmployeeById(@PathVariable Long id) {
         EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    //THIENTV
+    @PostMapping("/add")
+    public ResponseEntity<Void> addEmployee(@RequestBody EmployeeReqDTO employeeDTO)  {
+        iEmployeeService.addEmployeeByQuery(employeeDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<EmployeeResDTO> deleteEmployee(@PathVariable Long id) {
+        EmployeeResDTO employeeResDTO = iEmployeeService.findEmployeeById(id);
+        if (employeeResDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        iEmployeeService.deleteEmployeeById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

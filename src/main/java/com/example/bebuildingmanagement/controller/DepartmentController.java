@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
-import com.example.bebuildingmanagement.dto.response.DepartmentResDTO;
+import com.example.bebuildingmanagement.entity.Department;
 import com.example.bebuildingmanagement.service.interfaces.IDepartmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class DepartmentController {
     IDepartmentService iDepartmentService;
 
     @GetMapping("")
-    public ResponseEntity<List<DepartmentResDTO>> getAllDepartments() {
-        List<DepartmentResDTO> departments = iDepartmentService.getAllDepartments();
+    public ResponseEntity<List<Department>> getAllDepartments() {
+        List<Department> departments = iDepartmentService.getAllDepartments();
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 }

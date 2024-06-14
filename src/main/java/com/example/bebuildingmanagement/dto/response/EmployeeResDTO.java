@@ -1,5 +1,8 @@
 package com.example.bebuildingmanagement.dto.response;
 
+import com.example.bebuildingmanagement.entity.Account;
+import com.example.bebuildingmanagement.entity.Department;
+import com.example.bebuildingmanagement.entity.SalaryRank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,7 +26,7 @@ public class EmployeeResDTO {
     Date workDate;
     String firebaseUrl;
     boolean isDeleted;
-    DepartmentResDTO department;
-    SalaryRankResDTO salaryRank;
-    AccountResDTO account;
+    Department department;
+    SalaryRank salaryRank;
+    Account account;
 }

@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.service.implement;
 
+import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.IEmployeeRepository;
@@ -33,22 +34,27 @@ public class EmployeeServiceImpl implements IEmployeeService {
         Page<Employee> employeePage = iEmployeeRepository.search(
                 code, name, dob, dobFrom, dobTo, gender, address, phone, email, workDate, workDateFrom, workDateTo, departmentId, salaryRankId, accountUsername, pageable);
         Page<EmployeeResDTO> employeeResDTOPage = employeePage.map(employee -> modelMapper.map(employee, EmployeeResDTO.class));
-//        System.out.println("Search Parameters: " + code + ", " + name + ", " + gender + ", " + address + ", " + phone + ", " + email);
-//        System.out.println("Search Results: " + employeePage.getContent());
         return employeeResDTOPage;
     }
-
-//    @Override
-//    public EmployeeResDTO saveEmployee(EmployeeReqDTO employeeReqDTO) {
-//        Employee employee = modelMapper.map(employeeReqDTO, Employee.class);
-//        iEmployeeRepository.save(employee);
-//        return modelMapper.map(employee, EmployeeResDTO.class);
-//    }
 
     @Override
     public EmployeeResDTO findEmployeeById(Long id) {
         Employee employee = iEmployeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return modelMapper.map(employee, EmployeeResDTO.class);
+    }
+
+    @Override
+    public void deleteEmployeeById(Long id) {
+        iEmployeeRepository.deleteEmployeeByQuery(id);
+    }
+
+    @Override
+    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
+        EmployeeReqDTO emp = employeeReqDTO;
+        Long number = iEmployeeRepository.getMaxId() +1;
+        String code = "O.E-" + String.format("%04d", number);
+        emp.setCode(code);
+        iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
     }
 }

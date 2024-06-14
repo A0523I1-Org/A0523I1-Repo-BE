@@ -14,4 +14,7 @@ public interface IEmployeeService {
                                          Pageable pageable);
 
     EmployeeResDTO findEmployeeById(Long id);
+
+    void deleteEmployeeById(Long id);
+    void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO);
 }

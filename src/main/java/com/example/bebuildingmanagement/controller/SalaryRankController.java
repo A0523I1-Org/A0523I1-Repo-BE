@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
-import com.example.bebuildingmanagement.dto.response.SalaryRankResDTO;
+import com.example.bebuildingmanagement.entity.SalaryRank;
 import com.example.bebuildingmanagement.service.interfaces.ISalaryRankService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class SalaryRankController {
     ISalaryRankService iSalaryRankService;
 
     @GetMapping("")
-    public ResponseEntity<List<SalaryRankResDTO>> getAllSalaryRanks() {
-        List<SalaryRankResDTO> salaryRanks = iSalaryRankService.getAllSalaryRanks();
+    public ResponseEntity<List<SalaryRank>> getAllSalaryRanks() {
+        List<SalaryRank> salaryRanks = iSalaryRankService.getAllSalaryRanks();
         return new ResponseEntity<>(salaryRanks, HttpStatus.OK);
     }
 }
