@@ -1,6 +1,6 @@
 package com.example.bebuildingmanagement.service.implement;
 
-import com.example.bebuildingmanagement.repository.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

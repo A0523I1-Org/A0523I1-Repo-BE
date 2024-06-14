@@ -7,14 +7,16 @@ import com.example.bebuildingmanagement.entity.*;
 import com.example.bebuildingmanagement.exception.ResourceNotFoundException;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
-import com.example.bebuildingmanagement.projections.contract.IEmployeeProjection;
+import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
-import com.example.bebuildingmanagement.repository.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import com.example.bebuildingmanagement.service.interfaces.mail.IMailService;
-import com.example.bebuildingmanagement.utils.Const;
+import com.example.bebuildingmanagement.constants.ContractConst;
 
 import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
@@ -41,6 +43,7 @@ public class ContractServiceImpl implements IContractService {
     IEmployeeRepository iEmployeeRepository;
     IMailService iMailService;
     ICustomerRepository iCustomerRepository;
+    ILandingRepository iLandingRepository;
 
     //anh lq
     @Override
@@ -66,7 +69,10 @@ public class ContractServiceImpl implements IContractService {
         iContractRepository.deleteContractById(id);
     }
 
-        public Page<ContractResponseDTO> getContracts (Optional<Integer> page) {
+
+
+    @Override
+        public Page<ContractResponseDTO> getContracts(Optional<Integer> page,String customerName, String landingCode, String startDate, String endDate) {
             // lấy username đang đăng nhập :
             String username = "TranThiB";
             // lay thong tin account:
@@ -75,17 +81,29 @@ public class ContractServiceImpl implements IContractService {
             Page<IContractProjection> contractProjections = null ;
             Page<ContractResponseDTO> contractResponseDTOS ;
 
+            if (startDate==""){
+                startDate = null;
+            }else if (endDate == ""){
+                endDate = null;
+            }
+            if ((startDate == null && endDate == "") || (startDate == "" && endDate == null)){
+                startDate = null;
+                endDate = null;
+
+            }
             // check role :
             for (Role role: account.getRoles()
                  ) {
                 if (role.getName().equals("ADMIN")){
                     // lấy tất cả danh sách hợp đồng
-                    contractProjections = iContractRepository.getContracts(pageable);
-                    break;
+                        contractProjections = iContractRepository.getContracts(pageable,"%"+customerName.trim()+"%","%"+landingCode.trim()+"%",startDate,endDate);
+
+                        break;
 
                 }else {
+
                     // chỉ lấy ra danh sách nhân viên đã tạo hợp đồng :
-                    contractProjections = iContractRepository.getContractByEmployeeUsername(pageable,username);
+                    contractProjections = iContractRepository.getContractsByEmployeeUsername(pageable,username,"%"+customerName.trim()+"%","%"+landingCode.trim()+"%",startDate,endDate);
 
                 }
             }
@@ -93,6 +111,7 @@ public class ContractServiceImpl implements IContractService {
             contractResponseDTOS = contractProjections.map(
                     contractProjection -> {
                         ContractResponseDTO contractResponseDTO = ContractResponseDTO.builder()
+                                .id(contractProjection.getId())
                                 .startDate(contractProjection.getStartDate())
                                 .endDate(contractProjection.getEndDate())
                                 .customerName(contractProjection.getCustomerName())
@@ -110,30 +129,32 @@ public class ContractServiceImpl implements IContractService {
     public void createContract(ContractNewRequestDTO contractNewRequestDTO) {
         // Kiểm tra xem mặt bang đã làm hợp đồng chưa .
         if (iContractRepository.existsByLandingId(contractNewRequestDTO.getLandingId())){
-            throw new  RuntimeException("Mặt bằng này đã làm hợp đồng,  chọn mặt bằng khác !");
+            throw new  RuntimeException(ContractConst.ERROR_MESSAGE.LANDING_ALREADY_EXIST);
         }
         // lấy username đang đăng nhập
         String username = "TranThiB";
         // lấy 1 số dữ liệu employee để send mail và insert employeeId vào contract;
-        IEmployeeProjection employee = iEmployeeRepository.getEmployeeByUsername(username) ;
+        IEmployeeInfoProjection employee = iEmployeeRepository.getEmployeeByUsername(username) ;
 
         // đẩy dữ liệu lên repo để thực hiện query insert :
          iContractRepository.createContract(
                 contractNewRequestDTO.getTerm(),contractNewRequestDTO.getStartDate(),
                 contractNewRequestDTO.getEndDate(),contractNewRequestDTO.getTaxCode(),
-                contractNewRequestDTO.getCurrentFee(),contractNewRequestDTO.getDescription(),
+                contractNewRequestDTO.getCurrentFee(),
                 contractNewRequestDTO.getDeposit(),contractNewRequestDTO.getFirebaseUrl(),
                 contractNewRequestDTO.getContent(),contractNewRequestDTO.getLandingId(),
                 contractNewRequestDTO.getCustomerId(),employee.getId()
         ) ;
+         // set lại mặt bằng đã tạo hợp đồng sau khi thêm thành công :
+            iLandingRepository.setLandingIsAvailableFalse(contractNewRequestDTO.getLandingId());
 
         // gui mail :
 
             Customer customer = iCustomerRepository.findById(contractNewRequestDTO.getCustomerId())
-                    .orElseThrow(()-> new RuntimeException("Không tìm thấy khách hàng !"));
+                    .orElseThrow(()-> new RuntimeException(ContractConst.ERROR_MESSAGE.CUSTOMER_NOT_FOUNT));
             DataMailDTO dataMail = new DataMailDTO();
             dataMail.setToEmail(customer.getEmail());
-            dataMail.setSubject(Const.SEND_MAIL_SUBJECT.CLIENT_REGISTER);
+            dataMail.setSubject(ContractConst.SEND_MAIL_SUBJECT.CLIENT_REGISTER);
             // trả dữ liệu ve thymelef để hiên thị
             Map<String,Object> props = new HashMap<>();
             props.put("customerName",customer.getName());
@@ -147,9 +168,9 @@ public class ContractServiceImpl implements IContractService {
 
             dataMail.setProps(props);
         try {
-            iMailService.sendMail(dataMail,Const.TEMPLATE_FILE_NAME.CLIENT_REGISTER);
+            iMailService.sendMail(dataMail, ContractConst.TEMPLATE_FILE_NAME.CLIENT_REGISTER);
         } catch (MessagingException e) {
-            throw new RuntimeException("Gửi mail thất bại !");
+            throw new RuntimeException(ContractConst.ERROR_MESSAGE.MAIL_SENDING_FAILED);
         }
 
 

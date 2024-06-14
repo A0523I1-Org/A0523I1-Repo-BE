@@ -57,30 +57,25 @@ public class GlobalExceptionHandler {
         System.out.println(apiResponse);
         return ResponseEntity.badRequest().body(apiResponse);
     }
+//    @ExceptionHandler(RuntimeException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<ApiResponseDTO> handleRuntimeException(RuntimeException exception) {
+//        ApiResponseDTO apiResponse = new ApiResponseDTO();
+//        apiResponse.setCode(ErrorCode.CODE_LANDING_AVAILABLE.getCode());
+//        apiResponse.setMessage(exception.getMessage());
+//        apiResponse.setTimestamp(System.currentTimeMillis());
+//        return ResponseEntity.badRequest().body(apiResponse);
+//    }
 
-
-
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiResponseDTO> handleRuntimeException(RuntimeException exception) {
-        ApiResponseDTO apiResponse = new ApiResponseDTO();
-        apiResponse.setCode(ErrorCode.CODE_LANDING_AVAILABLE.getCode());
-        apiResponse.setMessage(exception.getMessage());
-        apiResponse.setTimestamp(System.currentTimeMillis());
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponseDTO> handleResourceNotFoundException(ResourceNotFoundException exception){
         String messege = exception.getMessage();
         ApiResponseDTO response = ApiResponseDTO.builder().message(messege).status(HttpStatus.NOT_FOUND.value()).build();
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(HttpMessageConversionException.class)
     public ResponseEntity<ApiResponseDTO> handleHttpMessageConversionException(HttpMessageConversionException e) {
-
-
-
-
         ApiResponseDTO response = ApiResponseDTO.builder()
                 .message("Invalid request body")
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -100,6 +95,16 @@ public class GlobalExceptionHandler {
 //        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 //    }
 
+    @ExceptionHandler(value = RuntimeException.class)
+    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
+        ApiResponseDTO response = ApiResponseDTO.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(System.currentTimeMillis())
+                .build();
+        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
@@ -108,8 +113,6 @@ public class GlobalExceptionHandler {
         errorMap.put(error.getField(), error.getDefaultMessage());
     });
         ApiResponseDTO response = ApiResponseDTO.builder()
-                .message("Validation errors")
-                .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(System.currentTimeMillis())
                 .result(errorMap)
                 .build();

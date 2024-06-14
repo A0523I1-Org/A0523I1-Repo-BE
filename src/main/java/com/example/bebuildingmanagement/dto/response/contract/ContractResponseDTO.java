@@ -12,8 +12,9 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContractResponseDTO  {
-    Date startDate;
-    Date endDate;
+    Long id;
+    String startDate;
+    String endDate;
     String customerName;
     String landingCode;
 
