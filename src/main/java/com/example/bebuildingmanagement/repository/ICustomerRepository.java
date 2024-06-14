@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.repository;
 
 
+import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 import com.example.bebuildingmanagement.entity.Customer;
 
 import org.springframework.data.domain.Page;

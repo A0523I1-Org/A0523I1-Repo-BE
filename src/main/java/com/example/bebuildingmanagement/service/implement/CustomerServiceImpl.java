@@ -1,7 +1,7 @@
 package com.example.bebuildingmanagement.service.implement;
 
 
-import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
+
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 
 
@@ -55,8 +55,10 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public Customer findByIdCustomer(long id) {
-        return iCustomerRepository.findCustomerId(id);
+    public CustomerResponseDTO findByIdCustomer(long id) {
+        Customer customer = iCustomerRepository.findCustomerId(id);
+        CustomerResponseDTO customerResponseDTO = modelMapper.map(customer, CustomerResponseDTO.class);
+        return customerResponseDTO;
     }
 
     @Override
@@ -65,6 +67,5 @@ public class CustomerServiceImpl implements ICustomerService {
         Page<CustomerResponseDTO> customerResponseDTOs = customers.map(customer -> modelMapper.map(customer, CustomerResponseDTO.class));
         return customerResponseDTOs;
     }
-
 
 }

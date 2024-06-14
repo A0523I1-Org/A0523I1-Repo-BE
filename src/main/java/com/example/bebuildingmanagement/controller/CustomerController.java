@@ -45,11 +45,11 @@ public class CustomerController {
             return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<?> findCustomerById(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponseDTO> findCustomerById(@PathVariable long id) {
         try {
-            Customer customer = iCustomerService.findByIdCustomer(id);
-            return new ResponseEntity<>(customer, HttpStatus.OK);
+            CustomerResponseDTO customerResponseDTO = iCustomerService.findByIdCustomer(id);
+            return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -85,9 +85,9 @@ public class CustomerController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable long id) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
         iCustomerService.delete(id);
-        return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/search")
