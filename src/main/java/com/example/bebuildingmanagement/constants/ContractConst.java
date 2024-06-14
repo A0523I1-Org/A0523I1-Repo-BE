@@ -1,8 +1,6 @@
-package com.example.bebuildingmanagement.utils;
+package com.example.bebuildingmanagement.constants;
 
-import javax.swing.plaf.PanelUI;
-
-public class Const {
+public class ContractConst {
     public final static  class SEND_MAIL_SUBJECT {
         public  final static  String CLIENT_REGISTER = "XÁC NHẬN TẠO HỢP ĐỒNG";
     }
@@ -12,10 +10,11 @@ public class Const {
 
     }
 
-    public final static class CONTRACT_QUERY {
+    public final static class QUERY {
         public final static String SELECT_CONTRACTS_BY_EMPLOYEE_USERNAME = "select " +
-                "c.start_date as startDate,"+
-                "c.end_date as endDate,"+
+                " DATE_FORMAT(start_date, '%d/%m/%Y') as startDate,"+
+                " DATE_FORMAT(end_date, '%d/%m/%Y') as endDate,"+
+                " c.id as id, " +
                 "cus.name as customerName,"+
                 "l.code as landingCode "+
                 "from contract as c " +
@@ -27,11 +26,48 @@ public class Const {
                 "on c.employee_id = e.id "+
                 " join account as ac " +
                 "on e.account_id = ac.id " +
-                "where c.is_deleted = 0 and ac.username = ?1 ";
-        public final static String COUNT_CONTRACT = "select count(*) from contract" ;
+                "where c.is_deleted = 0 " +
+                " and ac.username = ?1  " +
+                "and cus.name like ?2 " +
+                "and l.code like ?3 " +
+                "and  (?4 IS NULL OR c.start_date >= ?4) " +
+                "and  (?5 IS NULL OR c.end_date <= ?5) ";
+        public final static String COUNT_ALL_CONTRACT = "select " +
+                " count(*)" +
+                "from contract as c " +
+                "left join customer as cus "+
+                "on c.customer_id = cus.id "+
+                "left join landing as l "+
+                "on c.landing_id = l.id "+
+                "left join employee as e "+
+                "on c.employee_id = e.id "+
+                "where c.is_deleted = 0 " +
+                "and cus.name like ?1 " +
+                "and l.code like ?2 " +
+                "and  (?3 IS NULL OR c.start_date >= ?3) " +
+                "and  (?4 IS NULL OR c.end_date <= ?4)" ;
+        public final static String COUNT_CONTRACT_BY_USERNAME =
+                        "select " +
+                        "count(*) " +
+                        "from contract as c " +
+                        " join customer as cus "+
+                        "on c.customer_id = cus.id "+
+                        " join landing as l "+
+                        "on c.landing_id = l.id "+
+                        " join employee as e "+
+                        "on c.employee_id = e.id "+
+                        " join account as ac " +
+                        "on e.account_id = ac.id " +
+                        "where c.is_deleted = 0 " +
+                        " and ac.username = ?1  " +
+                        "and cus.name like ?2 " +
+                        "and l.code like ?3 " +
+                        "and  (?4 IS NULL OR c.start_date >= ?4) " +
+                        "and  (?5 IS NULL OR c.end_date <= ?5) ";
         public final static String SELECT_ALL_CONTRACT = "select " +
-                "c.start_date as startDate,"+
-                "c.end_date as endDate,"+
+                " DATE_FORMAT(start_date, '%d/%m/%Y') as startDate,"+
+                " DATE_FORMAT(end_date, '%d/%m/%Y') as endDate,"+
+                " c.id as id, " +
                 "cus.name as customerName,"+
                 "l.code as landingCode "+
                 "from contract as c " +
@@ -41,7 +77,11 @@ public class Const {
                 "on c.landing_id = l.id "+
                 "left join employee as e "+
                 "on c.employee_id = e.id "+
-                "where c.is_deleted = 0 ";
+                "where c.is_deleted = 0 " +
+                "and cus.name like ?1 " +
+                "and l.code like ?2 " +
+                "and  (?3 IS NULL OR c.start_date >= ?3) " +
+                "and  (?4 IS NULL OR c.end_date <= ?4)";
         public final static String INSERT_CONTRACT = "INSERT INTO contract( " +
                 " term, start_date, end_date ," +
                 " tax_code,current_fee," +
@@ -58,16 +98,7 @@ public class Const {
                 " where cont.id = ?1 ";
     }
 
-    public final static class EMPLOYEE_QUERY {
-        public final static String SELECT_EMPLOYEE_BY_USERNAME = "select e.id ," +
-                " e.name  ," +
-                " e.phone ," +
-                "e.email " +
-                " from employee as e " +
-                " join account as a " +
-                " on e.account_id = a.id " +
-                " where username = ?1 ";
-    }
+
     public final static class ERROR_MESSAGE {
         public final static String TERM_NOT_BLANK = "Vui lòng nhập kì hạn ! " ;
         public final static String TERM_MIN = "Kì hạn thuê tối thiểu 1 tháng !" ;
@@ -78,9 +109,9 @@ public class Const {
         public final static String CURRENT_FEE_ILLEGAL = "Phí hiện tại của mặt bằng không hợp lệ !";
         public final static String DEPOSIT_NOT_BLANK = "Vui lòng nhập tiền đặt cọc ! ";
         public final static String DEPOSIT_ILLEGAL = "Tiền đặt cọc không hợp lệ";
-        public final static String DEPOSIT_MIN = "Tiền đặt cọc tối thiểu bằng 10% so với tổng tiền (currentFee*term) ! ";
+        public final static String DEPOSIT_MIN = "Tiền đặt cọc tối thiểu bằng 10% so với phí hiện tại ! ";
         public final static String FIREBASE_NOT_BLANK = "Vui lòng cung cấp ảnh H/Đ !";
-        public final static String FIREBASE_FORMAT = "Chỉ được cung cấp file ảnh đúng định dạng (https://xxx/xx/xx.jpg) (jpg hoặc gif hoặc png) !";
+        public final static String FIREBASE_FORMAT = "Vui lòng cung cấp url ảnh đúng định dạng (https://xxx/xx/xx) !";
         public final static String CONTENT_NOT_BLANK = "Vui lòng nhập nội dung H/Đ !";
         public final static String CONTENT_MIN = "Vui lòng nhập nội dung tối thiểu 50 kí tự !";
         public final static String LANDING_NOT_BLANK = "Vui lòng cung cấp mặt bằng !";
@@ -94,7 +125,7 @@ public class Const {
         public static final String END_DATE_NOT_BLANK = "Vui lòng chọn ngày kết thúc !";
         public static final String END_DATE_COMPARED_TO_TERM = "Ngày kết thúc phải sau ngày bắt đầu bằng đúng số tháng của kì hạn !";
         public static final String END_DATE_FORMAT = "Vui lòng nhập ngày kết thúc đúng định dạng (yyyy-MM-dd)!";
-        public static final String LANDING_ALREADY_EXIST = "Mặt bằng này đã làm hợp đồng,  chọn mặt bằng khác !";
+        public static final String LANDING_ALREADY_EXIST = "Mặt bằng này đã làm hợp đồng  !";
         public static final String CUSTOMER_NOT_FOUNT = "Không tìm thấy khách hàng !";
         public static final String MAIL_SENDING_FAILED = "Gửi mail thất bại !";
         public static final String CONFIRM_PASSWORD_FALSE = "Mật khẩu xác nhận không đúng !";

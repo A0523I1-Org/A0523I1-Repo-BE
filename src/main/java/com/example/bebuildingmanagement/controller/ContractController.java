@@ -8,14 +8,7 @@ import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDT
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
-import com.example.bebuildingmanagement.utils.Const;
-import jakarta.servlet.http.PushBuilder;
-
-
-
-import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
-
-import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
+import com.example.bebuildingmanagement.constants.ContractConst;
 
 
 import jakarta.validation.Valid;
@@ -41,15 +34,20 @@ public class ContractController {
     IContractService iContractService;
 
     @GetMapping("")
-    public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page) {
+    public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page,
+                                                                      @RequestParam("customerName") String customerName,
+                                                                      @RequestParam("landingCode") String landingCode,
+                                                                      @RequestParam("startDate") String startDate,
+                                                                      @RequestParam("endDate")String endDate) {
         if (page.isEmpty()) {
-            throw new RuntimeException(Const.ERROR_MESSAGE.PAGE_IS_EMPTY);
+            throw new RuntimeException(ContractConst.ERROR_MESSAGE.PAGE_IS_EMPTY);
 
         }
         if (page.get() < 0) {
-            throw new RuntimeException(Const.SUCCESS_MESSAGE.PAGE_NOT_NEGATIVE);
+            throw new RuntimeException(ContractConst.SUCCESS_MESSAGE.PAGE_NOT_NEGATIVE);
         }
-        Page<ContractResponseDTO> contracts = iContractService.getContracts(page);
+
+        Page<ContractResponseDTO> contracts = iContractService.getContracts(page,customerName,landingCode,startDate,endDate);
 
         return new ResponseEntity<>(contracts, HttpStatus.OK);
     }
@@ -63,7 +61,7 @@ public class ContractController {
         //lay mật khẩu đang đăng nhập để xác nhận :
         String password = "a123456";
         if (!confirmPassword.equals(password)) {
-            throw new RuntimeException(Const.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
+            throw new RuntimeException(ContractConst.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
         }
         // check validate
         contractNewRequestDTO.validate(contractNewRequestDTO, bindingResult);
@@ -72,7 +70,7 @@ public class ContractController {
         }
         iContractService.createContract(contractNewRequestDTO);
         ApiResponseDTO response = ApiResponseDTO.builder()
-                .message(Const.SUCCESS_MESSAGE.ADD_NEW_CONTRACT)
+                .message(ContractConst.SUCCESS_MESSAGE.ADD_NEW_CONTRACT)
                 .status(HttpStatus.CREATED.value())
                 .timestamp(System.currentTimeMillis())
                 .build();

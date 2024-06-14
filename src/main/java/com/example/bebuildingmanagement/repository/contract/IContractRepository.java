@@ -1,14 +1,9 @@
 package com.example.bebuildingmanagement.repository.contract;
 
 
-import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
-
-
-import com.example.bebuildingmanagement.dto.response.ContractDetailDTO;
-
 import com.example.bebuildingmanagement.entity.Contract;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
-import com.example.bebuildingmanagement.utils.Const;
+import com.example.bebuildingmanagement.constants.ContractConst;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,12 +23,12 @@ import java.util.Optional;
 @Repository
 
 public interface IContractRepository extends JpaRepository<Contract, Long> {
-    @Query(value = Const.CONTRACT_QUERY.SELECT_CONTRACT_BY_ID,nativeQuery = true)
+    @Query(value = ContractConst.QUERY.SELECT_CONTRACT_BY_ID,nativeQuery = true)
     Optional<ContractDetailsProjection> contractById(Long id);
 
     @Modifying
     @Transactional
-    @Query(value = Const.CONTRACT_QUERY.UPDATE_CONTRACT,nativeQuery = true)
+    @Query(value = ContractConst.QUERY.UPDATE_CONTRACT,nativeQuery = true)
     void updateContractById(@Param("content") String content,@Param("deposit") double deposit,
                             @Param("description") String description,@Param("startDate") Date startDate,
                             @Param("endDate") Date endDate,@Param("firebaseUrl") String firebaseUrl,
@@ -41,28 +36,21 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
 
     @Modifying
     @Transactional
-    @Query(value =Const.CONTRACT_QUERY.DELETE_CONTRACT,nativeQuery = true)
+    @Query(value = ContractConst.QUERY.DELETE_CONTRACT,nativeQuery = true)
     void deleteContractById( Long id);
-    @Query(value = Const.CONTRACT_QUERY.SELECT_CONTRACTS_BY_EMPLOYEE_USERNAME,
+
+    @Query(value = ContractConst.QUERY.SELECT_CONTRACTS_BY_EMPLOYEE_USERNAME,
             nativeQuery = true,
-            countQuery = Const.CONTRACT_QUERY.COUNT_CONTRACT
+            countQuery = ContractConst.QUERY.COUNT_CONTRACT_BY_USERNAME
     )
+    Page<IContractProjection> getContractsByEmployeeUsername(Pageable pageable,String username,String customerName, String landingCode, String startDate, String endDate);
 
 
-    Page<IContractProjection> getContractByEmployeeUsername(Pageable pageable,String accountId);
-
-
-    
-    @Query(value = Const.CONTRACT_QUERY.SELECT_ALL_CONTRACT,
-            nativeQuery = true,
-            countQuery = Const.CONTRACT_QUERY.COUNT_CONTRACT
-    )
-    Page<IContractProjection> getContracts(Pageable pageable);
 
 
     @Modifying
     @Transactional
-    @Query(value = Const.CONTRACT_QUERY.INSERT_CONTRACT,
+    @Query(value = ContractConst.QUERY.INSERT_CONTRACT,
             nativeQuery = true
     )
     void createContract(int term,Date startDate,Date endDate,String taxCode,
@@ -72,5 +60,9 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
 
 
     boolean existsByLandingId(Long landingId);
-
+    @Query(value = ContractConst.QUERY.SELECT_ALL_CONTRACT,
+            nativeQuery = true,
+            countQuery = ContractConst.QUERY.COUNT_ALL_CONTRACT
+                )
+    Page<IContractProjection> getContracts(Pageable pageable, String customerName, String landingCode, String startDate, String endDate);
 }
