@@ -37,12 +37,14 @@ public class LandingServiceImpl implements ILandingService {
     Validator validator;
 
     @Override
-    public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding) {
+    public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding, String floorLanding) {
         Pageable pageable = PageRequest.of(page, size);
         typeLanding = "%" + typeLanding + "%";
         codeLanding = "%" + codeLanding + "%";
         statusLanding = "%" + statusLanding + "%";
-        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding);
+        floorLanding = "%" + floorLanding + "%";
+
+        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding,floorLanding);
 
     }
 
@@ -147,12 +149,7 @@ public class LandingServiceImpl implements ILandingService {
         }
 
 
-
     }
-
-
-
-
 
 
 }

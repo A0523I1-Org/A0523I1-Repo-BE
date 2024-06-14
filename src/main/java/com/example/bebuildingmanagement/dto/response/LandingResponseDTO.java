@@ -20,4 +20,7 @@ public class LandingResponseDTO {
     double feeManager;
     String floor;
     String firebaseUrl;
+    String description;
+
+
 }

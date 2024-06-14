@@ -41,9 +41,10 @@ public class LandingController {
             @RequestParam(value = "statusLanding", required = false) String statusLanding,
             @RequestParam(value = "codeLanding", required = false) String codeLanding,
             @RequestParam(value = "areaLanding", required = false) Double areaLanding,
-            @RequestParam(value = "typeLanding", required = false) String typeLanding) {
+            @RequestParam(value = "typeLanding", required = false) String typeLanding,
+            @RequestParam(value = "floorLanding", required = false) String floorLanding) {
 
-        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding);
+        Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
         return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
 
