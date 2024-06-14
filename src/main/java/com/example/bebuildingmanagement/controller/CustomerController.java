@@ -46,10 +46,17 @@ public class CustomerController {
         }
     }
     @GetMapping("/{id}")
+
     public ResponseEntity<CustomerResponseDTO> findCustomerById(@PathVariable long id) {
         try {
             CustomerResponseDTO customerResponseDTO = iCustomerService.findByIdCustomer(id);
             return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
+
+    public ResponseEntity<?> findCustomerById(@PathVariable long id) {
+        try {
+            Customer customer = iCustomerService.findByIdCustomer(id);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
