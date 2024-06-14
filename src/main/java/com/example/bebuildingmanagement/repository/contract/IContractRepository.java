@@ -29,10 +29,11 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.UPDATE_CONTRACT,nativeQuery = true)
-    void updateContractById(@Param("content") String content,@Param("deposit") double deposit,
-                            @Param("description") String description,@Param("startDate") Date startDate,
-                            @Param("endDate") Date endDate,@Param("firebaseUrl") String firebaseUrl,
-                            @Param("taxCode") String taxCode,@Param("term") int term, @Param("id") long id);
+    void updateContractById(@Param("content") String content
+            ,@Param("deposit") double deposit
+            ,@Param("startDate") Date startDate
+            ,@Param("endDate") Date endDate, @Param("firebaseUrl") String firebaseUrl
+            ,@Param("taxCode") String taxCode,@Param("term") int term,@Param("currentFee") double currentFee ,@Param("id") long id);
 
     @Modifying
     @Transactional

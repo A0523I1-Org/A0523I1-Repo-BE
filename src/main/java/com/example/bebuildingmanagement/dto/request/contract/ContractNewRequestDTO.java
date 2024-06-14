@@ -22,7 +22,6 @@ import static java.lang.String.valueOf;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContractNewRequestDTO  implements Validator {
-
      int term;
      Date startDate;
      Date endDate;

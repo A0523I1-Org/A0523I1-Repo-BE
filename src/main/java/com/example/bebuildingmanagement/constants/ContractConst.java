@@ -88,7 +88,7 @@ public class ContractConst {
                 " deposit,firebase_url,content," +
                 " landing_id, customer_id, employee_id )" +
                 " VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)";
-        public final static String UPDATE_CONTRACT = " UPDATE contract SET content = :content, deposit = :deposit, description = :description, start_date = :startDate,end_date = :endDate, firebase_url =  :firebaseUrl,tax_code = :taxCode,term = :term WHERE id = :id ";
+        public final static String UPDATE_CONTRACT = " UPDATE contract SET content = :content, deposit = :deposit, description = :description, start_date = :startDate,end_date = :endDate, firebase_url =  :firebaseUrl,tax_code = :taxCode,term = :term, current_fee = :currentFee WHERE id = :id ";
         public final static String DELETE_CONTRACT =  " UPDATE contract SET is_deleted = 1 WHERE id = ?1 ";
         public final static String SELECT_CONTRACT_BY_ID = "SELECT cont.id,land.code as code,cus.name as customerName,emp.name as employeeName,cont.content as content,cont.deposit as deposit,cont.description as description,cont.start_date as startDate, land.fee_per_month as FeePerMouth,cont.end_date as endDate,cont.firebase_url as firebaseUrl,cont.tax_code as taxCode,cont.term  as term" +
                 " FROM Contract cont " +
