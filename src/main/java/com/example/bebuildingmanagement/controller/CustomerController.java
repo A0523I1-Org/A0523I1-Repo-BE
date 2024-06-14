@@ -44,7 +44,7 @@ public class CustomerController {
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
+            return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
     @GetMapping("/{id}")
