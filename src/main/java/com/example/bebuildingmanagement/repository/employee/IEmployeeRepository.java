@@ -4,6 +4,7 @@ import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,4 +20,8 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
                     " where username = ?1 ",
             nativeQuery = true)
     IEmployeeInfoProjection getEmployeeByUsername(String username);
+
+
+    @Query(value = "SELECT * FROM Employee WHERE account_id = :accountId", nativeQuery = true)
+    Employee findByAccount(@Param("accountId") Long accountId);
 }

@@ -21,6 +21,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,7 @@ import java.util.Optional;
 public class ContractController {
 
     IContractService iContractService;
+    PasswordEncoder passwordEncoder;
 
     @GetMapping("")
     public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page,
@@ -66,8 +68,8 @@ public class ContractController {
                                                          BindingResult bindingResult
     ) {
         //lay mật khẩu đang đăng nhập để xác nhận :
-        String password = "a123456";
-        if (!confirmPassword.equals(password)) {
+//        String password = "admin";
+        if (!passwordEncoder.matches(confirmPassword, "$2a$10$sY2u/vbF3oL6nDPcRYfReObtnMBQbbu3ySwDB1s13DVu139KI1HkW")) {
             throw new RuntimeException(ContractConst.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
         }
         // check validate

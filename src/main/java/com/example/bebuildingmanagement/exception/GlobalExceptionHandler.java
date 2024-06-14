@@ -2,6 +2,7 @@ package com.example.bebuildingmanagement.exception;
 
 
 
+
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.fasterxml.jackson.core.JsonParseException;
 import jakarta.validation.ConstraintViolation;
@@ -119,5 +120,16 @@ public class GlobalExceptionHandler {
         return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
-}
+
+        @ExceptionHandler(CustomerNotFoundException.class)
+        public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
+
+
+
 

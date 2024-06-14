@@ -74,9 +74,9 @@ public class ContractServiceImpl implements IContractService {
     @Override
         public Page<ContractResponseDTO> getContracts(Optional<Integer> page,String customerName, String landingCode, String startDate, String endDate) {
             // lấy username đang đăng nhập :
-            String username = "TranThiB";
+            String username = "admin";
             // lay thong tin account:
-            Account account = iAccountRepository.findByUsername(username);
+            Account account = iAccountRepository.findByUsername(username).orElseThrow();
             Pageable pageable = PageRequest.of(page.orElse(0), 3);
             Page<IContractProjection> contractProjections = null ;
             Page<ContractResponseDTO> contractResponseDTOS ;
@@ -132,7 +132,7 @@ public class ContractServiceImpl implements IContractService {
             throw new  RuntimeException(ContractConst.ERROR_MESSAGE.LANDING_ALREADY_EXIST);
         }
         // lấy username đang đăng nhập
-        String username = "TranThiB";
+        String username = "admin";
         // lấy 1 số dữ liệu employee để send mail và insert employeeId vào contract;
         IEmployeeInfoProjection employee = iEmployeeRepository.getEmployeeByUsername(username) ;
 
