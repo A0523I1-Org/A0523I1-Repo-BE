@@ -54,9 +54,12 @@ public class CustomerServiceImpl implements ICustomerService {
         iCustomerRepository.deleteCustomerId(id);
     }
 
+
     @Override
-    public Customer findByIdCustomer(long id) {
-        return iCustomerRepository.findCustomerId(id);
+    public CustomerResponseDTO findByIdCustomer(long id) {
+        Customer customer = iCustomerRepository.findCustomerId(id);
+        CustomerResponseDTO customerResponseDTO = modelMapper.map(customer, CustomerResponseDTO.class);
+        return customerResponseDTO;
     }
 
     @Override
