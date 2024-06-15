@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.service.implement.authentication;
 
 import com.example.bebuildingmanagement.entity.Account;
-import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import com.example.bebuildingmanagement.service.interfaces.authentication.IJWTService;
 import io.jsonwebtoken.Claims;
@@ -43,7 +42,7 @@ public class JwtServiceImpl implements IJWTService {
     ITokenRepository iTokenRepository;
 
 
-    public String extractUsername(String token) {
+    public String   extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

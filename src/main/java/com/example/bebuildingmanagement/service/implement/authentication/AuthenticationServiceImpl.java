@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -42,8 +42,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     AuthenticationManager authenticationManager;
     IRoleRepository iRoleRepository;
 
-    /* Hiện tại đang để chỉ có admin mới có quyền tạo tài khoản */
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public AuthenticationResponse register(RegisterRequest request) {
 
         // check if user already exist. if exist than authenticate the user
@@ -101,9 +99,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             return;
         }
 
-        validTokens.forEach(t-> {
-            t.setLoggedOut(true);
-        });
+        validTokens.forEach(t-> t.setLoggedOut(true));
 
         iTokenRepository.saveAll(validTokens);
     }
@@ -113,7 +109,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         token.setRefreshToken(refreshToken);
         token.setLoggedOut(false);
         token.setAccount(user);
-        iTokenRepository.save(token);
+        iTokenRepository.saveToken(token.getAccessToken(),
+                token.getRefreshToken(),
+                token.isLoggedOut(),
+                token.getAccount().getId());
     }
 
     /*====================================== REFRESH TOKEN METHODS ======================================*/
@@ -124,7 +123,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         String token = authHeader.substring(7);
@@ -145,14 +144,14 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             revokeAllTokenByUser(user);
             saveUserToken(accessToken, refreshToken, user);
 
-            return new ResponseEntity(AuthenticationResponse.builder()
+            return new ResponseEntity<>(AuthenticationResponse.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .message( "New token generated")
                     .build(), HttpStatus.OK);
         }
 
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 

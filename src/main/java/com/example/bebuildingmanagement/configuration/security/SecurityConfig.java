@@ -1,5 +1,4 @@
 package com.example.bebuildingmanagement.configuration.security;
-import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
