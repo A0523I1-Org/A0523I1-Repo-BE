@@ -26,7 +26,7 @@ public class EmployeeResDTO {
     Date workDate;
     String firebaseUrl;
     boolean isDeleted;
-    Department department;
-    SalaryRank salaryRank;
-    Account account;
+    String department;
+    String salaryRank;
+    String username;
 }
