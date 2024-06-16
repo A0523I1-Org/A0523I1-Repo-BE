@@ -21,12 +21,6 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeReqDTO implements Validator {
-
-    //    @PostMapping("/add")
-    //    public ModelAndView add(@Validated @ModelAttribute User user, BindingResult bindingResult) {
-    //        if (bindingResult.hasErrors()) {
-    //            return new ModelAndView("formCreate", "user", user);
-    //        }
     @Pattern(regexp = "^O.E-\\d{4}$", message = "Employee code does not matches the format: O.E-xxxx !")
     @NotBlank(message = "Employee code not be blank !")
     String code;
@@ -71,26 +65,22 @@ public class EmployeeReqDTO implements Validator {
             LocalDate currentDay = LocalDate.now();
             int age = Period.between(localDate, currentDay).getYears();
             if (age < 18) {
-                errors.rejectValue("day_of_birth", "employee.age.min", "Must be at least 18 years old!");
+                errors.rejectValue("day_of_birth", "employee.age.min");
             } else if (age > 100) {
-                errors.rejectValue("day_of_birth", "", "Age must be less than 100!");
+                errors.rejectValue("day_of_birth", "employee.age.max");
             }
         }
     }
-    //        String email = studentDTO.getEmail();
-    //        if ("".equals(email)) {
-    //            errors.rejectValue("email", "", "Can not be empty");
-    //        } else if (email.length() < 5) {
-    //            errors.rejectValue("email", "email.min");//email.min = > 5 characters
-    //        }
-    //    }
-
-
-    //    @PostMapping("/add")
     //    public String addNewStudent(@Valid @ModelAttribute("student") StudentDTO student,
     //                                BindingResult bindingResult){
     //        new StudentDTO().validate(student,bindingResult);
     //        if(bindingResult.hasErrors()){
     //            return "/create";
+    //        }
+
+
+    //    public ModelAndView add(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+    //        if (bindingResult.hasErrors()) {
+    //            return new ModelAndView("formCreate", "user", user);
     //        }
 }

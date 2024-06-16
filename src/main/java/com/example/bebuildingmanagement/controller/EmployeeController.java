@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.controller;
 import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +69,7 @@ public class EmployeeController {
         int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
         Pageable pageable = PageRequest.of(currentPage, 5);
         Page<EmployeeResDTO> employees = iEmployeeService.searchEmployees(
-                code, name, dob,  dobFrom, dobTo, gender, address, phone, email, workDate, workDateFrom, workDateTo, departmentId, salaryRankId, accountUsername, pageable);
+                code, name, dob, dobFrom, dobTo, gender, address, phone, email, workDate, workDateFrom, workDateTo, departmentId, salaryRankId, accountUsername, pageable);
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
@@ -75,25 +77,28 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResDTO> getEmployeeById(@PathVariable Long id) {
         EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
         if (employee == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (employee.isDeleted()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     //THIENTV
     @PostMapping("/add")
-    public ResponseEntity<Void> addEmployee(@RequestBody EmployeeReqDTO employeeDTO)  {
+    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO) {
         iEmployeeService.addEmployeeByQuery(employeeDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("Employee added.", HttpStatus.CREATED);
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<EmployeeResDTO> deleteEmployee(@PathVariable Long id) {
-        EmployeeResDTO employeeResDTO = iEmployeeService.findEmployeeById(id);
-        if (employeeResDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+        EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         iEmployeeService.deleteEmployeeById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Delete employee successfully.", HttpStatus.NO_CONTENT);
     }
 }

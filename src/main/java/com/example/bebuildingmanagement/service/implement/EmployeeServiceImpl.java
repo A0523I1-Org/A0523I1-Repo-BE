@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -51,35 +51,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
-    IEmployeeRepository iEmployeeRepository;
-
-    @Override
-    public Page<Employee> findAll(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public void deleteEmployee(Long id) {
-        iEmployeeRepository.deleteEmployeeByQuery(id);
-    }
-
-    @Override
-    public Employee findById(Long id) {
-        return iEmployeeRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO){
-        EmployeeReqDTO emp = employeeReqDTO;
-        Long number = iEmployeeRepository.getMaxId() +1;
+        Long number = iEmployeeRepository.getMaxId() + 1;
         String code = "O.E-" + String.format("%04d", number);
-        emp.setCode(code);
+        employeeReqDTO.setCode(code);
         iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
     }
-
-    @Override
-    public List<Employee> findAll() {
-        return iEmployeeRepository.findAll();
-    }
-
 }

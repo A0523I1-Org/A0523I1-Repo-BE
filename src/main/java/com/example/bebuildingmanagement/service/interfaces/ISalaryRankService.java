@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface ISalaryRankService {
     List<SalaryRank> getAllSalaryRanks();
-public interface ISalaryRankService{
-    List<SalaryRank> findAll();
 }

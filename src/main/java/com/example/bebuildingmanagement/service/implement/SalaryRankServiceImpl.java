@@ -20,7 +20,6 @@ public class SalaryRankServiceImpl implements ISalaryRankService {
 
     @Override
     public List<SalaryRank> getAllSalaryRanks() {
-    public List<SalaryRank> findAll() {
         return iSalaryRankRepository.findAll();
     }
 }

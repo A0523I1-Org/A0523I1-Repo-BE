@@ -15,7 +15,8 @@ import java.util.Date;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
-    //VUNV
+//    /
+    //V@Repository
     @Query("SELECT e FROM Employee e " +
             "LEFT JOIN e.account a " +
             "WHERE e.isDeleted = false " +
@@ -54,8 +55,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findEmployeeById(Long id);
 
     //THIENTV
-@Repository
-public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Modifying
     @Transactional
     @Query(value = "insert into employee(code, name, dob, gender, address, phone, email, work_date, firebase_url, department_id, salary_rank_id)" +

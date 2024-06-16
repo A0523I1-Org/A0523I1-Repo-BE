@@ -29,6 +29,4 @@ public class EmployeeResDTO {
     Department department;
     SalaryRank salaryRank;
     Account account;
-    String department;
-    Double salaryRank;
 }

@@ -14,4 +14,9 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getAllErrors().forEach(error -> errors.append(error.getDefaultMessage()).append("; "));
         return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleAllOrException(Exception e) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
