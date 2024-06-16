@@ -7,6 +7,8 @@ import com.example.bebuildingmanagement.dto.response.authentication.Authenticati
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
 import com.example.bebuildingmanagement.entity.authentication.Token;
+import com.example.bebuildingmanagement.exception.authexception.AccountNotFoundException;
+import com.example.bebuildingmanagement.exception.authexception.InvalidPasswordException;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.IRoleRepository;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
@@ -21,10 +23,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 
@@ -70,28 +73,35 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     /*====================================== AUTHENTICATION METHODS ======================================*/
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-         boolean isAuthenticated = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        ).isAuthenticated();
+        try {
+            Account user = iAccountRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() ->
+                            new AccountNotFoundException("Tài khoản KHÔNG tồn tại."));
 
-         Account user = iAccountRepository.findByUsername(request.getUsername()).orElseThrow();
-         String accessToken = jwtServiceImpl.generateAccessToken(user);
-         String refreshToken = jwtServiceImpl.generateRefreshToken(user);
-         List<String> roles = user.getRoles().stream().map(Role::getName).toList();
+            boolean isAuthenticated = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            ).isAuthenticated();
 
-         revokeAllTokenByUser(user);
-         saveUserToken(accessToken, refreshToken, user);
-         return AuthenticationResponse.builder()
-                 .accessToken(accessToken)
-                 .refreshToken(refreshToken)
-                 .isAuthenticated(isAuthenticated)
-                 .roles(roles)
-                 .message("Đăng nhập thành công.")
-                 .build();
+            String accessToken = jwtServiceImpl.generateAccessToken(user);
+            String refreshToken = jwtServiceImpl.generateRefreshToken(user);
+            List<String> roles = user.getRoles().stream().map(Role::getName).toList();
 
+            revokeAllTokenByUser(user);
+            saveUserToken(accessToken, refreshToken, user);
+
+            return AuthenticationResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .isAuthenticated(isAuthenticated)
+                    .roles(roles)
+                    .message("Đăng nhập thành công.")
+                    .build();
+        } catch (BadCredentialsException e) {
+            throw new InvalidPasswordException("Mật khẩu KHÔNG trùng khớp.");
+        }
     }
     private void revokeAllTokenByUser(Account user) {
         List<Token> validTokens = iTokenRepository.findAllAccessTokensByUser(user.getId());
@@ -109,6 +119,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         token.setRefreshToken(refreshToken);
         token.setLoggedOut(false);
         token.setAccount(user);
+
         iTokenRepository.saveToken(token.getAccessToken(),
                 token.getRefreshToken(),
                 token.isLoggedOut(),
