@@ -23,3 +23,4 @@ public class DepartmentServiceImpl implements IDepartmentService {
     public List<Department> getAllDepartments() {
         return iDepartmentRepository.findAll();
     }
+}
