@@ -21,8 +21,5 @@ public class LandingResponseDTO {
     String floor;
     String firebaseUrl;
     String description;
-
-
-
-
+    
 }
