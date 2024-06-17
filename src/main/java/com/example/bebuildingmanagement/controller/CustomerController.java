@@ -63,9 +63,9 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            iCustomerService.createCustomers(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(),
-                    customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(),
-                    customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard());
+            iCustomerService.createCustomers(customerRequestDTO.getName(), customerRequestDTO.getAddress(), customerRequestDTO.getDob(),
+                    customerRequestDTO.getPhone(), customerRequestDTO.getEmail(), customerRequestDTO.getIdCard(), customerRequestDTO.getCompanyName(), customerRequestDTO.getWebsite(), customerRequestDTO.getGender()
+            );
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -76,7 +76,7 @@ public class CustomerController {
     public ResponseEntity<CustomerRequestDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
         new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
         try {
-            iCustomerService.edit(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(), customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(), customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard(), id);
+            iCustomerService.edit(customerRequestDTO.getName(), customerRequestDTO.getAddress(), customerRequestDTO.getDob(), customerRequestDTO.getPhone(), customerRequestDTO.getEmail(), customerRequestDTO.getIdCard(), customerRequestDTO.getCompanyName(), customerRequestDTO.getWebsite(), customerRequestDTO.getGender(), id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
