@@ -13,6 +13,7 @@ import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
+import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import com.example.bebuildingmanagement.service.interfaces.mail.IMailService;
@@ -44,6 +45,7 @@ public class ContractServiceImpl implements IContractService {
     IMailService iMailService;
     ICustomerRepository iCustomerRepository;
     ILandingRepository iLandingRepository;
+    IAccountService iAccountService;
 
     //anh lq
     @Override
@@ -74,7 +76,7 @@ public class ContractServiceImpl implements IContractService {
     @Override
         public Page<ContractResponseDTO> getContracts(Optional<Integer> page,String customerName, String landingCode, String startDate, String endDate) {
             // lấy username đang đăng nhập :
-            String username = "admin";
+            String username = iAccountService.getCurrentAccount().getUsername();
             // lay thong tin account:
             Account account = iAccountRepository.findByUsername(username).orElseThrow();
             Pageable pageable = PageRequest.of(page.orElse(0), 3);
@@ -132,7 +134,7 @@ public class ContractServiceImpl implements IContractService {
             throw new  RuntimeException(ContractConst.ERROR_MESSAGE.LANDING_ALREADY_EXIST);
         }
         // lấy username đang đăng nhập
-        String username = "admin";
+        String username = iAccountService.getCurrentAccount().getUsername();
         // lấy 1 số dữ liệu employee để send mail và insert employeeId vào contract;
         IEmployeeInfoProjection employee = iEmployeeRepository.getEmployeeByUsername(username) ;
 

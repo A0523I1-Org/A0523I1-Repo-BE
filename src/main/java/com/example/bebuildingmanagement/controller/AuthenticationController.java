@@ -4,7 +4,6 @@ import com.example.bebuildingmanagement.dto.request.authentication.Authenticatio
 import com.example.bebuildingmanagement.dto.request.authentication.RegisterRequest;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.service.implement.authentication.AuthenticationServiceImpl;
-import com.example.bebuildingmanagement.service.interfaces.authentication.IJWTService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     AuthenticationServiceImpl authService;
-    IJWTService ijwtService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -41,15 +39,6 @@ public class AuthenticationController {
             HttpServletResponse response
     ) {
         return authService.refreshToken(request, response);
-    }
-
-    @GetMapping("/api/roles")
-    public String[] getRolesFromToken(@RequestHeader("Authorization") String token) {
-        // Loại bỏ tiền tố "Bearer " nếu có
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        return ijwtService.getRolesFromToken(token);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.service.implement.authentication;
 
 import com.example.bebuildingmanagement.entity.Account;
-import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import com.example.bebuildingmanagement.service.interfaces.authentication.IJWTService;
 import io.jsonwebtoken.Claims;
@@ -43,7 +42,7 @@ public class JwtServiceImpl implements IJWTService {
     ITokenRepository iTokenRepository;
 
 
-    public String extractUsername(String token) {
+    public String   extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -101,7 +100,7 @@ public class JwtServiceImpl implements IJWTService {
     }
 
     private String generateToken(Account user, long expireTime) {
-        String token = Jwts
+        return Jwts
                 .builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -109,8 +108,6 @@ public class JwtServiceImpl implements IJWTService {
                 .claim("scope", buildScope(user))
                 .signWith(getSignerKey())
                 .compact();
-
-        return token;
     }
 
     private SecretKey getSignerKey() {

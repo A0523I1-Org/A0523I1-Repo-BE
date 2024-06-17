@@ -2,6 +2,16 @@ package com.example.bebuildingmanagement.exception;
 
 
 
+import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
+import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
+import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
+
 
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -75,6 +85,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 
+
     @ExceptionHandler(HttpMessageConversionException.class)
     public ResponseEntity<ApiResponseDTO> handleHttpMessageConversionException(HttpMessageConversionException e) {
         ApiResponseDTO response = ApiResponseDTO.builder()
@@ -126,10 +137,24 @@ public class GlobalExceptionHandler {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
 
+
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<AuthenticationResponse> handleInvalidPasswordException(InvalidPasswordException ex) {
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<AuthenticationResponse> handleAccountNotFoundException(AccountNotFoundException ex) {
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 
-
-
-
+}
 
