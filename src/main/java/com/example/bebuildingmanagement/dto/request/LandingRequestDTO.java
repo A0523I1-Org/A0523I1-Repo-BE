@@ -8,7 +8,6 @@ import com.example.bebuildingmanagement.validate.customerValidate.validateinterf
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.MinLength;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.NoSpecialCharacters;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.description.MaxLengthDescription;
-import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.description.NoSpecialCharactersDescription;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feeManager.FeeManagerSpecialCharacter;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feeManager.NotBlankFeeManager;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feePerMonth.FeePerMonthNotBlank;
