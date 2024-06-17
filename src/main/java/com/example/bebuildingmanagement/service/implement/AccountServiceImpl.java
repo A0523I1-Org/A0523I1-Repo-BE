@@ -39,22 +39,17 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public AccountResponse getCurrentAccount() {
+    public Account getCurrentAccount() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
-        Account account = iAccountRepository.findByUsername(name).orElseThrow();
-
-        AccountResponse accountResponse = new AccountResponse();
-        accountResponse.setUsername(account.getUsername());
-        return accountResponse;
+        return iAccountRepository.findByUsername(name).orElseThrow();
     }
 
     @Override
     @Transactional
     public ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest) {
-        AccountResponse accountResponse = getCurrentAccount();
-        Account account = iAccountRepository.findByUsername(accountResponse.getUsername()).orElseThrow();
+        Account account = getCurrentAccount();
 
         if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
 

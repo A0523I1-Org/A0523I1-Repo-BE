@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.service.implement.authentication;
 
 import com.example.bebuildingmanagement.dto.request.authentication.AuthenticationRequest;
 import com.example.bebuildingmanagement.dto.request.authentication.RegisterRequest;
+import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -162,6 +164,5 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-
 
 }

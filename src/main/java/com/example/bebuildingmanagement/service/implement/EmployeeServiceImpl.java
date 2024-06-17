@@ -26,8 +26,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public EmployeeDTO getCurrentEmployeeInfo() {
         // Lấy thông tin tài khoản hiện tại
-        AccountResponse accountResponse = iAccountService.getCurrentAccount();
-        Account account = iAccountRepository.findByUsername(accountResponse.getUsername()).orElseThrow();
+        Account account = iAccountService.getCurrentAccount();
 
         // Sử dụng truy vấn thuần đã được định nghĩa trong repository
         Employee employee = iEmployeeRepository.findByAccount(account.getId());
