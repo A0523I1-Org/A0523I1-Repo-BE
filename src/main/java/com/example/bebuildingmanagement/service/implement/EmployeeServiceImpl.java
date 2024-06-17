@@ -50,10 +50,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
-        EmployeeReqDTO emp = employeeReqDTO;
-        Long number = iEmployeeRepository.getMaxId() +1;
+        Long number = iEmployeeRepository.getMaxId() + 1;
         String code = "O.E-" + String.format("%04d", number);
-        emp.setCode(code);
+        employeeReqDTO.setCode(code);
         iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
     }
 

@@ -23,7 +23,6 @@ import java.util.List;
 public class SalaryRankController {
     @Autowired
     ISalaryRankService iSalaryRankService;
-
     @GetMapping("")
     public ResponseEntity<List<SalaryRank>> getAllSalaryRanks() {
         List<SalaryRank> salaryRanks = iSalaryRankService.getAllSalaryRanks();
