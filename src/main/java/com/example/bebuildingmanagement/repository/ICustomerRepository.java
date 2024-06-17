@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Repository
@@ -52,8 +53,12 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Transactional
     @Query(value = "UPDATE Customer c SET c.is_deleted= 1 WHERE c.id = :id", nativeQuery = true)
     void deleteCustomerId(@Param("id") long id);
-
+    @Modifying
     @Transactional
+        @Query(value = "UPDATE Customer c SET c.is_deleted = 1 WHERE c.id IN :ids",nativeQuery = true)
+    void deleteCustomersByIds(@Param("ids") List<Long> ids);
+
+     @Transactional
     @Query(value = "select * FROM  Customer  where id= :id", nativeQuery = true)
     Customer findCustomerId(@Param("id") long id);
 
