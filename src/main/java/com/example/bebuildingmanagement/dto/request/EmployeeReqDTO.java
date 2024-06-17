@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -21,15 +22,12 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeReqDTO implements Validator {
-    @Pattern(regexp = "^O.E-\\d{4}$", message = "Employee code does not matches the format: O.E-xxxx !")
-    @NotBlank(message = "Employee code not be blank !")
     String code;
-
     @NotBlank(message = "Employee name not be blank !")
     @Size(min = 5, max = 100, message = "Employee name only 5 to 100 characters")
-    @Pattern(regexp = "^[A-Z][a-z]+(\\s[A-Z][a-z]+)*$", message = "Employee name does not matches the pattern !")
+    @Pattern(regexp = "^[A-Za-zÀ-ỹ]+(\\s[A-Za-zÀ-ỹ]+)*$", message = "Employee name does not matches the pattern !")
     String name;
-    @NotBlank(message = "Employee day of birth not be blank !")
+    @NotNull(message = "Employee day of birth not be null !")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date dob;
     @NotBlank(message = "Employee gender not be blank !")
@@ -40,16 +38,16 @@ public class EmployeeReqDTO implements Validator {
     @Pattern(regexp = "^0\\d{9}$", message = "Employee phone does not matches the pattern !")
     String phone;
     @NotBlank(message = "Employee email not be blank !")
-    @Pattern(regexp = "^[a-zA-Z0-9]+@gmail.com$", message = "Employee email does not matches the pattern !")
+    @Pattern(regexp = "^[a-zA-Z0-9._]+@gmail.com$", message = "Employee email does not matches the pattern !")
     String email;
-    @NotBlank(message = "Employee work start date not be blank !")
+    @NotNull(message = "Employee work start date not be blank !")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date workDate;
     @NotBlank(message = "Employee avatar not be blank !")
     String firebaseUrl;
-    @NotBlank(message = "Employee department not be blank !")
+    @NotNull(message = "Employee department not be null !")
     Long department;
-    @NotBlank(message = "Employee salary rank not be blank !")
+    @NotNull(message = "Employee salary rank not be null !")
     Long salaryRank;
 
     @Override
@@ -71,16 +69,4 @@ public class EmployeeReqDTO implements Validator {
             }
         }
     }
-    //    public String addNewStudent(@Valid @ModelAttribute("student") StudentDTO student,
-    //                                BindingResult bindingResult){
-    //        new StudentDTO().validate(student,bindingResult);
-    //        if(bindingResult.hasErrors()){
-    //            return "/create";
-    //        }
-
-
-    //    public ModelAndView add(@Validated @ModelAttribute User user, BindingResult bindingResult) {
-    //        if (bindingResult.hasErrors()) {
-    //            return new ModelAndView("formCreate", "user", user);
-    //        }
 }
