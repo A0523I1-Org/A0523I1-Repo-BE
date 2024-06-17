@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+import java.util.List;
 
 
 @Service
@@ -67,6 +67,11 @@ public class CustomerServiceImpl implements ICustomerService {
         Page<Customer> customers = iCustomerRepository.searchByName(pageable, name);
         Page<CustomerResponseDTO> customerResponseDTOs = customers.map(customer -> modelMapper.map(customer, CustomerResponseDTO.class));
         return customerResponseDTOs;
+    }
+
+    @Override
+    public void deleteCustomersByIds(List<Long> ids) {
+        iCustomerRepository.deleteCustomersByIds(ids);
     }
 
 

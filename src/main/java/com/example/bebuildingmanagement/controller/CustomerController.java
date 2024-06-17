@@ -3,7 +3,7 @@ package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
-import com.example.bebuildingmanagement.entity.Customer;
+
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -87,6 +88,11 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
         iCustomerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/deleteBatch")
+    public ResponseEntity<Void> deleteCustomersByIds(@RequestParam List<Long> ids) {
+        iCustomerService.deleteCustomersByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
