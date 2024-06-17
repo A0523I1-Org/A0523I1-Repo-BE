@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
+import com.example.bebuildingmanagement.dto.EmployeeDTO;
 import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -29,6 +31,7 @@ public class EmployeeController {
     IEmployeeService iEmployeeService;
 
     //VUNV
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<EmployeeResDTO>> searchEmployees(
             @RequestParam(value = "code", required = false) String code,
@@ -99,5 +102,10 @@ public class EmployeeController {
         }
         iEmployeeService.deleteEmployeeById(id);
         return new ResponseEntity<>("Delete employee successfully.", HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/my-info")
+    public ResponseEntity<EmployeeDTO> getMyInfo() {
+        return ResponseEntity.ok(iEmployeeService.getCurrentEmployeeInfo());
     }
 }

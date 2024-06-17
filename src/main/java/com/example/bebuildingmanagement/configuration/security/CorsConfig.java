@@ -1,4 +1,5 @@
-package com.example.bebuildingmanagement.configuration;
+package com.example.bebuildingmanagement.configuration.security;
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedOrigins("*");
+
             }
         };
     }

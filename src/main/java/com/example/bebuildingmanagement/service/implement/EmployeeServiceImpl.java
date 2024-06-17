@@ -3,7 +3,11 @@ package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import com.example.bebuildingmanagement.entity.Employee;
-import com.example.bebuildingmanagement.repository.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
+import com.example.bebuildingmanagement.dto.EmployeeDTO;
+import com.example.bebuildingmanagement.entity.Account;
+import com.example.bebuildingmanagement.repository.IAccountRepository;
+import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Autowired
     IEmployeeRepository iEmployeeRepository;
+
+    @Autowired
+    IAccountService iAccountService;
 
     @Override
     public Page<EmployeeResDTO> searchEmployees(String code, String name, Date dob, Date dobFrom, Date dobTo, String gender,
@@ -72,5 +79,27 @@ public class EmployeeServiceImpl implements IEmployeeService {
         }
 
         return employeeResDTO;
+
+
+    }
+
+    @Override
+    public EmployeeDTO getCurrentEmployeeInfo() {
+        // Lấy thông tin tài khoản hiện tại
+        Account account = iAccountService.getCurrentAccount();
+
+        // Sử dụng truy vấn thuần đã được định nghĩa trong repository
+        Employee employee = iEmployeeRepository.findByAccount(account.getId());
+
+        // Trả về EmployeeDTO
+        return EmployeeDTO.builder()
+                .userName(employee.getAccount().getUsername())
+                .name(employee.getName())
+                .dob(employee.getDob().toString())
+                .gender(employee.getGender())
+                .address(employee.getAddress())
+                .phone(employee.getPhone())
+                .email(employee.getEmail())
+                .build();
     }
 }
