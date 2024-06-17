@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
+import java.util.List;
 
 
 @Service
@@ -40,8 +40,8 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void createCustomers(String name, Date dob, String gender, String address, String email, String phone, String website, String companyName, String idCard) {
-        iCustomerRepository.createCustomers(name,dob,gender,address,phone,website,email,companyName,idCard);
+    public void createCustomers(String name, Date dob, String gender, String address,String email, String phone, String website, String companyName, String idCard) {
+        iCustomerRepository.createCustomers(name,dob,gender,address,email,phone,website,companyName,idCard);
     }
 
     @Override
@@ -68,5 +68,13 @@ public class CustomerServiceImpl implements ICustomerService {
         Page<CustomerResponseDTO> customerResponseDTOs = customers.map(customer -> modelMapper.map(customer, CustomerResponseDTO.class));
         return customerResponseDTOs;
     }
+
+
+    @Override
+    public void deleteCustomersByIds(List<Long> ids) {
+        iCustomerRepository.deleteCustomersByIds(ids);
+    }
+
+
 
 }

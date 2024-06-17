@@ -4,6 +4,7 @@ package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
+
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -63,8 +66,9 @@ public class CustomerController {
         }
         try {
             iCustomerService.createCustomers(customerRequestDTO.getName(), customerRequestDTO.getDob(), customerRequestDTO.getGender(),
-                    customerRequestDTO.getAddress(), customerRequestDTO.getEmail(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(),
+                    customerRequestDTO.getAddress(), customerRequestDTO.getPhone(), customerRequestDTO.getWebsite(), customerRequestDTO.getEmail(),
                     customerRequestDTO.getCompanyName(), customerRequestDTO.getIdCard());
+
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -87,6 +91,11 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
         iCustomerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/deleteBatch")
+    public ResponseEntity<Void> deleteCustomersByIds(@RequestParam List<Long> ids) {
+        iCustomerService.deleteCustomersByIds(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
