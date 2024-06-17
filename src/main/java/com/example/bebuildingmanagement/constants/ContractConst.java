@@ -31,7 +31,8 @@ public class ContractConst {
                 "and cus.name like ?2 " +
                 "and l.code like ?3 " +
                 "and  (?4 IS NULL OR c.start_date >= ?4) " +
-                "and  (?5 IS NULL OR c.end_date <= ?5) ";
+                "and  (?5 IS NULL OR c.end_date <= ?5) " +
+                " order by c.id desc ";
         public final static String COUNT_ALL_CONTRACT = "select " +
                 " count(*)" +
                 "from contract as c " +
@@ -81,7 +82,8 @@ public class ContractConst {
                 "and cus.name like ?1 " +
                 "and l.code like ?2 " +
                 "and  (?3 IS NULL OR c.start_date >= ?3) " +
-                "and  (?4 IS NULL OR c.end_date <= ?4)";
+                "and  (?4 IS NULL OR c.end_date <= ?4) " +
+                " order by c.id desc ";
         public final static String INSERT_CONTRACT = "INSERT INTO contract( " +
                 " term, start_date, end_date ," +
                 " tax_code,current_fee," +

@@ -23,8 +23,7 @@ import java.util.List;
 public class CustomerController {
     ICustomerService iCustomerService;
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllLandingSpace(){
-
+    public ResponseEntity<List<Customer>> getAllCustomer(){
         return new ResponseEntity<>( iCustomerService.getAllCustomer(), HttpStatus.OK);
     }
 }
