@@ -7,8 +7,8 @@ import com.example.bebuildingmanagement.dto.response.authentication.Authenticati
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
 import com.example.bebuildingmanagement.entity.authentication.Token;
-import com.example.bebuildingmanagement.exception.authexception.AccountNotFoundException;
-import com.example.bebuildingmanagement.exception.authexception.InvalidPasswordException;
+import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
+import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.IRoleRepository;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
@@ -25,12 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -109,9 +106,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             return;
         }
 
-        validTokens.forEach(t-> t.setLoggedOut(true));
+        List<Long> tokenIds = validTokens.stream().map(Token::getId).toList();
 
-        iTokenRepository.saveAll(validTokens);
+        // Update tokens to logged out
+        iTokenRepository.updateTokensToLoggedOut(tokenIds);
     }
     private void saveUserToken(String accessToken, String refreshToken, Account user) {
         Token token = new Token();

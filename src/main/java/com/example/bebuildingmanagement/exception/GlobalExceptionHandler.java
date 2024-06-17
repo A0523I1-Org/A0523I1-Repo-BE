@@ -1,8 +1,8 @@
 package com.example.bebuildingmanagement.exception;
 
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
-import com.example.bebuildingmanagement.exception.authexception.AccountNotFoundException;
-import com.example.bebuildingmanagement.exception.authexception.InvalidPasswordException;
+import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
+import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

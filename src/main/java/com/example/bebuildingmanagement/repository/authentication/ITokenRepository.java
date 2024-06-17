@@ -15,10 +15,12 @@ import java.util.Optional;
 
 public interface ITokenRepository extends JpaRepository<Token, Long> {
 
-    @Query("""
-    select t from Token t inner join Account u on t.account.id = u.id
-    where t.account.id = :userId and t.loggedOut = false
-    """)
+    @Query(value = """
+                    SELECT token.id, access_token, refresh_token, logged_out, account_id 
+                    FROM token
+                    join account on token.account_id = account.id
+                    where account.id = :userId and logged_out = false
+                    """, nativeQuery = true)
     List<Token> findAllAccessTokensByUser(Long userId);
 
     @Query(value = "SELECT id, access_token, refresh_token, logged_out, account_id FROM token WHERE access_token = :token", nativeQuery = true)
@@ -40,5 +42,9 @@ public interface ITokenRepository extends JpaRepository<Token, Long> {
             @Param("accountId") Long accountId
     );
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE token SET logged_out = true WHERE id IN (:tokenIds)", nativeQuery = true)
+    void updateTokensToLoggedOut(List<Long> tokenIds);
 }
 

@@ -4,16 +4,20 @@ import com.example.bebuildingmanagement.entity.authentication.Token;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomLogoutHandler implements LogoutHandler {
 
-    @Autowired
-    private ITokenRepository iTokenRepository;
+    ITokenRepository iTokenRepository;
 
     @Override
     public void logout(HttpServletRequest request,

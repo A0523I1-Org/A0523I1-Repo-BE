@@ -100,7 +100,7 @@ public class JwtServiceImpl implements IJWTService {
     }
 
     private String generateToken(Account user, long expireTime) {
-        String token = Jwts
+        return Jwts
                 .builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -108,8 +108,6 @@ public class JwtServiceImpl implements IJWTService {
                 .claim("scope", buildScope(user))
                 .signWith(getSignerKey())
                 .compact();
-
-        return token;
     }
 
     private SecretKey getSignerKey() {
