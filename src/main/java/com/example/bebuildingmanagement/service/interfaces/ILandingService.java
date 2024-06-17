@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.service.interfaces;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
+import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import org.springframework.data.domain.Page;
 
@@ -23,5 +24,7 @@ public interface ILandingService {
 
     LandingResponseDTO findLanding(Long id);
     LandingResponseDTO findLandingByCode(String code);
+
+    Page<LandingHomeResponseDTO> findAllLandingsHome(int page, int size);
 
 }

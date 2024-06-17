@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.service.implement;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
+import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
@@ -93,6 +94,27 @@ public class LandingServiceImpl implements ILandingService {
         return iLandingRepository.findLanding(id);
     }
 
+    /**
+     * Phung-PV
+     * Lấy danh sách các bản ghi Landing phân trang để hiển thị trên trang chính.
+     *
+     * @param page Số trang cần lấy (bắt đầu từ 0).
+     * @param size Số lượng bản ghi trên mỗi trang.
+     * @return Danh sách phân trang các đối tượng {@link LandingHomeResponseDTO} chứa thông tin về các bản ghi Landing.
+     */
+    @Override
+    public Page<LandingHomeResponseDTO> findAllLandingsHome(int page, int size) {
+        // Tạo đối tượng Pageable để phân trang dựa trên số trang và kích thước đã cung cấp
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Lấy danh sách phân trang các bản ghi Landing từ repository
+        Page<LandingHomeResponseDTO> listLandingHome = iLandingRepository.findAllLandingsHome(pageable);
+
+        // Trả về danh sách phân trang các DTO Landing
+        return listLandingHome;
+    }
+
+
     @Override
     public LandingResponseDTO findLandingByCode(String code) {
         return iLandingRepository.findLandingByCode(code);
@@ -130,7 +152,12 @@ public class LandingServiceImpl implements ILandingService {
         }
 
 
+
     }
+
+
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
+import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.IFloorService;
@@ -46,11 +47,11 @@ public class LandingController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
-        iLandingService.updateLanding(landingRequestDTO);
+         iLandingService.updateLanding(landingRequestDTO);
 
-        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
+         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
 
-        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
 
     }
 
@@ -79,15 +80,17 @@ public class LandingController {
 
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Thêm mặt bằng thành công").build();
 
-        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
 
-    @PutMapping("/deleteLanding/{id}")
+    @DeleteMapping("/deleteLanding/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
-        return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
+
+        return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
+
 
 
 }
