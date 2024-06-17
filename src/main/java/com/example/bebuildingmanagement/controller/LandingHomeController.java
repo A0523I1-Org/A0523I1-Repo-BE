@@ -25,7 +25,7 @@ public class LandingHomeController {
      * @param size Số lượng bản ghi trên mỗi trang (mặc định là 4 nếu không được cung cấp).
      * @return Một đối tượng ResponseEntity chứa danh sách phân trang các đối tượng DTO LandingHomeResponseDTO.
      */
-    @GetMapping("/listLadingHome")
+    @GetMapping("/listLandingHome")
     public ResponseEntity<Page<LandingHomeResponseDTO>> getListAllLandingHome(@RequestParam(value = "page",defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "4") int size) {
 
         // Gọi phương thức service để lấy danh sách các bản ghi Landing phân trang

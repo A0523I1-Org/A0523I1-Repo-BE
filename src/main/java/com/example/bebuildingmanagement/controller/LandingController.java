@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.controller;
 
 
+
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
@@ -16,10 +17,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+import com.example.bebuildingmanagement.entity.Landing;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
 import java.util.List;
 
-@RestController
-@RequestMapping("/landing")
+@RequestMapping("/api/landing")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
@@ -80,7 +95,7 @@ public class LandingController {
         return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteLanding/{id}")
+    @PutMapping("/deleteLanding/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
@@ -89,5 +104,10 @@ public class LandingController {
     }
 
 
+    @GetMapping("/landing-space")
+    public ResponseEntity<List<LandingIsAvailableResponseDTO>> getAllLandingSpace(){
+        List<LandingIsAvailableResponseDTO> landingIsAvailableResponseDTOs = iLandingService.getLandingsSpace();
+        return new ResponseEntity<>(landingIsAvailableResponseDTOs , HttpStatus.OK);
+    }
 
 }

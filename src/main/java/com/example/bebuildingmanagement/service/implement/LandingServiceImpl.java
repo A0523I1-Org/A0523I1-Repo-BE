@@ -3,6 +3,7 @@ package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
 import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
@@ -27,6 +28,7 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class LandingServiceImpl implements ILandingService {
         statusLanding = "%" + statusLanding + "%";
         floorLanding = "%" + floorLanding + "%";
 
-        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding,floorLanding);
+        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
 
     }
 
@@ -171,12 +173,17 @@ public class LandingServiceImpl implements ILandingService {
         }
 
 
-
     }
 
+    @Override
+    public List<LandingIsAvailableResponseDTO> getLandingsSpace() {
+        List<Landing> landings = iLandingRepository.findAllByIsAvailableTrue();
+        List<LandingIsAvailableResponseDTO> landingIsAvailableResponseDTOS = landings.stream()
+                .map(landing -> modelMapper.map(landing, LandingIsAvailableResponseDTO.class))
+                .collect(Collectors.toList());
+
+        return landingIsAvailableResponseDTOS;
 
 
-
-
-
+    }
 }
