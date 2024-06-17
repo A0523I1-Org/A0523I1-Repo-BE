@@ -25,7 +25,7 @@ import java.util.Date;
 @Repository
 public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Transactional
-        @Query(value = "select id,dob,gender, name, phone,id_card, email,address,website,company_name,is_deleted from customer where is_deleted = 0;", nativeQuery = true)
+    @Query(value = "select id,dob,gender, name, phone,id_card, email,address,website,company_name,is_deleted from customer where is_deleted = 0;", nativeQuery = true)
     Page<Customer> getAllCustomer(Pageable pageable);
 
     @Modifying

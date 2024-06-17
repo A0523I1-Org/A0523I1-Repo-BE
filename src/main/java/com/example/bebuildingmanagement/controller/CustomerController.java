@@ -1,9 +1,9 @@
+
 package com.example.bebuildingmanagement.controller;
 
 
 import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
-import com.example.bebuildingmanagement.entity.Customer;
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -46,17 +46,10 @@ public class CustomerController {
         }
     }
     @GetMapping("/{id}")
-
     public ResponseEntity<CustomerResponseDTO> findCustomerById(@PathVariable long id) {
         try {
             CustomerResponseDTO customerResponseDTO = iCustomerService.findByIdCustomer(id);
             return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
-
-    public ResponseEntity<?> findCustomerById(@PathVariable long id) {
-        try {
-            Customer customer = iCustomerService.findByIdCustomer(id);
-            return new ResponseEntity<>(customer, HttpStatus.OK);
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,7 +98,7 @@ public class CustomerController {
         if (name == null || name.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        
+
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
         Page<CustomerResponseDTO> customerDTOPage = iCustomerService.searchByName(pageable, name);
 
