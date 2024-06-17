@@ -28,12 +28,6 @@ public class LandingController {
     IFloorService iFloorService;
 
 
-//    @GetMapping
-//    public ResponseEntity<Iterable<LandingResponseDTO>> getListAllLanding(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "3") int size) {
-//            Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size);
-//        return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
-//    }
-
     @GetMapping
     public ResponseEntity<Page<LandingResponseDTO>> getListAllLanding(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -92,7 +86,6 @@ public class LandingController {
     public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
-
         return new ResponseEntity<>(apiResponseDTO, HttpStatus.OK);
     }
 

@@ -9,8 +9,6 @@ import com.example.bebuildingmanagement.repository.IFloorRepository;
 import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.repository.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.ILandingService;
-import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,7 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Set;
 
 @Service
@@ -77,25 +74,8 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
-//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
-//        }
-
-
-        ;
         iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(), landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
-
-//    @Override
-//    public Page<LandingResponseDTO> findAll(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-//
-////        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
-//
-//        return listLanding;
-//    }
 
 
     @Override
