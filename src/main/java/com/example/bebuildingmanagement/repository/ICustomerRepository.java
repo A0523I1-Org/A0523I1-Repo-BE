@@ -29,25 +29,27 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Query(value = "select id,dob,gender, name, phone,id_card, email,address,website,company_name,is_deleted from customer where is_deleted = 0;", nativeQuery = true)
     Page<Customer> getAllCustomer(Pageable pageable);
 
+
     @Modifying
     @Transactional
-    @Query(value = "insert into Customer (name,dob,gender,address,email,phone,website,company_name,id_card)" + "values (?,?,?,?,?,?,?,?,?)", nativeQuery = true)
-    void createCustomers(@Param("name") String name, @Param("dob") Date dob, @Param("gender") String gender, @Param("address") String address,
-                         @Param("phone") String phone, @Param("website") String website, @Param("email") String email,
-                         @Param("companyName") String companyName, @Param("idCard") String idCard);
-    name,dob,gender,address,email,phone,website,companyName,idCard
+    @Query(value = "insert into Customer (name,address,dob,phone,email,id_card,company_name,website,gender)" + "values (?,?,?,?,?,?,?,?,?)", nativeQuery = true)
+    void createCustomers(@Param("name") String name, @Param("address") String address, @Param("dob") Date dob, @Param("phone") String phone,
+                        @Param("email") String email, @Param("id_card") String idCard,@Param("companyName") String companyName,
+                         @Param("website") String website,@Param("gender") String gender);
+
+
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Customer c SET c.name = :name, c.dob = :dob, c.gender = :gender, c.address = :address, c.email = :email, c.phone = :phone, c.website = :website, c.company_name = :companyName, c.id_card = :idCard WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Customer c SET c.name = :name, c.address = :address, c.dob = :dob, c.phone = :phone, c.email = :email, c.idCard = :idCard, c.companyName = :companyName, c.website = :website, c.gender = :gender WHERE c.id = :id", nativeQuery = true)
     void updateCustomer(@Param("name") String name,
-                        @Param("dob") Date dob,
-                        @Param("gender") String gender,
                         @Param("address") String address,
-                        @Param("email") String email,
+                        @Param("dob") Date dob,
                         @Param("phone") String phone,
-                        @Param("website") String website,
-                        @Param("companyName") String companyName,
+                        @Param("email") String email,
                         @Param("idCard") String idCard,
+                        @Param("companyName") String companyName,
+                        @Param("website") String website,
+                        @Param("gender") String gender,
                         @Param("id") long id);
 
     @Modifying

@@ -16,6 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,13 +42,14 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void createCustomers(String name, Date dob, String gender, String address,String email, String phone, String website, String companyName, String idCard) {
-        iCustomerRepository.createCustomers(name,dob,gender,address,email,phone,website,companyName,idCard);
+    public void createCustomers(String name, String address, Date dob, String phone, String email, String idCard, String companyName, String website, String gender) {
+        iCustomerRepository.createCustomers(name,address,dob,phone,email,idCard,companyName,website,gender);
+
     }
 
     @Override
-    public void edit(String name, Date dob, String gender, String address, String email, String phone, String website, String companyName, String idCard, long id) {
-        iCustomerRepository.updateCustomer(name,dob,gender,address,email,phone,website,companyName,idCard,id);
+    public void edit(String name, String address, Date dob, String phone, String email, String idCard, String companyName, String website, String gender,long id)  {
+        iCustomerRepository.updateCustomer(name,address,dob,phone,email,idCard,companyName,website,gender,id);
     }
 
     @Override
