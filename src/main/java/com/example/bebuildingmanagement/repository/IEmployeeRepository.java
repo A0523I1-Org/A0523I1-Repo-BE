@@ -15,8 +15,6 @@ import java.util.Date;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
-//    /
-    //V@Repository
     @Query("SELECT e FROM Employee e " +
             "LEFT JOIN e.account a " +
             "WHERE e.isDeleted = false " +

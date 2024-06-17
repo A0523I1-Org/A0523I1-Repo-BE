@@ -33,15 +33,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
                                                 Pageable pageable) {
         Page<Employee> employeePage = iEmployeeRepository.search(
                 code, name, dob, dobFrom, dobTo, gender, address, phone, email, workDate, workDateFrom, workDateTo, departmentId, salaryRankId, accountUsername, pageable);
-        Page<EmployeeResDTO> employeeResDTOPage = employeePage.map(employee -> modelMapper.map(employee, EmployeeResDTO.class));
-        return employeeResDTOPage;
+        return employeePage.map(this::convertToDTO);
     }
 
     @Override
     public EmployeeResDTO findEmployeeById(Long id) {
         Employee employee = iEmployeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
-        return modelMapper.map(employee, EmployeeResDTO.class);
+        return convertToDTO(employee);
     }
 
     @Override
@@ -55,5 +54,23 @@ public class EmployeeServiceImpl implements IEmployeeService {
         String code = "O.E-" + String.format("%04d", number);
         employeeReqDTO.setCode(code);
         iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
+    }
+
+    private EmployeeResDTO convertToDTO(Employee employee) {
+        EmployeeResDTO employeeResDTO = modelMapper.map(employee, EmployeeResDTO.class);
+
+        if (employee.getDepartment() != null) {
+            employeeResDTO.setDepartment(employee.getDepartment().getName());
+        }
+
+        if (employee.getSalaryRank() != null) {
+            employeeResDTO.setSalaryRank(employee.getSalaryRank().getSalaryRank());
+        }
+
+        if (employee.getAccount() != null) {
+            employeeResDTO.setUsername(employee.getAccount().getUsername());
+        }
+
+        return employeeResDTO;
     }
 }
