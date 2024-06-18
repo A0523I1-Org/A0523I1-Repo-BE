@@ -1,10 +1,11 @@
 package com.example.bebuildingmanagement.controller;
 
-import com.example.bebuildingmanagement.entity.Customer;
-import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
+import com.example.bebuildingmanagement.entity.SalaryRank;
+import com.example.bebuildingmanagement.service.interfaces.ISalaryRankService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,14 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customer")
-@CrossOrigin("*")
+@RequestMapping("/api/salary-rank")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CustomerController {
-    ICustomerService iCustomerService;
+@CrossOrigin("*") //cho phép FE & BE chạy trên domain khác nhau thực thi yêu cầu cross-origin
+public class SalaryRankController {
+    @Autowired
+    ISalaryRankService iSalaryRankService;
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllCustomer(){
-        return new ResponseEntity<>( iCustomerService.getAllCustomer(), HttpStatus.OK);
+    public ResponseEntity<List<SalaryRank>> getAllSalaryRanks() {
+        List<SalaryRank> salaryRanks = iSalaryRankService.getAllSalaryRanks();
+        return new ResponseEntity<>(salaryRanks, HttpStatus.OK);
     }
 }

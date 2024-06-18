@@ -37,37 +37,9 @@ import java.util.*;
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
     IAccountRepository iAccountRepository;
-    PasswordEncoder passwordEncoder;
     JwtServiceImpl jwtServiceImpl;
     ITokenRepository iTokenRepository;
     AuthenticationManager authenticationManager;
-    IRoleRepository iRoleRepository;
-
-//    public AuthenticationResponse register(RegisterRequest request) {
-//
-//        // check if user already exist. if exist than authenticate the user
-//        if(iAccountRepository.findByUsername(request.getUsername()).isPresent()) {
-//            return AuthenticationResponse.builder()
-//                    .message("User already exist")
-//                    .build();
-//        }
-//
-//        Account account = new Account();
-//        account.setUsername(request.getUsername());
-//        account.setPassword(passwordEncoder.encode(request.getPassword()));
-//
-//        // Chỗ này cần xứ lí role thêm nữa
-//        HashSet<Role> roles = new HashSet<>();
-//        iRoleRepository.findByName("USER").ifPresent(roles::add);
-//        account.setRoles(roles);
-//
-//        account = iAccountRepository.save(account);
-//
-//        saveUserToken(null, null, account);
-//
-//        return AuthenticationResponse.builder().message("User registration was successful").build();
-//
-//    }
 
     /*====================================== AUTHENTICATION METHODS ======================================*/
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

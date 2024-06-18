@@ -16,11 +16,6 @@ public enum ErrorCode {
     AREA_LANDING_REAL_NUMBER(8,"Vui lòng nhập diện tích lớn hơn 0."),
     AREA_LANDING_SPECIAL_CHARACTERS(9,"Diện tích phải là số và không được có ký tự đặc biệt."),
 
-
-
-
-
-
     ;
 
     private int code;

@@ -1,43 +1,21 @@
 package com.example.bebuildingmanagement.exception;
 
 
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
 import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-
-
-
+import org.springframework.web.bind.annotation.*;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
-import com.fasterxml.jackson.core.JsonParseException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
@@ -117,19 +95,19 @@ public class GlobalExceptionHandler {
         return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
-    Map<String, String> errorMap = new HashMap<>();
-        exception.getBindingResult().getFieldErrors().forEach(error -> {
-        errorMap.put(error.getField(), error.getDefaultMessage());
-    });
-        ApiResponseDTO response = ApiResponseDTO.builder()
-                .timestamp(System.currentTimeMillis())
-                .result(errorMap)
-                .build();
-        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
+//    Map<String, String> errorMap = new HashMap<>();
+//        exception.getBindingResult().getFieldErrors().forEach(error -> {
+//        errorMap.put(error.getField(), error.getDefaultMessage());
+//    });
+//        ApiResponseDTO response = ApiResponseDTO.builder()
+//                .timestamp(System.currentTimeMillis())
+//                .result(errorMap)
+//                .build();
+//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+//    }
 
 
         @ExceptionHandler(CustomerNotFoundException.class)
@@ -155,6 +133,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((e) -> {
+            String fieldName = ((FieldError) e).getField();
+            String errorMessage = e.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
 }
 
