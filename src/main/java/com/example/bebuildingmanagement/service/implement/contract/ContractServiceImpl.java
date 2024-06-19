@@ -9,7 +9,7 @@ import com.example.bebuildingmanagement.projections.contract.ContractDetailsProj
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
-import com.example.bebuildingmanagement.repository.ILandingRepository;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
@@ -29,10 +29,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 

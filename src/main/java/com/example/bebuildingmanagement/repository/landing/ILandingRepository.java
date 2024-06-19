@@ -1,8 +1,7 @@
-package com.example.bebuildingmanagement.repository;
+package com.example.bebuildingmanagement.repository.landing;
 
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
-import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;

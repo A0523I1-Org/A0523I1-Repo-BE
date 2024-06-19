@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.service.interfaces;
+package com.example.bebuildingmanagement.service.interfaces.landing;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;

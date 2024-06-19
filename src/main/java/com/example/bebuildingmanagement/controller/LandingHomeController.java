@@ -1,7 +1,7 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
