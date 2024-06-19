@@ -1,8 +1,9 @@
-package com.example.bebuildingmanagement.service.interfaces;
+package com.example.bebuildingmanagement.service.interfaces.landing;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -26,5 +27,6 @@ public interface ILandingService {
     LandingResponseDTO findLandingByCode(String code);
 
     Page<LandingHomeResponseDTO> findAllLandingsHome(int page, int size);
+    List<LandingIsAvailableResponseDTO> getLandingsSpace();
 
 }

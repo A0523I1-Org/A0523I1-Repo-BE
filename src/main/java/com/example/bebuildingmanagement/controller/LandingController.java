@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 
-import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
@@ -17,10 +16,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/landing")
+@RequestMapping("/api/landing")
+@CrossOrigin(value = "http://localhost:3000",allowedHeaders = "*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin("*")
@@ -42,7 +49,6 @@ public class LandingController {
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
         return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
@@ -87,6 +93,15 @@ public class LandingController {
     public ResponseEntity<ApiResponseDTO<Void>> deleteLanding(@PathVariable Long id) {
         iLandingService.deleteLanding(id);
         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Xóa mặt bằng thành công").build();
+
         return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
     }
+
+
+    @GetMapping("/landing-space")
+    public ResponseEntity<List<LandingIsAvailableResponseDTO>> getAllLandingSpace(){
+        List<LandingIsAvailableResponseDTO> landingIsAvailableResponseDTOs = iLandingService.getLandingsSpace();
+        return new ResponseEntity<>(landingIsAvailableResponseDTOs , HttpStatus.OK);
+    }
+
 }

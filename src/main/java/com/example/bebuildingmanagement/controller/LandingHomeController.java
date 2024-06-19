@@ -1,19 +1,17 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/landingHome")
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class LandingHomeController {
@@ -27,7 +25,7 @@ public class LandingHomeController {
      * @param size Số lượng bản ghi trên mỗi trang (mặc định là 4 nếu không được cung cấp).
      * @return Một đối tượng ResponseEntity chứa danh sách phân trang các đối tượng DTO LandingHomeResponseDTO.
      */
-    @GetMapping("/listLadingHome")
+    @GetMapping("/listLandingHome")
     public ResponseEntity<Page<LandingHomeResponseDTO>> getListAllLandingHome(@RequestParam(value = "page",defaultValue = "0") int page, @RequestParam(value = "size",defaultValue = "4") int size) {
 
         // Gọi phương thức service để lấy danh sách các bản ghi Landing phân trang

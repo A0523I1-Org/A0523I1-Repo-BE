@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Xác Nhận Hợp đồng</title>
+
+</head>
+<style>
+
+
+
+    .footer {
+        margin-top: 20px;
+        text-align: right;
+    }
+</style>
+<body style="
+        font-family: Arial, sans-serif;
+        background-color: #F8F9FA;
+        margin: 0;
+        padding: 0;">
+<div style="max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;">
+    <div style="
+        background-color: #007BFF;
+        color: #FFFFFF;
+        padding: 20px;
+        border-radius: 8px 8px 0 0;">
+        <h1 style="
+        margin: 0;
+        font-size: 24px;
+        ">Thông Báo Xác Nhận Hợp Đồng</h1>
+    </div>
+    <div style=" padding: 20px;">
+        <p>Kính gửi ông/bà : <span style="font-variant: small-caps " th:text="${customerName}"></span></p>
+        <p>Chúng tôi, công ty A0523I1, xin chân thành cảm ơn quý khách đã tin tưởng và hợp tác với chúng tôi.
+            Chúng tôi rất vui mừng thông báo rằng hợp đồng giữa A0523I1 và ông/bà <span th:text="${customerName}"></span>
+            đã được xác nhận thành công.</p>
+        <h2 style=" font-size: 20px;
+        margin-top: 20px;">Thông tin hợp đồng:</h2>
+        <ul style="list-style: none;
+        padding: 0;">
+            <li style="padding: 10px;
+                border: 1px solid #DDDDDD;
+                border-radius: 4px;
+                margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Ngày hiệu lực:</strong> <span th:text="${startDate}"></span></li>
+            <li style="padding: 10px;
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Ngày kết thúc:</strong> <span th:text="${endDate}" ></span></li>
+            <li style="padding: 10px;
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Thời hạn :</strong> <span th:text="${term +' tháng'}"></span></li>
+        </ul>
+        <h2 style=" font-size: 20px;
+        margin-top: 20px;">Thông tin liên hệ:</h2>
+        <ul style="list-style: none;
+        padding: 0;">
+            <li style="padding: 10px;
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Người liên hệ:</strong> <span th:text="${employeeName}"></span></li>
+            <li style="padding: 10px;
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Số điện thoại:</strong> <span th:text="${phone}"></span></li>
+            <li style="padding: 10px;
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        margin-bottom: 10px;" class="list-group-item"><strong style="display: inline-block;
+        width: 150px;">Email:</strong> <span th:text="${email}"></span></li>
+        </ul>
+        <div style=" margin-top: 20px;
+        text-align: right;">
+            <i style="font-size: 20px">XIN CHÂN THÀNH CÁM ƠN !</i>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
