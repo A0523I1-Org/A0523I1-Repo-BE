@@ -9,13 +9,14 @@ import com.example.bebuildingmanagement.projections.contract.ContractDetailsProj
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
-import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
+
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
-import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
+
 import com.example.bebuildingmanagement.service.interfaces.mail.IMailService;
 import com.example.bebuildingmanagement.constants.ContractConst;
 
@@ -27,7 +28,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import java.util.HashMap;
 

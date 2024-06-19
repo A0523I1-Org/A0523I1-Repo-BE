@@ -33,7 +33,7 @@ public class SecurityConfig {
     private CustomLogoutHandler logoutHandler;
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/login/**", "/refresh_token/**", "/register/**"
+            "/login/**", "/refresh_token/**", "/register/**", "/landingHome/**"
     };
 
     @Bean
