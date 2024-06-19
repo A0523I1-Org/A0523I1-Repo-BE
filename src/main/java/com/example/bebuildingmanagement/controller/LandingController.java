@@ -6,7 +6,7 @@ import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.IFloorService;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,6 @@ import java.util.List;
 @CrossOrigin(value = "http://localhost:3000",allowedHeaders = "*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin("*")
 public class LandingController {
     ILandingService iLandingService;
     IFloorService iFloorService;
