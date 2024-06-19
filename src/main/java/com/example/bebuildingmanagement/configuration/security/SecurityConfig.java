@@ -35,8 +35,9 @@ public class SecurityConfig {
     CustomLogoutHandler logoutHandler;
 
     String[] publicEndPoints = {
-            "/login/**", "/refresh_token/**", "/register/**"
+            "/login/**", "/refresh_token/**", "/register/**", "/landingHome/**"
     };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

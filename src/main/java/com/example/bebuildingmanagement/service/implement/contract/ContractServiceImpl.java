@@ -9,13 +9,14 @@ import com.example.bebuildingmanagement.projections.contract.ContractDetailsProj
 import com.example.bebuildingmanagement.projections.contract.IContractProjection;
 import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjection;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
 import com.example.bebuildingmanagement.repository.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
-import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
+
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
-import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
+
 import com.example.bebuildingmanagement.service.interfaces.mail.IMailService;
 import com.example.bebuildingmanagement.constants.ContractConst;
 
@@ -28,10 +29,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Locale;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -67,7 +66,6 @@ public class ContractServiceImpl implements IContractService {
     @Override
     public void deleteContractById(Long id) {
         iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
-
         iContractRepository.deleteContractById(id);
     }
 
@@ -79,7 +77,7 @@ public class ContractServiceImpl implements IContractService {
             String username = iAccountService.getCurrentAccount().getUsername();
             // lay thong tin account:
             Account account = iAccountRepository.findByUsername(username).orElseThrow();
-            Pageable pageable = PageRequest.of(page.orElse(0), 3);
+            Pageable pageable = PageRequest.of(page.orElse(0), 4);
             Page<IContractProjection> contractProjections = null ;
             Page<ContractResponseDTO> contractResponseDTOS ;
 
@@ -99,7 +97,6 @@ public class ContractServiceImpl implements IContractService {
                 if (role.getName().equals("ADMIN")){
                     // lấy tất cả danh sách hợp đồng
                         contractProjections = iContractRepository.getContracts(pageable,"%"+customerName.trim()+"%","%"+landingCode.trim()+"%",startDate,endDate);
-
                         break;
 
                 }else {

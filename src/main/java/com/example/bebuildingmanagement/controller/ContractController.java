@@ -5,7 +5,9 @@ import com.example.bebuildingmanagement.dto.request.contract.ContractNewRequestD
 import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDTO;
+import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.exception.GlobalExceptionHandler;
+import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.constants.ContractConst;
@@ -41,6 +43,7 @@ public class ContractController {
 
     IContractService iContractService;
     PasswordEncoder passwordEncoder;
+    IAccountService iAccountService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page,
@@ -68,8 +71,8 @@ public class ContractController {
                                                          BindingResult bindingResult
     ) {
         //lay mật khẩu đang đăng nhập để xác nhận :
-//        String password = "admin";
-        if (!passwordEncoder.matches(confirmPassword, "$2a$10$sY2u/vbF3oL6nDPcRYfReObtnMBQbbu3ySwDB1s13DVu139KI1HkW")) {
+        Account account =  iAccountService.getCurrentAccount();
+        if (!passwordEncoder.matches(confirmPassword, account.getPassword())) {
             throw new RuntimeException(ContractConst.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
         }
         // check validate
