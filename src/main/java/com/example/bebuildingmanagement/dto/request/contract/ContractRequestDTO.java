@@ -107,14 +107,11 @@ public class ContractRequestDTO implements Validator {
 
         if (startDate == null) {
             errors.rejectValue("startDate", "", "Vui lòng chọn ngày bắt đầu !");
-        } else if (date.after(startDate) && !(date.getDay() == startDate.getDay() && date.getMonth() == startDate.getMonth() && date.getYear() == startDate.getYear())) {
-            errors.rejectValue("startDate", "", "Ngày bắt đầu bắt buộc phải ngày hiện tại hoặc ngày tương lai !");
         }else if (!strStartDate.matches("(^[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}$)")){
             errors.rejectValue("startDate", "", "Vui lòng nhập ngày bắt đầu đúng định dạng (DD-MM-YYYY)!");
         }
 
         //check endDate :
-
         LocalDate localDateEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDateNew = LocalDate.parse(strStartDate).plusMonths(term);
         if (endDate == null) {

@@ -101,6 +101,7 @@ public class GlobalExceptionHandler {
                 .message(exception.getMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(System.currentTimeMillis())
+                .result(exception.getMessage())
                 .build();
         return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }

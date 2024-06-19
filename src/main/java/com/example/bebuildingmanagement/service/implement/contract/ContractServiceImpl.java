@@ -48,14 +48,13 @@ public class ContractServiceImpl implements IContractService {
     //anh lq
     @Override
     public ContractDetailsProjection contractById(Long id) {
-
-      return  iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
+      return  iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Hợp đồng " + id+ " không tồn tại "));
     }
 
 
     @Override
     public void updateContractById(ContractRequestDTO contractDTO, Long id) {
-        iContractRepository.contractById(id).orElseThrow(() -> new RuntimeException("Contract not found"));
+        iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Hợp đồng " + id+ " không tồn tại "));
         iContractRepository.updateContractById(
                 contractDTO.getContent(), contractDTO.getDeposit(), contractDTO.getStartDate(),contractDTO.getEndDate(),
                 contractDTO.getFireBaseUrl(), contractDTO.getTaxCode(),contractDTO.getTerm(),contractDTO.getCurrentFee(),id);
@@ -64,7 +63,7 @@ public class ContractServiceImpl implements IContractService {
 //anh lq
     @Override
     public void deleteContractById(Long id) {
-        iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Contract not found"));
+        iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Hợp đồng " + id+ " không tồn tại "));
 
         iContractRepository.deleteContractById(id);
     }

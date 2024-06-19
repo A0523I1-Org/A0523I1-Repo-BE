@@ -103,7 +103,7 @@ public class ContractController {
     public ResponseEntity<ApiResponseDTO> updateContractById(@PathVariable("contractId") long contractId
             ,@Valid  @RequestBody ContractRequestDTO contractRequestDTO,BindingResult bindingResult)  {
         contractRequestDTO.validate(contractRequestDTO,bindingResult);
-          if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
             ApiResponseDTO response = ApiResponseDTO.builder()
@@ -114,13 +114,10 @@ public class ContractController {
                     .build();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-                try {
-                    iContractService.updateContractById(contractRequestDTO, contractId);
-                    ApiResponseDTO response = ApiResponseDTO.builder().message("Contract updated successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
-                    return new ResponseEntity<>(response, HttpStatus.OK);
-                }catch (Exception e){
-                    throw new RuntimeException();
-                }
+        iContractService.updateContractById(contractRequestDTO, contractId);
+        ApiResponseDTO response = ApiResponseDTO.builder().message("Contract updated successfully").status(HttpStatus.OK.value()).timestamp(System.currentTimeMillis()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 

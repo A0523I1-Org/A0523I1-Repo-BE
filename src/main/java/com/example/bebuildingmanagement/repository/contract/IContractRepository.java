@@ -29,7 +29,8 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.UPDATE_CONTRACT,nativeQuery = true)
-    void updateContractById(@Param("content") String content
+    void updateContractById(
+            @Param("content") String content
             ,@Param("deposit") double deposit
             ,@Param("startDate") Date startDate
             ,@Param("endDate") Date endDate, @Param("firebaseUrl") String firebaseUrl
