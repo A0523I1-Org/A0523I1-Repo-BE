@@ -8,7 +8,6 @@ import com.example.bebuildingmanagement.validate.customerValidate.validateinterf
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.MinLength;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.code.NoSpecialCharacters;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.description.MaxLengthDescription;
-import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.description.NoSpecialCharactersDescription;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feeManager.FeeManagerSpecialCharacter;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feeManager.NotBlankFeeManager;
 import com.example.bebuildingmanagement.validate.customerValidate.validateinterface.feePerMonth.FeePerMonthNotBlank;
@@ -65,7 +64,6 @@ public class LandingRequestDTO {
     @NotBlankFeeManager(message = "FEEMAGER_LANDING_NOT_BLANK", groups = ValidationGroups.MandatoryChecksFeeManager.class)
 //    @FeeManagerSpecialCharacter(message = "FEEMAGER_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     double feeManager;
-
 
     String firebaseUrl;
 

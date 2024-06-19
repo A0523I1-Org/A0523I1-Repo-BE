@@ -15,6 +15,6 @@ public class FeeManagerValidator implements ConstraintValidator<FeeManagerSpecia
             return false;
         }
         String stringValue = String.valueOf(value);
-        return stringValue.matches("^[0-9]*\\.?[0-9]*$");
+        return stringValue.matches("^[0-9]+$");
     }
 }

@@ -17,10 +17,8 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String code;
     String name;
-
     Date dob;
     String gender;
     String address;

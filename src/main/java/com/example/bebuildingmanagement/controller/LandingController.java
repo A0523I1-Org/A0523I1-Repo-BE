@@ -6,7 +6,7 @@ import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.service.interfaces.IFloorService;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/landing")
+@RequestMapping("/api/landing")
+@CrossOrigin(value = "http://localhost:3000",allowedHeaders = "*")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -90,5 +98,10 @@ public class LandingController {
     }
 
 
+    @GetMapping("/landing-space")
+    public ResponseEntity<List<LandingIsAvailableResponseDTO>> getAllLandingSpace(){
+        List<LandingIsAvailableResponseDTO> landingIsAvailableResponseDTOs = iLandingService.getLandingsSpace();
+        return new ResponseEntity<>(landingIsAvailableResponseDTOs , HttpStatus.OK);
+    }
 
 }

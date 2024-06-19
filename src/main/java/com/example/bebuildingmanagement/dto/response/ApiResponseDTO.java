@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.dto.response;
 
+
 import com.example.bebuildingmanagement.dto.request.FieldErrorDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -15,8 +16,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponseDTO <T> {
 
-    private int code;
-    private String message;
-    private T result;
-    private List<FieldErrorDTO> errors;
+     Integer code;
+     Integer status;
+     String message;
+     T result;
+     Long timestamp;
+     List<FieldErrorDTO> errors;
+
 }

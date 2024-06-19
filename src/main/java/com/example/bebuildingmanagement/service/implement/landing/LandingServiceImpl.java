@@ -1,17 +1,15 @@
 package com.example.bebuildingmanagement.service.implement;
-
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
 import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
 import com.example.bebuildingmanagement.repository.IFloorRepository;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
-import com.example.bebuildingmanagement.repository.ILandingRepository;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
-import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +22,10 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public class LandingServiceImpl implements ILandingService {
         statusLanding = "%" + statusLanding + "%";
         floorLanding = "%" + floorLanding + "%";
 
-        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding,floorLanding);
+        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
 
     }
 
@@ -78,25 +77,8 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
-//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
-//        }
-
-
-        ;
         iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(), landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
-
-//    @Override
-//    public Page<LandingResponseDTO> findAll(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-//
-////        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
-//
-//        return listLanding;
-//    }
 
 
     @Override
@@ -107,6 +89,7 @@ public class LandingServiceImpl implements ILandingService {
         }
         iLandingRepository.deleteLandingById(id);
     }
+
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
@@ -174,9 +157,15 @@ public class LandingServiceImpl implements ILandingService {
 
     }
 
+    @Override
+    public List<LandingIsAvailableResponseDTO> getLandingsSpace() {
+        List<Landing> landings = iLandingRepository.findAllByIsAvailableTrue();
+        List<LandingIsAvailableResponseDTO> landingIsAvailableResponseDTOS = landings.stream()
+                .map(landing -> modelMapper.map(landing, LandingIsAvailableResponseDTO.class))
+                .collect(Collectors.toList());
+
+        return landingIsAvailableResponseDTOS;
 
 
-
-
-
+    }
 }
