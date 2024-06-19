@@ -130,7 +130,7 @@ public class ContractConst {
         public static final String LANDING_ALREADY_EXIST = "Mặt bằng này đã làm hợp đồng  !";
         public static final String CUSTOMER_NOT_FOUNT = "Không tìm thấy khách hàng !";
         public static final String MAIL_SENDING_FAILED = "Gửi mail thất bại !";
-        public static final String CONFIRM_PASSWORD_FALSE = "Mật khẩu xác nhận không đúng !";
+        public static final String CONFIRM_PASSWORD_FALSE = "Mật khẩu không chính xác !";
         public static final String PAGE_IS_EMPTY = "Vui lòng nhập page !";
     }
 
