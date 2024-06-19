@@ -63,9 +63,9 @@ public class EmployeeReqDTO implements Validator {
             LocalDate currentDay = LocalDate.now();
             int age = Period.between(localDate, currentDay).getYears();
             if (age < 18) {
-                errors.rejectValue("day_of_birth", "employee.age.min");
+                errors.rejectValue("dob", "", "Employee must be at least 18 years old.");
             } else if (age > 100) {
-                errors.rejectValue("day_of_birth", "employee.age.max");
+                errors.rejectValue("dob", "", "Employee age cannot exceed 100 years.");
             }
         }
     }

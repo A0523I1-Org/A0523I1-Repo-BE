@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -86,7 +88,11 @@ public class EmployeeController {
 
     //THIENTV
     @PostMapping("/add")
-    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO) {
+    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO, BindingResult bindingResult) throws MethodArgumentNotValidException{
+        new EmployeeReqDTO().validate(employeeDTO, bindingResult);
+        if (bindingResult.hasErrors()){
+            throw new MethodArgumentNotValidException(null, bindingResult);
+        }
         iEmployeeService.addEmployeeByQuery(employeeDTO);
         return new ResponseEntity<>("Employee added.", HttpStatus.CREATED);
     }

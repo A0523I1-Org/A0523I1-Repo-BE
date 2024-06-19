@@ -1,8 +1,5 @@
 package com.example.bebuildingmanagement.dto.response;
 
-import com.example.bebuildingmanagement.entity.Account;
-import com.example.bebuildingmanagement.entity.Department;
-import com.example.bebuildingmanagement.entity.SalaryRank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
