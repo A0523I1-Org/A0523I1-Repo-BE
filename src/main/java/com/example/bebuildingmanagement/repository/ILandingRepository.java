@@ -28,7 +28,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
             "AND ld.code LIKE :codeLanding " +
             "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
             "AND ld.type LIKE :typeLanding" +
-            " AND fl.name like :floorLanding" + " and ld.isDeleted = false " + "and ld.isAvailable= true ")
+            " AND fl.name like :floorLanding" + " and ld.isDeleted = false ")
     Page<LandingResponseDTO> findListAllLanding(Pageable pageable,
                                                 @Param("statusLanding") String statusLanding,
                                                 @Param("codeLanding") String codeLanding,
@@ -77,7 +77,7 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 //    Dien comment
     @Modifying
     @Transactional
-    @Query(value = "UPDATE landing SET is_deleted = 1, is_available = 0 WHERE id = ?1", nativeQuery = true)
+    @Query(value = "UPDATE landing SET is_deleted = 1 WHERE id = ?1", nativeQuery = true)
     void deleteLandingById(Long id);
 
     @Modifying
