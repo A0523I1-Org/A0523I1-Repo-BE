@@ -58,12 +58,12 @@ public class LandingRequestDTO {
 
 
     @FeePerMonthNotBlank(message = "FEEPERMONTH_LANDING_NOTBLANK", groups = ValidationGroups.MandatoryChecks.class)
-    @FeePerMonthSpecialCharacter(message = "FEEPERMONTH_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+//    @FeePerMonthSpecialCharacter(message = "FEEPERMONTH_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     double feePerMonth;
 
 
     @NotBlankFeeManager(message = "FEEMAGER_LANDING_NOT_BLANK", groups = ValidationGroups.MandatoryChecksFeeManager.class)
-    @FeeManagerSpecialCharacter(message = "FEEMAGER_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+//    @FeeManagerSpecialCharacter(message = "FEEMAGER_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     double feeManager;
 
 
