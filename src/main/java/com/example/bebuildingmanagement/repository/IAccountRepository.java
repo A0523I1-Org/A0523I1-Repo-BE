@@ -13,8 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface IAccountRepository extends JpaRepository<Account, Long> {
-//    @Query("SELECT e FROM Employee e WHERE e.account.username = ?1")
-//    Optional<Account> findByUsername(String username);
 
     @Procedure(procedureName = "create_employee_account")
     Integer createEmployeeAccount(

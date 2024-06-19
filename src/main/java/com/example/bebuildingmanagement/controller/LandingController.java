@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
-import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
