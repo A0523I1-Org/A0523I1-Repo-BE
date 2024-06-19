@@ -1,10 +1,10 @@
 package com.example.bebuildingmanagement.service.interfaces;
 
+import com.example.bebuildingmanagement.dto.EmployeeDTO;
 import com.example.bebuildingmanagement.dto.request.EmployeeReqDTO;
 import com.example.bebuildingmanagement.dto.response.EmployeeResDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.Date;
 
 public interface IEmployeeService {
@@ -16,5 +16,8 @@ public interface IEmployeeService {
     EmployeeResDTO findEmployeeById(Long id);
 
     void deleteEmployeeById(Long id);
+
     void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO);
+
+    EmployeeDTO getCurrentEmployeeInfo();
 }
