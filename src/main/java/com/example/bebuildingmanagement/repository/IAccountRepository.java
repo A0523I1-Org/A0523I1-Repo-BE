@@ -16,10 +16,10 @@ public interface IAccountRepository extends JpaRepository<Account, Long> {
     @Query(value = "SELECT id, username, password, is_active FROM account WHERE username = :username", nativeQuery = true)
     Optional<Account> findByUsername(String username);
 
-    @Modifying
-    @Transactional
-    @Query(value = "update account set password =:password where username =:username", nativeQuery = true)
-    void updatePassword(String username, String password);
+//    @Modifying
+//    @Transactional
+//    @Query(value = "update account set password =:password where username =:username", nativeQuery = true)
+//    void updatePassword(String username, String password);
 
     @Modifying
     @Query(value = "UPDATE Account SET password = :newPassword WHERE username = :username", nativeQuery = true)
