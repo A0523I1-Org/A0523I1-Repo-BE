@@ -4,7 +4,7 @@ package com.example.bebuildingmanagement.repository;
 import com.example.bebuildingmanagement.entity.Customer;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,9 +14,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +35,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Customer c SET c.name = :name, c.address = :address, c.dob = :dob, c.phone = :phone, c.email = :email, c.idCard = :idCard, c.companyName = :companyName, c.website = :website, c.gender = :gender WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Customer c SET c.name = :name, c.address = :address, c.dob = :dob, c.phone = :phone, c.email = :email, c.id_card = :idCard, c.company_name = :companyName, c.website = :website, c.gender = :gender WHERE c.id = :id", nativeQuery = true)
     void updateCustomer(@Param("name") String name,
                         @Param("address") String address,
                         @Param("dob") Date dob,
