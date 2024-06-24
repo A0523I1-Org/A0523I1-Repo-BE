@@ -20,20 +20,33 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 //    Thien-LC comment
     boolean existsByCode(String code);
 
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status, ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
-            "FROM Landing ld " +
-            "JOIN ld.floor fl " +
-            "WHERE ld.status like :statusLanding " +
+
+    @Query(value = "SELECT ld.* " +
+            "FROM landing ld " +
+            "JOIN floor fl ON ld.floor_id = fl.id " +
+            "WHERE ld.status LIKE :statusLanding " +
             "AND ld.code LIKE :codeLanding " +
             "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
-            "AND ld.type LIKE :typeLanding" +
-            " AND fl.name like :floorLanding" + " and ld.isDeleted = false ")
-    Page<LandingResponseDTO> findListAllLanding(Pageable pageable,
-                                                @Param("statusLanding") String statusLanding,
-                                                @Param("codeLanding") String codeLanding,
-                                                @Param("areaLanding") Double areaLanding,
-                                                @Param("typeLanding") String typeLanding,
-                                                @Param("floorLanding") String floorLanding);
+            "AND ld.type LIKE :typeLanding " +
+            "AND fl.name LIKE :floorLanding " +
+            "AND ld.is_deleted = false " +
+            "ORDER BY ld.id",  // Thêm mệnh đề ORDER BY
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM landing ld " +
+                    "JOIN floor fl ON ld.floor_id = fl.id " +
+                    "WHERE ld.status LIKE :statusLanding " +
+                    "AND ld.code LIKE :codeLanding " +
+                    "AND (:areaLanding IS NULL OR ld.area = :areaLanding) " +
+                    "AND ld.type LIKE :typeLanding " +
+                    "AND fl.name LIKE :floorLanding " +
+                    "AND ld.is_deleted = false",
+            nativeQuery = true)
+    Page<Landing> findListAllLanding(Pageable pageable,
+                                     @Param("statusLanding") String statusLanding,
+                                     @Param("codeLanding") String codeLanding,
+                                     @Param("areaLanding") Double areaLanding,
+                                     @Param("typeLanding") String typeLanding,
+                                     @Param("floorLanding") String floorLanding);
 
 
 
@@ -41,12 +54,12 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
 
 
 
-
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingResponseDTO(ld.id, ld.code, ld.type, ld.area, ld.status,ld.feePerMonth, ld.feeManager, fl.name,ld.firebaseUrl,ld.description) " +
-            "FROM Landing ld " +
-            "JOIN ld.floor fl " +
-            " where ld.id=?1")
-    LandingResponseDTO findLanding(Long id);
+    @Query(value = "SELECT ld.* " +
+            "FROM landing ld " +
+            "JOIN floor fl ON ld.floor_id = fl.id " +
+            "WHERE ld.id = :id",
+            nativeQuery = true)
+    Landing findLanding(@Param("id") Long id);
 
 
     @Modifying

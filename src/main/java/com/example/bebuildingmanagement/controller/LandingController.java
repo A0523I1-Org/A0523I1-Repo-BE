@@ -29,7 +29,6 @@ import java.util.List;
 @RequestMapping("/api/landing")
 @CrossOrigin(value = "http://localhost:3000",allowedHeaders = "*")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
     ILandingService iLandingService;
@@ -47,6 +46,7 @@ public class LandingController {
             @RequestParam(value = "floorLanding", required = false) String floorLanding) {
 
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+
         return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
 
@@ -67,8 +67,8 @@ public class LandingController {
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    ResponseEntity<LandingResponseDTO> findLanding(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<LandingResponseDTO> findLanding(@PathVariable Long id) {
         LandingResponseDTO landingResponseDTO = iLandingService.findLanding(id);
         return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
     }

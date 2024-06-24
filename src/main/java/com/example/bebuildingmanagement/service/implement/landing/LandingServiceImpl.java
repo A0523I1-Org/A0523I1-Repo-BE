@@ -44,10 +44,18 @@ public class LandingServiceImpl implements ILandingService {
         statusLanding = "%" + statusLanding + "%";
         floorLanding = "%" + floorLanding + "%";
 
-        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+        Page<Landing> results = iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+
+
+        return results.map(this::convertToDto);
 
     }
 
+    private LandingResponseDTO convertToDto(Landing landing) {
+        LandingResponseDTO dto = modelMapper.map(landing, LandingResponseDTO.class);
+        dto.setFloor(landing.getFloor().getName());
+        return dto;
+    }
     @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
@@ -83,17 +91,20 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public void deleteLanding(Long id) {
-        LandingResponseDTO landing = iLandingRepository.findLanding(id);
+        Landing landing = iLandingRepository.findLanding(id);
         if (landing == null) {
             throw new CustomValidationException("Mặt bằng không tồn tại");
         }
         iLandingRepository.deleteLandingById(id);
     }
 
-
     @Override
     public LandingResponseDTO findLanding(Long id) {
-        return iLandingRepository.findLanding(id);
+        Landing landing = iLandingRepository.findLanding(id);
+        if (landing == null) {
+            throw new CustomValidationException("Mặt bằng không tồn tại");
+        }
+        return convertToDto(landing);
     }
 
     /**
