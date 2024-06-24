@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.service.implement;
 
 
+
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 
 
@@ -43,6 +44,7 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public void createCustomers(String name, String address, Date dob, String phone, String email, String idCard, String companyName, String website, String gender) {
         iCustomerRepository.createCustomers(name,address,dob,phone,email,idCard,companyName,website,gender);
+
     }
 
     @Override
@@ -70,10 +72,12 @@ public class CustomerServiceImpl implements ICustomerService {
         return customerResponseDTOs;
     }
 
+
     @Override
     public void deleteCustomersByIds(List<Long> ids) {
         iCustomerRepository.deleteCustomersByIds(ids);
     }
+
 
 
 }
