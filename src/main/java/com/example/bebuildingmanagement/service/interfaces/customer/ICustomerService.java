@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.service.interfaces;
+package com.example.bebuildingmanagement.service.interfaces.customer;
 
 import com.example.bebuildingmanagement.entity.Customer;
 

@@ -1,7 +1,7 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.entity.Customer;
-import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
+import com.example.bebuildingmanagement.service.interfaces.customer.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

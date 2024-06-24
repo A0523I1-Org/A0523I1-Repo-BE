@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,9 +33,11 @@ public class CustomLogoutHandler implements LogoutHandler {
         String token = authHeader.substring(7);
         Token storedToken = iTokenRepository.findByAccessToken(token).orElse(null);
 
+        log.info(String.valueOf(storedToken));
+
         if(storedToken != null) {
             storedToken.setLoggedOut(true);
-            iTokenRepository.save(storedToken);
+            iTokenRepository.logOutTokenById(storedToken.getId());
         }
     }
 }

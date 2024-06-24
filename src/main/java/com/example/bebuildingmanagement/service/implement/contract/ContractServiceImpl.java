@@ -11,7 +11,7 @@ import com.example.bebuildingmanagement.projections.employee.IEmployeeInfoProjec
 import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.repository.contract.IContractRepository;
-import com.example.bebuildingmanagement.repository.ICustomerRepository;
+import com.example.bebuildingmanagement.repository.customer.ICustomerRepository;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;

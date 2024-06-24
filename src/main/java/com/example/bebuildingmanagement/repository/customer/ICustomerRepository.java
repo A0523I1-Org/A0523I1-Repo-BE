@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.repository;
+package com.example.bebuildingmanagement.repository.customer;
 
 import com.example.bebuildingmanagement.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
