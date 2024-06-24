@@ -1,7 +1,7 @@
-package com.example.bebuildingmanagement.service.implement;
+package com.example.bebuildingmanagement.service.implement.landing;
 
-import com.example.bebuildingmanagement.repository.ILandingRepository;
-import com.example.bebuildingmanagement.service.interfaces.ILandingService;
+import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
+import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

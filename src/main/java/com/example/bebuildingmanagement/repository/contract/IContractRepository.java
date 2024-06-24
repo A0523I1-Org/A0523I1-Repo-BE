@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.repository;
+package com.example.bebuildingmanagement.repository.contract;
 
 import com.example.bebuildingmanagement.entity.Contract;
 import org.springframework.data.jpa.repository.JpaRepository;

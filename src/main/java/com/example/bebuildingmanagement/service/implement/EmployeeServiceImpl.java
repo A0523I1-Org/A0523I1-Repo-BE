@@ -1,11 +1,10 @@
 package com.example.bebuildingmanagement.service.implement;
 
 import com.example.bebuildingmanagement.dto.EmployeeDTO;
-import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
-import com.example.bebuildingmanagement.repository.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
