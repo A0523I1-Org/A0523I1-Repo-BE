@@ -14,6 +14,7 @@ public interface ICustomerService {
     void createCustomers(String name,  String address, Date dob, String phone, String email,
                          String idCard, String companyName, String website, String gender);
 
+
     void edit(String name,  String address, Date dob, String phone, String email,
               String idCard, String companyName, String website, String gender, long id);
 
