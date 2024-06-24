@@ -80,6 +80,7 @@ public class CustomerController {
     public ResponseEntity<CustomerRequestDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO, @PathVariable long id, BindingResult bindingResult) {
         new CustomerRequestDTO().validate(customerRequestDTO, bindingResult);
         try {
+
             iCustomerService.edit(customerRequestDTO.getName(), customerRequestDTO.getAddress(), customerRequestDTO.getDob(), customerRequestDTO.getPhone(), customerRequestDTO.getEmail(), customerRequestDTO.getIdCard(), customerRequestDTO.getCompanyName(), customerRequestDTO.getWebsite(), customerRequestDTO.getGender(), id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
