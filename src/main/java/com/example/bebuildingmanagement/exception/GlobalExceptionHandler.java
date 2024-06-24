@@ -142,17 +142,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
 
     }
-
-//    @ExceptionHandler(value = RuntimeException.class)
-//    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
-//        ApiResponseDTO response = ApiResponseDTO.builder()
-//                .message(exception.getMessage())
-//                .status(HttpStatus.BAD_REQUEST.value())
-//                .timestamp(System.currentTimeMillis())
-//                .build();
-//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-//    }
-
+    // Exception runtime : (Hoài NT)
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
         ApiResponseDTO response = ApiResponseDTO.builder()
@@ -163,20 +153,6 @@ public class GlobalExceptionHandler {
                 .build();
         return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
-
-//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
-//    Map<String, String> errorMap = new HashMap<>();
-//        exception.getBindingResult().getFieldErrors().forEach(error -> {
-//        errorMap.put(error.getField(), error.getDefaultMessage());
-//    });
-//        ApiResponseDTO response = ApiResponseDTO.builder()
-//                .timestamp(System.currentTimeMillis())
-//                .result(errorMap)
-//                .build();
-//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-//    }
 
 
         @ExceptionHandler(CustomerNotFoundException.class)
