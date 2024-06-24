@@ -1,8 +1,7 @@
 package com.example.bebuildingmanagement.dto.response.landing;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
+// DTO trả về danh sách mặt bằng còn trống : (Hoài NT)
 @Getter
 @Setter
 @Builder

@@ -17,6 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,47 +135,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageConversionException.class)
     public ResponseEntity<ApiResponseDTO> handleHttpMessageConversionException(HttpMessageConversionException e) {
         ApiResponseDTO response = ApiResponseDTO.builder()
-                .message("Invalid request body")
+                .message("Giá trị truyền vào không hợp lệ, vui lòng kiểm tra lại")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(System.currentTimeMillis())
                 .build();
         return ResponseEntity.badRequest().body(response);
 
     }
-
-//    @ExceptionHandler(value = RuntimeException.class)
-//    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
-//        ApiResponseDTO response = ApiResponseDTO.builder()
-//                .message(exception.getMessage())
-//                .status(HttpStatus.BAD_REQUEST.value())
-//                .timestamp(System.currentTimeMillis())
-//                .build();
-//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-//    }
-
+    // Exception runtime : (Hoài NT)
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
         ApiResponseDTO response = ApiResponseDTO.builder()
                 .message(exception.getMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(System.currentTimeMillis())
+                .result(exception.getMessage())
                 .build();
         return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
-
-//    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    ResponseEntity<ApiResponseDTO> handlingValidation(MethodArgumentNotValidException exception){
-//    Map<String, String> errorMap = new HashMap<>();
-//        exception.getBindingResult().getFieldErrors().forEach(error -> {
-//        errorMap.put(error.getField(), error.getDefaultMessage());
-//    });
-//        ApiResponseDTO response = ApiResponseDTO.builder()
-//                .timestamp(System.currentTimeMillis())
-//                .result(errorMap)
-//                .build();
-//        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-//    }
 
 
         @ExceptionHandler(CustomerNotFoundException.class)
@@ -199,7 +177,16 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        String errorMessage = "Invalid input format for parameter " + ex.getValue();
+        ApiResponseDTO response = ApiResponseDTO.builder()
+                .message(errorMessage)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .timestamp(System.currentTimeMillis())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
 }
 
