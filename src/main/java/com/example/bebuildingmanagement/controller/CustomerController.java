@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.entity.Customer;
-import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,7 @@ import java.util.List;
 public class CustomerController {
     ICustomerService iCustomerService;
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllLandingSpace(){
-
+    public ResponseEntity<List<Customer>> getAllCustomer(){
         return new ResponseEntity<>( iCustomerService.getAllCustomer(), HttpStatus.OK);
     }
 }

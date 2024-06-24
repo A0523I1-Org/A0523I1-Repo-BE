@@ -5,13 +5,15 @@ import com.example.bebuildingmanagement.dto.request.contract.ContractNewRequestD
 import com.example.bebuildingmanagement.dto.request.contract.ContractRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.contract.ContractResponseDTO;
+import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.exception.GlobalExceptionHandler;
+import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.contract.IContractService;
 import com.example.bebuildingmanagement.projections.contract.ContractDetailsProjection;
 import com.example.bebuildingmanagement.constants.ContractConst;
 
 
-
+import com.example.bebuildingmanagement.validate.customerValidate.validateCustom.ContractUpdateValidator;
 import jakarta.validation.Valid;
 
 import lombok.AccessLevel;
@@ -21,6 +23,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +42,9 @@ import java.util.Optional;
 public class ContractController {
 
     IContractService iContractService;
+    PasswordEncoder passwordEncoder;
+    IAccountService iAccountService;
+    ContractUpdateValidator contractUpdateValidator;
 
     @GetMapping("")
     public ResponseEntity<Iterable<ContractResponseDTO>> getContracts(@RequestParam("page") Optional<Integer> page,
@@ -66,8 +72,8 @@ public class ContractController {
                                                          BindingResult bindingResult
     ) {
         //lay mật khẩu đang đăng nhập để xác nhận :
-        String password = "a123456";
-        if (!confirmPassword.equals(password)) {
+        Account account =  iAccountService.getCurrentAccount();
+        if (!passwordEncoder.matches(confirmPassword, account.getPassword())) {
             throw new RuntimeException(ContractConst.ERROR_MESSAGE.CONFIRM_PASSWORD_FALSE);
         }
         // check validate
@@ -102,7 +108,7 @@ public class ContractController {
     @PutMapping("/{contractId}")
     public ResponseEntity<ApiResponseDTO> updateContractById(@PathVariable("contractId") long contractId
             ,@Valid  @RequestBody ContractRequestDTO contractRequestDTO,BindingResult bindingResult)  {
-        contractRequestDTO.validate(contractRequestDTO,bindingResult);
+        contractUpdateValidator.validate(contractRequestDTO,bindingResult);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
