@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.service.implement;
+package com.example.bebuildingmanagement.service.implement.customer;
 
 
 
@@ -6,8 +6,8 @@ import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 
 
 import com.example.bebuildingmanagement.entity.Customer;
-import com.example.bebuildingmanagement.repository.ICustomerRepository;
-import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
+import com.example.bebuildingmanagement.repository.customer.ICustomerRepository;
+import com.example.bebuildingmanagement.service.interfaces.customer.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

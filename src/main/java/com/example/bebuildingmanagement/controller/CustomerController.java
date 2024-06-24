@@ -5,7 +5,7 @@ package com.example.bebuildingmanagement.controller;
 import com.example.bebuildingmanagement.dto.request.CustomerRequestDTO;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 
-import com.example.bebuildingmanagement.service.interfaces.ICustomerService;
+import com.example.bebuildingmanagement.service.interfaces.customer.ICustomerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -115,7 +114,7 @@ public class CustomerController {
         if (customerDTOPage.getContent().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(customerDTOPage.getContent(), HttpStatus.OK);
+            return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
 }
