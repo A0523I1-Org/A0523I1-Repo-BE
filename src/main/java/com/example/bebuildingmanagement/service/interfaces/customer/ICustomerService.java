@@ -1,5 +1,4 @@
 package com.example.bebuildingmanagement.service.interfaces.customer;
-
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,3 +25,4 @@ public interface ICustomerService {
     void deleteCustomersByIds(List<Long> ids);
 
 }
+

@@ -1,7 +1,5 @@
 package com.example.bebuildingmanagement.repository.customer;
 
-
-import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
 import com.example.bebuildingmanagement.entity.Customer;
 
 import org.springframework.data.domain.Page;
@@ -15,7 +13,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 
 import java.util.Date;
 import java.util.List;
