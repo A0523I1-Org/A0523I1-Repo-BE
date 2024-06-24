@@ -131,5 +131,9 @@ public class CustomerController {
             return new ResponseEntity<>(customerDTOPage, HttpStatus.OK);
         }
     }
+    @GetMapping("")
+    public ResponseEntity<List<Customer>> getAllCustomerForContract(){
+        return new ResponseEntity<>(iCustomerService.getAllCustomerForContract(),HttpStatus.OK);
+    }
 
 }

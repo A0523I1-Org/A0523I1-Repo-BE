@@ -70,6 +70,10 @@ public class CustomerServiceImpl implements ICustomerService {
         iCustomerRepository.deleteCustomersByIds(ids);
     }
 
+    @Override
+    public List<Customer> getAllCustomerForContract() {
+        return iCustomerRepository.findAll();
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.bebuildingmanagement.service.interfaces.customer;
 import com.example.bebuildingmanagement.dto.response.CustomerResponseDTO;
+import com.example.bebuildingmanagement.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,5 +25,6 @@ public interface ICustomerService {
     Page<CustomerResponseDTO> searchByName(Pageable pageable, String name);
     void deleteCustomersByIds(List<Long> ids);
 
+    List<Customer> getAllCustomerForContract();
 }
 
