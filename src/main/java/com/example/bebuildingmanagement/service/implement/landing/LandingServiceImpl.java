@@ -130,7 +130,8 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO findLandingByCode(String code) {
-        return iLandingRepository.findLandingByCode(code);
+        Landing ld = iLandingRepository.findLandingByCode(code);
+        return convertToDto(ld);
     }
 
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
