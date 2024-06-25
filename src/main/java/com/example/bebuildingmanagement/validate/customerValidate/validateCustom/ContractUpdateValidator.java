@@ -85,8 +85,6 @@ public class ContractUpdateValidator implements Validator {
         //check content:
         if (content == null || content.trim().equals("")) {
             errors.rejectValue("content", "", "Vui lòng nhập nội dung H/Đ !");
-        } else if (content.length() < 10) {
-            errors.rejectValue("content", "", "Vui lòng nhập nội dung tối thiểu 50 kí tự !");
         } else if( content.length() > 250){
             errors.rejectValue("content", "", "Vui lòng nhập nội dung tối đa 250 kí tự !");
         }
