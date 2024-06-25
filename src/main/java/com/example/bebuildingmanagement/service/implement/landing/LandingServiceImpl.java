@@ -36,6 +36,13 @@ public class LandingServiceImpl implements ILandingService {
     ModelMapper modelMapper;
     Validator validator;
 
+
+    private LandingHomeResponseDTO convertToLandingHomeDto(Landing landing) {
+        LandingHomeResponseDTO dto = modelMapper.map(landing, LandingHomeResponseDTO.class);
+        dto.setFloor(landing.getFloor().getName());  // Đảm bảo map đúng tên tầng
+        return dto;
+    }
+
     @Override
     public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding, String floorLanding) {
         Pageable pageable = PageRequest.of(page, size);
@@ -126,10 +133,10 @@ public class LandingServiceImpl implements ILandingService {
         Pageable pageable = PageRequest.of(page, size);
 
         // Lấy danh sách phân trang các bản ghi Landing từ repository
-        Page<LandingHomeResponseDTO> listLandingHome = iLandingRepository.findAllLandingsHome(pageable);
+        Page<Object[]> result = iLandingRepository.findAllLandingsHome(pageable);
 
         // Trả về danh sách phân trang các DTO Landing
-        return listLandingHome;
+        return result.map(objects -> LandingHomeResponseDTO.fromObjectArray(objects));
     }
 
 

@@ -3,6 +3,8 @@ package com.example.bebuildingmanagement.repository.landing;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
 import com.example.bebuildingmanagement.entity.Landing;
+import jakarta.persistence.ConstructorResult;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Repository
 public interface ILandingRepository extends JpaRepository<Landing, Long> {
+
 
 //    Thien-LC comment
     boolean existsByCode(String code);
@@ -96,13 +99,17 @@ public interface ILandingRepository extends JpaRepository<Landing, Long> {
      * @return Một trang (page) các đối tượng LandingResponseHomeDTO chứa thông tin về area, description, fee_manager,
      *         fee_per_month, firebase_url, type của landing và name của floor.
      */
-    @Query("SELECT new com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO(ld.area, ld.description, ld.feeManager, ld.feePerMonth, ld.firebaseUrl,ld.type,  fl.name) " +
-            "FROM Landing ld " +
-            "JOIN ld.floor fl " +
-            "WHERE ld.status != 'Occupied'\n" +
-            "  AND ld.isDeleted != true\n" +
-            "  AND fl.isDeleted != true")
-    Page<LandingHomeResponseDTO> findAllLandingsHome(Pageable pageable);
+
+    @Query(value = "SELECT ld.id as landing_id, ld.code, ld.type, ld.area, ld.description, ld.status, ld.fee_per_month, ld.fee_manager, ld.firebase_url, fl.name " +
+            "FROM landing ld " +
+            "JOIN floor fl ON ld.floor_id = fl.id " +
+            "WHERE ld.is_available = 1 AND ld.is_deleted = 0 AND fl.is_deleted = 0",
+            countQuery = "SELECT COUNT(ld.id) " +
+                    "FROM landing ld " +
+                    "JOIN floor fl ON ld.floor_id = fl.id " +
+                    "WHERE ld.is_available = 1 AND ld.is_deleted = 0 AND fl.is_deleted = 0",
+            nativeQuery = true)
+    Page<Object[]> findAllLandingsHome(Pageable pageable);
 
     // hoài lấy ds mặt bằng còn trống
     @Query(value = " select * " +
