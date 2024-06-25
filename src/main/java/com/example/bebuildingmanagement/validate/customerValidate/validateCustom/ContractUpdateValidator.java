@@ -72,19 +72,19 @@ public class ContractUpdateValidator implements Validator {
         } else if (deposit <= 0) {
             errors.rejectValue("deposit", "", "Tiền đặt cọc ko bằng được bằng 0");
         }
-//        else if (deposit < (term * currentFee * 10) / 100) {
-//            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu bằng 10% so với tổng tiền (currentFee*term) ! ");
-//        }
+        else if (deposit < (term * currentFee * 10) / 100) {
+            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu bằng 10% so với tổng tiền (currentFee*term) ! ");
+        }
         else if (deposit > (term * currentFee)){
             errors.rejectValue("deposit", "", "Tiền đặt cọc không được nhập lớn hơn tổng tiền  ");
-        }else if (deposit < (3 * currentFee)) {
-            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu phải bằng 3 tháng tiền thuê!");
+
         }
+//        else if (deposit < (3 * currentFee)) {
+//            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu phải bằng 3 tháng tiền thuê!");
+//        }
         //check content:
         if (content == null || content.trim().equals("")) {
             errors.rejectValue("content", "", "Vui lòng nhập nội dung H/Đ !");
-        } else if (content.length() < 10) {
-            errors.rejectValue("content", "", "Vui lòng nhập nội dung tối thiểu 50 kí tự !");
         } else if( content.length() > 250){
             errors.rejectValue("content", "", "Vui lòng nhập nội dung tối đa 250 kí tự !");
         }
