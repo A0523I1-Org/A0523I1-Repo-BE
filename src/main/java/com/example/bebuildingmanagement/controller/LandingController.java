@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/landing")
-@CrossOrigin("*")
+@CrossOrigin(value = "http://localhost:3000",allowedHeaders = "*")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LandingController {
