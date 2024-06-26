@@ -29,7 +29,8 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.UPDATE_CONTRACT,nativeQuery = true)
-    void updateContractById(@Param("content") String content
+    void updateContractById(
+            @Param("content") String content
             ,@Param("deposit") double deposit
             ,@Param("startDate") Date startDate
             ,@Param("endDate") Date endDate, @Param("firebaseUrl") String firebaseUrl
@@ -38,8 +39,13 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.DELETE_CONTRACT,nativeQuery = true)
-    void deleteContractById( Long id);
+    void deleteContractById(@Param("contractId") Long contractId, @Param("landingId") Long landingId);
 
+    @Query(value = ContractConst.QUERY.LANDING_ID, nativeQuery = true)
+    Long queryLandingId(@Param("contractId") Long contractId);
+
+
+    // lấy danh sách hợp đồng của người đang đăng nhập : (Hoài NT)
     @Query(value = ContractConst.QUERY.SELECT_CONTRACTS_BY_EMPLOYEE_USERNAME,
             nativeQuery = true,
             countQuery = ContractConst.QUERY.COUNT_CONTRACT_BY_USERNAME
@@ -48,7 +54,7 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
 
 
 
-
+    // Thêm mới hợp đồng : (Hoài NT)
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.INSERT_CONTRACT,
@@ -59,11 +65,15 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
                             String firebaseUrl,String content,Long landingId,
                             Long customerId,Long employeeId) ;
 
-
+    // kiểm tra xem mặt bằng đã làm hợp đồng chưa : (Hoài NT)
     boolean existsByLandingId(Long landingId);
+
+
+    // lấy tất cả danh sách hợp đồng dành cho role ADMIN : (Hoài NT)
     @Query(value = ContractConst.QUERY.SELECT_ALL_CONTRACT,
             nativeQuery = true,
             countQuery = ContractConst.QUERY.COUNT_ALL_CONTRACT
                 )
     Page<IContractProjection> getContracts(Pageable pageable, String customerName, String landingCode, String startDate, String endDate);
+
 }

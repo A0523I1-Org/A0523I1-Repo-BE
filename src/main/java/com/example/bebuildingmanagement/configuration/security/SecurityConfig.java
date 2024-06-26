@@ -1,6 +1,8 @@
 package com.example.bebuildingmanagement.configuration.security;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -21,20 +23,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
 
     @Resource
-    private UserDetailsService userDetailsService;
+    UserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
-    private CustomLogoutHandler logoutHandler;
+    CustomLogoutHandler logoutHandler;
 
-    private final String[] PUBLIC_ENDPOINTS = {
+    String[] publicEndPoints = {
             "/login/**", "/refresh_token/**", "/register/**", "/landingHome/**"
     };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +45,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers(PUBLIC_ENDPOINTS)
+                        req->req.requestMatchers(publicEndPoints)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

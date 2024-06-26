@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 
-import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
 
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
@@ -17,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +54,9 @@ public class LandingController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
-        iLandingService.updateLanding(landingRequestDTO);
+         iLandingService.updateLanding(landingRequestDTO);
 
-        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
+         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
 
         return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
 
@@ -66,8 +68,8 @@ public class LandingController {
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<LandingResponseDTO> findLanding(@PathVariable Long id) {
+    @GetMapping("{id}")
+    ResponseEntity<LandingResponseDTO> findLanding(@PathVariable("id") Long id) {
         LandingResponseDTO landingResponseDTO = iLandingService.findLanding(id);
         return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
     }

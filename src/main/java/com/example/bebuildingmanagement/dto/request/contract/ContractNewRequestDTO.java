@@ -1,19 +1,16 @@
 package com.example.bebuildingmanagement.dto.request.contract;
-
 import com.example.bebuildingmanagement.constants.ContractConst;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 
-import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
+// DTO hợp đồng mới (Hoài NT)
 
 @Getter
 @Setter
@@ -39,7 +36,7 @@ public class ContractNewRequestDTO  implements Validator {
           return false;
      }
 
-
+     // validate :
      @Override
      public void validate(Object target, Errors errors) {
           ContractNewRequestDTO contractNewRequestDTO = (ContractNewRequestDTO) target;
@@ -97,8 +94,6 @@ public class ContractNewRequestDTO  implements Validator {
           //check content :
           if (content == null || content.trim().equals("")) {
                errors.rejectValue("content", "", ContractConst.ERROR_MESSAGE.CONTENT_NOT_BLANK);
-          } else if (content.length() < 50) {
-               errors.rejectValue("content", "", ContractConst.ERROR_MESSAGE.CONTENT_MIN);
           }
 
           //check id landing and employee :

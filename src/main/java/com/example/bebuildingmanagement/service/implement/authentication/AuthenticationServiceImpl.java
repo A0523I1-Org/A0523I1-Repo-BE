@@ -2,8 +2,6 @@ package com.example.bebuildingmanagement.service.implement.authentication;
 
 
 import com.example.bebuildingmanagement.dto.request.authentication.AuthenticationRequest;
-import com.example.bebuildingmanagement.dto.request.authentication.RegisterRequest;
-import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
@@ -11,7 +9,6 @@ import com.example.bebuildingmanagement.entity.authentication.Token;
 import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
 import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
-import com.example.bebuildingmanagement.repository.IRoleRepository;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import com.example.bebuildingmanagement.service.interfaces.authentication.IAuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,8 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -38,37 +33,9 @@ import java.util.*;
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
     IAccountRepository iAccountRepository;
-    PasswordEncoder passwordEncoder;
     JwtServiceImpl jwtServiceImpl;
     ITokenRepository iTokenRepository;
     AuthenticationManager authenticationManager;
-    IRoleRepository iRoleRepository;
-
-    public AuthenticationResponse register(RegisterRequest request) {
-
-        // check if user already exist. if exist than authenticate the user
-        if(iAccountRepository.findByUsername(request.getUsername()).isPresent()) {
-            return AuthenticationResponse.builder()
-                    .message("User already exist")
-                    .build();
-        }
-
-        Account account = new Account();
-        account.setUsername(request.getUsername());
-        account.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        // Chỗ này cần xứ lí role thêm nữa
-        HashSet<Role> roles = new HashSet<>();
-        iRoleRepository.findByName("USER").ifPresent(roles::add);
-        account.setRoles(roles);
-
-        account = iAccountRepository.save(account);
-
-        saveUserToken(null, null, account);
-
-        return AuthenticationResponse.builder().message("User registration was successful").build();
-
-    }
 
     /*====================================== AUTHENTICATION METHODS ======================================*/
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

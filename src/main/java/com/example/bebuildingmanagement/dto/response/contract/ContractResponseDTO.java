@@ -1,10 +1,8 @@
 package com.example.bebuildingmanagement.dto.response.contract;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-
+// DTO lấy dữ liệu trả về danh sách hợp đồng : (Hoài NT)
 @Getter
 @Setter
 @Builder
