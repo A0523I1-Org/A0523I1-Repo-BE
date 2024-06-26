@@ -6,7 +6,6 @@ import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.dto.EmployeeDTO;
 import com.example.bebuildingmanagement.entity.Account;
-import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
@@ -46,14 +45,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeePage.map(this::convertToDTO);
     }
 
-    /*
-        @Override
-        public EmployeeResDTO findEmployeeById(Long id) {
-            Employee employee = iEmployeeRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Employee not found"));
-            return convertToDTO(employee);
-        }
-    */
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
     public EmployeeResDTO findEmployeeById(Long id) {

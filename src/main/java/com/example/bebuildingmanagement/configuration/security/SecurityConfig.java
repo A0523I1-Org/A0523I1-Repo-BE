@@ -1,4 +1,5 @@
 package com.example.bebuildingmanagement.configuration.security;
+
 import jakarta.annotation.Resource;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class SecurityConfig {
 
     CustomLogoutHandler logoutHandler;
 
-    private final String[] publicEndPoints = {
+    String[] publicEndPoints = {
             "/login/**", "/refresh_token/**", "/register/**", "/landingHome/**"
     };
 
@@ -45,18 +46,18 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers(publicEndPoints)
+                        req -> req.requestMatchers(publicEndPoints)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
                 .userDetailsService(userDetailsService)
-                .sessionManagement(session->session
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
-                        e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
+                        e -> e.accessDeniedHandler(
+                                        (request, response, accessDeniedException) -> response.setStatus(403)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
 
@@ -74,6 +75,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-
 }
