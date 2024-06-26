@@ -13,18 +13,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     // lấy employee by username : (Hoài NT)
     @Query(value = "select e.id ," +
-                    " e.name  ," +
-                    " e.phone ," +
-                    "e.email " +
-                    " from employee as e " +
-                    " join account as a " +
-                    " on e.account_id = a.id " +
-                    " where username = ?1 ",
+            " e.name  ," +
+            " e.phone ," +
+            "e.email " +
+            " from employee as e " +
+            " join account as a " +
+            " on e.account_id = a.id " +
+            " where username = ?1 ",
             nativeQuery = true)
     IEmployeeInfoProjection getEmployeeByUsername(String username);
 
@@ -82,8 +83,29 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Modifying
     @Transactional
     @Query(value = "update employee set is_deleted = 1 where id = ?1", nativeQuery = true)
-    void deleteEmployeeByQuery( Long id);
+    void deleteEmployeeByQuery(Long id);
 
     @Query(value = "SELECT COUNT(*) FROM employee", nativeQuery = true)
     Long getMaxId();
+
+    @Query(value = "select e.email from employee e", nativeQuery = true)
+    List<String> findAllExistEmail();
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE employee e SET e.name = :name, e.dob = :dob, e.gender = :gender, e.address = :address," +
+            " e.phone = :phone, e.email = :email, e.work_date = :workDate, e.firebase_url = :firebaseUrl, " +
+            "e.department_id = :department, e.salary_rank_id = :salaryRank WHERE e.id = :id", nativeQuery = true)
+    void updateEmployeeByQuery(@Param("name") String name,
+                               @Param("dob") Date dob,
+                               @Param("gender") String gender,
+                               @Param("address") String address,
+                               @Param("phone") String phone,
+                               @Param("email") String email,
+                               @Param("workDate") Date workDate,
+                               @Param("firebaseUrl") String firebaseUrl,
+                               @Param("department") Long department,
+                               @Param("salaryRank") Long salaryRank,
+                               @Param("id") long id);
+
 }

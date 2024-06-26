@@ -25,7 +25,6 @@ public class Employee {
     String phone;
     String email;
     Date workDate;
-    String position;
     String firebaseUrl;
 
 
@@ -43,5 +42,4 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "account_id")
     Account account;
-
 }

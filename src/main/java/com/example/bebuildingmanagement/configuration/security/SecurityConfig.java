@@ -34,7 +34,7 @@ public class SecurityConfig {
 
     CustomLogoutHandler logoutHandler;
 
-    String[] publicEndPoints = {
+    private final String[] publicEndPoints = {
             "/login/**", "/refresh_token/**", "/register/**", "/landingHome/**"
     };
 
