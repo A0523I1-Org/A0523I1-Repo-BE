@@ -44,11 +44,22 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeePage.map(this::convertToDTO);
     }
 
+    /*
+        @Override
+        public EmployeeResDTO findEmployeeById(Long id) {
+            Employee employee = iEmployeeRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Employee not found"));
+            return convertToDTO(employee);
+        }
+    */
     @Override
     public EmployeeResDTO findEmployeeById(Long id) {
-        Employee employee = iEmployeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        return convertToDTO(employee);
+        Employee employee = iEmployeeRepository.findById(id).orElse(null);
+        if (employee == null) {
+            return null;
+        } else {
+            return convertToDTO(employee);
+        }
     }
 
     @Override
