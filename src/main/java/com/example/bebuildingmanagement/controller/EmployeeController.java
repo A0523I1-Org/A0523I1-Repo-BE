@@ -80,6 +80,10 @@ public class EmployeeController {
         if (bindingResult.hasErrors()) {
             throw new MethodArgumentNotValidException(null, bindingResult);
         }
+        List<String> allEmailExist = iEmployeeService.findAllExistEmail();
+        if (allEmailExist.contains(employeeDTO.getEmail())) {
+            return new ResponseEntity<>("Employee email exist !.", HttpStatus.BAD_REQUEST);
+        }
         iEmployeeService.addEmployeeByQuery(employeeDTO);
         return new ResponseEntity<>("Employee added.", HttpStatus.CREATED);
     }
