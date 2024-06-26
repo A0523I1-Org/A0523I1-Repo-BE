@@ -3,13 +3,20 @@ package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.AccountReqDTO;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Employee;
+import com.example.bebuildingmanagement.dto.request.ChangePasswordRequest;
+import com.example.bebuildingmanagement.dto.response.ChangePasswordResponse;
+import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
+import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
-import com.example.bebuildingmanagement.repository.IEmployeeRepository;
+import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +25,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountServiceImpl implements IAccountService {
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
+    
     IAccountRepository iAccountRepository;
-
-    @Autowired
+    PasswordEncoder passwordEncoder;
     IEmployeeRepository iEmployeeRepository;
 
     @Override
@@ -55,5 +58,44 @@ public class AccountServiceImpl implements IAccountService {
         } else {
             return "Employee account created failed";
         }
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account account = iAccountRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Access roles to initialize them within the transaction
+        account.getRoles().size();
+        return account;
+    }
+
+    @Override
+    public Account getCurrentAccount() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        return iAccountRepository.findByUsername(name).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest) {
+        Account account = getCurrentAccount();
+
+        if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
+
+            String newPasswordEncoded = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+            int updateCount = iAccountRepository.updatePasswordByUsername(account.getUsername(), newPasswordEncoded);
+
+            if (updateCount > 0) {
+                return ChangePasswordResponse.builder()
+                        .message("Đổi mật khẩu thành công.")
+                        .build();
+            }
+        }
+        return ChangePasswordResponse.builder()
+                .message("Đổi mật khẩu thất bại.")
+                .build();
     }
 }
