@@ -1,5 +1,4 @@
-package com.example.bebuildingmanagement.service.implement.landing;
-
+package com.example.bebuildingmanagement.service.implement;
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.LandingHomeResponseDTO;
 import com.example.bebuildingmanagement.dto.response.LandingResponseDTO;
@@ -8,9 +7,9 @@ import com.example.bebuildingmanagement.entity.Floor;
 import com.example.bebuildingmanagement.entity.Landing;
 import com.example.bebuildingmanagement.exception.CustomValidationException;
 import com.example.bebuildingmanagement.repository.IFloorRepository;
-import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import com.example.bebuildingmanagement.repository.landing.ILandingRepository;
 import com.example.bebuildingmanagement.service.interfaces.landing.ILandingService;
+import com.example.bebuildingmanagement.validate.customerValidate.validateclass.code.ValidationGroups;
 import jakarta.validation.Validator;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+
 
 import java.util.List;
 import java.util.Set;
@@ -35,19 +35,6 @@ public class LandingServiceImpl implements ILandingService {
     IFloorRepository floorRepository;
     ModelMapper modelMapper;
     Validator validator;
-
-
-    private LandingHomeResponseDTO convertToLandingHomeDto(Landing landing) {
-        LandingHomeResponseDTO dto = modelMapper.map(landing, LandingHomeResponseDTO.class);
-        dto.setFloor(landing.getFloor().getName());  // Đảm bảo map đúng tên tầng
-        return dto;
-    }
-
-    private LandingResponseDTO convertToDto(Landing landing) {
-        LandingResponseDTO dto = modelMapper.map(landing, LandingResponseDTO.class);
-        dto.setFloor(landing.getFloor().getName());
-        return dto;
-    }
 
     @Override
     public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding, String floorLanding) {
@@ -64,6 +51,11 @@ public class LandingServiceImpl implements ILandingService {
 
     }
 
+    private LandingResponseDTO convertToDto(Landing landing) {
+        LandingResponseDTO dto = modelMapper.map(landing, LandingResponseDTO.class);
+        dto.setFloor(landing.getFloor().getName());
+        return dto;
+    }
     @Override
     public LandingResponseDTO createLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
@@ -93,30 +85,13 @@ public class LandingServiceImpl implements ILandingService {
     @Override
     public void updateLanding(LandingRequestDTO landingRequestDTO) {
         validateLandingRequest(landingRequestDTO);
-//        if (iLandingRepository.existsByCode(landingRequestDTO.getCode())) {
-//            throw new CustomValidationException("Mã mặt bằng đã tồn tại");
-//        }
-
-
-        ;
         iLandingRepository.updateLanding(landingRequestDTO.getCode(), landingRequestDTO.getType(), landingRequestDTO.getArea(), landingRequestDTO.getStatus(), landingRequestDTO.getDescription(), landingRequestDTO.getFeePerMonth(), landingRequestDTO.getFeeManager(), landingRequestDTO.getFirebaseUrl(), landingRequestDTO.getFloor(), landingRequestDTO.getId());
     }
-
-//    @Override
-//    public Page<LandingResponseDTO> findAll(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        Page<LandingResponseDTO> listLanding = iLandingRepository.findListAllLanding(pageable);
-//
-////        Page<LandingResponseDTO> landingResponseDTOPage = listLanding.map(listNew -> modelMapper.map(listNew, LandingResponseDTO.class));
-//
-//        return listLanding;
-//    }
 
 
     @Override
     public void deleteLanding(Long id) {
-        LandingResponseDTO landing = iLandingRepository.findLanding(id);
+        Landing landing = iLandingRepository.findLanding(id);
         if (landing == null) {
             throw new CustomValidationException("Mặt bằng không tồn tại");
         }
@@ -125,7 +100,11 @@ public class LandingServiceImpl implements ILandingService {
 
     @Override
     public LandingResponseDTO findLanding(Long id) {
-        return iLandingRepository.findLanding(id);
+        Landing landing = iLandingRepository.findLanding(id);
+        if (landing == null) {
+            throw new CustomValidationException("Mặt bằng không tồn tại");
+        }
+        return convertToDto(landing);
     }
 
     /**
@@ -148,10 +127,10 @@ public class LandingServiceImpl implements ILandingService {
         return result.map(objects -> LandingHomeResponseDTO.fromObjectArray(objects));
     }
 
-
     @Override
     public LandingResponseDTO findLandingByCode(String code) {
-        return iLandingRepository.findLandingByCode(code);
+        Landing ld = iLandingRepository.findLandingByCode(code);
+        return convertToDto(ld);
     }
 
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
@@ -184,6 +163,7 @@ public class LandingServiceImpl implements ILandingService {
         if (!formatViolationsFeeManager.isEmpty()) {
             throw new ConstraintViolationException(formatViolationsFeeManager);
         }
+
 
 
     }

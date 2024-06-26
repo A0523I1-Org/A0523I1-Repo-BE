@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 
-
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
@@ -47,15 +46,16 @@ public class LandingController {
             @RequestParam(value = "floorLanding", required = false) String floorLanding) {
 
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+
         return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Void>> updateLading(@PathVariable("id") Long id, @RequestBody @Valid LandingRequestDTO landingRequestDTO) {
         landingRequestDTO.setId(id);
-         iLandingService.updateLanding(landingRequestDTO);
+        iLandingService.updateLanding(landingRequestDTO);
 
-         ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
+        ApiResponseDTO apiResponseDTO = ApiResponseDTO.builder().code(1000).message("Update landing successfully").build();
 
         return new ResponseEntity<>(apiResponseDTO,HttpStatus.OK);
 
@@ -67,8 +67,8 @@ public class LandingController {
         return new ResponseEntity<>(floorResponseDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    ResponseEntity<LandingResponseDTO> findLanding(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<LandingResponseDTO> findLanding(@PathVariable Long id) {
         LandingResponseDTO landingResponseDTO = iLandingService.findLanding(id);
         return new ResponseEntity<>(landingResponseDTO, HttpStatus.OK);
     }
