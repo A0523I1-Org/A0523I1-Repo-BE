@@ -62,7 +62,8 @@ public class ContractServiceImpl implements IContractService {
     @Override
     public void deleteContractById(Long id) {
         iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Hợp đồng " + id+ " không tồn tại "));
-        iContractRepository.deleteContractById(id);
+        Long landingId =  iContractRepository.queryLandingId(id);
+        iContractRepository.deleteContractById(id,landingId);
     }
     //anh lq
 // Danh Sách Hợp Đồng : (Hoài NT)

@@ -39,7 +39,10 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
     @Modifying
     @Transactional
     @Query(value = ContractConst.QUERY.DELETE_CONTRACT,nativeQuery = true)
-    void deleteContractById( Long id);
+    void deleteContractById(@Param("contractId") Long contractId, @Param("landingId") Long landingId);
+
+    @Query(value = ContractConst.QUERY.LANDING_ID, nativeQuery = true)
+    Long queryLandingId(@Param("contractId") Long contractId);
 
 
     // lấy danh sách hợp đồng của người đang đăng nhập : (Hoài NT)

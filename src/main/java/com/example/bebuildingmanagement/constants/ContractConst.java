@@ -92,7 +92,11 @@ public class ContractConst {
                 " landing_id, customer_id, employee_id )" +
                 " VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11)";
         public final static String UPDATE_CONTRACT = " UPDATE contract SET content = :content, deposit = :deposit, start_date = :startDate,end_date = :endDate, firebase_url =  :firebaseUrl,tax_code = :taxCode,term = :term, current_fee = :currentFee WHERE id = :id";
-        public final static String DELETE_CONTRACT =  " UPDATE contract SET is_deleted = 1 WHERE id = ?1 ";
+        public final static String DELETE_CONTRACT =  " UPDATE contract c " +
+                " INNER JOIN landing l ON c.landing_id = l.id " +
+                " SET c.is_deleted = 1, l.is_available = 1 " +
+                " WHERE c.id = :contractId AND l.id =  :landingId ;";
+        public final static String LANDING_ID =  "SELECT landing_id FROM contract where id = :contractId";
         public final static String SELECT_CONTRACT_BY_ID = "SELECT cont.id,land.code as code,cus.name as customerName,emp.name as employeeName,cont.content as content,cont.deposit as deposit,cont.start_date as startDate, cont.current_fee as FeePerMouth,cont.end_date as endDate,cont.firebase_url as firebaseUrl,cont.tax_code as taxCode,cont.term  as term" +
                 " FROM Contract cont " +
                 " join landing land on cont.landing_id = land.id " +

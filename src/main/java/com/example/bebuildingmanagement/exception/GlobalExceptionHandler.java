@@ -176,7 +176,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        String errorMessage = "Invalid input format for parameter " + ex.getValue();
+        String errorMessage = "Giá trị bạn đang nhập " + ex.getValue() + " không hợp lệ ";
         ApiResponseDTO response = ApiResponseDTO.builder()
                 .message(errorMessage)
                 .status(HttpStatus.BAD_REQUEST.value())
