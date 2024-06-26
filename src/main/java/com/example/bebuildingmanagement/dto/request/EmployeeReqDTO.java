@@ -22,10 +22,11 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeReqDTO implements Validator {
+    Long id;
     String code;
     @NotBlank(message = "Employee name not be blank !")
     @Size(min = 5, max = 100, message = "Employee name only 5 to 100 characters")
-    @Pattern(regexp = "^[A-Za-zÀ-ỹ]+(\\s[A-Za-zÀ-ỹ]+)*$", message = "Employee name does not matches the pattern !")
+    @Pattern(regexp = "^[A-ZÀ-Ỹ][a-zà-ỹ]+(\\s[A-ZÀ-Ỹ][a-zà-ỹ]+)+$", message = "Employee name does not matches the pattern !")
     String name;
     @NotNull(message = "Employee day of birth not be null !")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -33,12 +34,13 @@ public class EmployeeReqDTO implements Validator {
     @NotBlank(message = "Employee gender not be blank !")
     String gender;
     @NotBlank(message = "Employee address not be blank !")
+    @Size(min = 5, max = 500, message = "Employee address only 5 to 500 characters")
     String address;
     @NotBlank(message = "Employee phone not be blank !")
     @Pattern(regexp = "^0\\d{9}$", message = "Employee phone does not matches the pattern !")
     String phone;
     @NotBlank(message = "Employee email not be blank !")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+@gmail.com$", message = "Employee email does not matches the pattern !")
+    @Pattern(regexp = "^[a-zA-Z0-9._]+@gmail\\.com$", message = "Employee email does not matches the pattern !")
     String email;
     @NotNull(message = "Employee work start date not be blank !")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -57,16 +59,29 @@ public class EmployeeReqDTO implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+//        Check age
         EmployeeReqDTO employeeReqDTO = (EmployeeReqDTO) target;
         if (employeeReqDTO.getDob() != null) {
             LocalDate localDate = employeeReqDTO.getDob().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate currentDay = LocalDate.now();
-            int age = Period.between(localDate, currentDay).getYears();
+            int age = Period.between(localDate, LocalDate.now()).getYears();
             if (age < 18) {
-                errors.rejectValue("day_of_birth", "employee.age.min");
-            } else if (age > 100) {
-                errors.rejectValue("day_of_birth", "employee.age.max");
+                errors.rejectValue("dob", "", "Employee must be at least 18 years old.");
+            } else if (age > 120) {
+                errors.rejectValue("dob", "", "Employee age cannot exceed 120 years.");
             }
         }
+//        Check date start work
+
+        if (employeeReqDTO.getWorkDate() != null) {
+            LocalDate localDate = employeeReqDTO.getWorkDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int date = Period.between(localDate, LocalDate.now()).getDays();
+            if (date < -31) {
+                errors.rejectValue("workDate", "", "Employee must be at least 18 years old.");
+            } else if (date > 30) {
+                errors.rejectValue("workDate", "", "Employee age cannot exceed 120 years.");
+            }
+        }
+
     }
+
 }
