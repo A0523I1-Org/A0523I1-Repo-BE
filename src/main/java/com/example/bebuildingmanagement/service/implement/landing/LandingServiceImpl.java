@@ -43,6 +43,12 @@ public class LandingServiceImpl implements ILandingService {
         return dto;
     }
 
+    private LandingResponseDTO convertToDto(Landing landing) {
+        LandingResponseDTO dto = modelMapper.map(landing, LandingResponseDTO.class);
+        dto.setFloor(landing.getFloor().getName());
+        return dto;
+    }
+
     @Override
     public Page<LandingResponseDTO> findAll(int page, int size, String statusLanding, String codeLanding, Double areaLanding, String typeLanding, String floorLanding) {
         Pageable pageable = PageRequest.of(page, size);
@@ -51,7 +57,10 @@ public class LandingServiceImpl implements ILandingService {
         statusLanding = "%" + statusLanding + "%";
         floorLanding = "%" + floorLanding + "%";
 
-        return iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+        Page<Landing> results = iLandingRepository.findListAllLanding(pageable, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+
+
+        return results.map(this::convertToDto);
 
     }
 
