@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -34,7 +33,6 @@ public class EmployeeController {
     IEmployeeService iEmployeeService;
 
     //VUNV
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<EmployeeResDTO>> searchEmployees(
             @RequestParam(value = "code", required = false) String code,
@@ -53,6 +51,7 @@ public class EmployeeController {
             @RequestParam(value = "salaryRankId", required = false) Long salaryRankId,
             @RequestParam(value = "accountUsername", required = false) String accountUsername,
             @RequestParam("page") Optional<Integer> page) {
+
 
         int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
         Pageable pageable = PageRequest.of(currentPage, 5);

@@ -1,4 +1,4 @@
-package com.example.bebuildingmanagement.dto.request.authentication;
+package com.example.bebuildingmanagement.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RegisterRequest {
-    String username;
-    String password;
+
+public class FieldErrorDTO {
+    private String field;
+    private int code;
+    private String message;
 }

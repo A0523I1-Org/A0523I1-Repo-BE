@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*") //cho phép FE & BE chạy trên domain khác nhau thực thi yêu cầu cross-origin
 public class AccountController {
 
-    @Autowired
     IAccountService iAccountService;
 
     //    Sử dụng @Valid để tự động kiểm tra tính hợp lệ của các trường trong DTO. Nếu có bất kỳ vi phạm nào, một MethodArgumentNotValidException sẽ được ném ra.

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository
 public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
-    // hoài lấy employee by username
+    // lấy employee by username : (Hoài NT)
     @Query(value = "select e.id ," +
             " e.name  ," +
             " e.phone ," +

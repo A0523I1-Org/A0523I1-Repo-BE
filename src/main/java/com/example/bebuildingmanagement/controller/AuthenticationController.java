@@ -1,7 +1,6 @@
 package com.example.bebuildingmanagement.controller;
 
 import com.example.bebuildingmanagement.dto.request.authentication.AuthenticationRequest;
-import com.example.bebuildingmanagement.dto.request.authentication.RegisterRequest;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.service.implement.authentication.AuthenticationServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
