@@ -35,7 +35,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Customer c SET c.name = :name, c.address = :address, c.dob = :dob, c.phone = :phone, c.email = :email, c.id_card = :idCard, c.company_name = :companyName, c.website = :website, c.gender = :gender WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Customer c SET c.name = :name, c.address = :address, c.dob = :dob, c.phone = :phone, c.email = :email, c.id_card = :idCard, c.company_name = :companyName, c.website = :website, c.gender = :gender WHERE c.id = :id and is_deleted = 0 ", nativeQuery = true)
     void updateCustomer(@Param("name") String name,
                         @Param("address") String address,
                         @Param("dob") Date dob,
@@ -58,11 +58,11 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     void deleteCustomersByIds(@Param("ids") List<Long> ids);
 
     @Transactional
-    @Query(value = "select * FROM  Customer  where id= :id", nativeQuery = true)
+    @Query(value = "select * FROM  Customer  where id= :id and is_deleted = 0", nativeQuery = true)
     Customer findCustomerId(@Param("id") long id);
 
     @Transactional
-    @Query(value = "select * FROM  Customer where name like %:name%", nativeQuery = true)
+    @Query(value = "select * FROM  Customer where name like %:name% AND is_deleted = 0", nativeQuery = true)
     Page<Customer> searchByName(Pageable pageable, @Param("name") String name);
 
 }
