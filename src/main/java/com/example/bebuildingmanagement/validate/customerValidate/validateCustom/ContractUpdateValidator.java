@@ -19,7 +19,7 @@ import java.util.Optional;
 public class ContractUpdateValidator implements Validator {
     @Autowired
     private IContractRepository iContractRepository;
-
+  
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
