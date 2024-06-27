@@ -26,10 +26,7 @@ public enum ErrorCode {
     TYPE_NOT_BLANK(15, "Vui lòng chọn loại mặt bằng"),
     DESCRIPTION_MAX_LENGTH(16, "Chú thích có độ dài tối đa 200 ký tự"),
     DESCRIPTION_NO_SPECIAL_CHARACTERS(17, "Chú thích không được có ký tự đặc biệt."),
-
-
     VALIDATION_ERROR, CUSTOM_VALIDATION_ERROR;
-
 
     private int code;
     private String message;

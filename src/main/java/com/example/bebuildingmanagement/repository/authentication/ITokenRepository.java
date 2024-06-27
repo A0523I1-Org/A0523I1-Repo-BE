@@ -46,5 +46,10 @@ public interface ITokenRepository extends JpaRepository<Token, Long> {
     @Modifying
     @Query(value = "UPDATE token SET logged_out = true WHERE id IN (:tokenIds)", nativeQuery = true)
     void updateTokensToLoggedOut(List<Long> tokenIds);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE token SET logged_out = true WHERE id = :id", nativeQuery = true)
+    void logOutTokenById(Long id);
 }
 

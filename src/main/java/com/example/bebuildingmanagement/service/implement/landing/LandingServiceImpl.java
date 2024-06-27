@@ -121,16 +121,16 @@ public class LandingServiceImpl implements ILandingService {
         Pageable pageable = PageRequest.of(page, size);
 
         // Lấy danh sách phân trang các bản ghi Landing từ repository
-        Page<LandingHomeResponseDTO> listLandingHome = iLandingRepository.findAllLandingsHome(pageable);
+        Page<Object[]> result = iLandingRepository.findAllLandingsHome(pageable);
 
         // Trả về danh sách phân trang các DTO Landing
-        return listLandingHome;
+        return result.map(objects -> LandingHomeResponseDTO.fromObjectArray(objects));
     }
-
 
     @Override
     public LandingResponseDTO findLandingByCode(String code) {
-        return iLandingRepository.findLandingByCode(code);
+        Landing ld = iLandingRepository.findLandingByCode(code);
+        return convertToDto(ld);
     }
 
     private void validateLandingRequest(LandingRequestDTO landingRequest) {
