@@ -50,21 +50,20 @@ public class LandingRequestDTO {
 
     String status;
 
-//    @NoSpecialCharactersDescription(message = "DESCRIPTION_NO_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+    //    @NoSpecialCharactersDescription(message = "DESCRIPTION_NO_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     @MaxLengthDescription(value = 200, message = "DESCRIPTION_MAX_LENGTH", groups = ValidationGroups.LengthChecks.class)
     String description;
 
 
 
     @FeePerMonthNotBlank(message = "FEEPERMONTH_LANDING_NOTBLANK", groups = ValidationGroups.MandatoryChecks.class)
-    @FeePerMonthSpecialCharacter(message = "FEEPERMONTH_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+//    @FeePerMonthSpecialCharacter(message = "FEEPERMONTH_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     double feePerMonth;
 
 
     @NotBlankFeeManager(message = "FEEMAGER_LANDING_NOT_BLANK", groups = ValidationGroups.MandatoryChecksFeeManager.class)
-    @FeeManagerSpecialCharacter(message = "FEEMAGER_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
+//    @FeeManagerSpecialCharacter(message = "FEEMAGER_LANDING_NOT_SPECIAL_CHARACTERS", groups = ValidationGroups.SpecialCharacterChecks.class)
     double feeManager;
-
 
     String firebaseUrl;
 
