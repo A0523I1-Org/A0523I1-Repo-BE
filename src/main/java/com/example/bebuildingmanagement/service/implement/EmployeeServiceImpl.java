@@ -72,6 +72,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void updateEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
         iEmployeeRepository.updateEmployeeByQuery(employeeReqDTO.getName(), employeeReqDTO.getDob(), employeeReqDTO.getGender(), employeeReqDTO.getAddress(),
                 employeeReqDTO.getPhone(), employeeReqDTO.getEmail(), employeeReqDTO.getWorkDate(), employeeReqDTO.getFirebaseUrl()
