@@ -33,8 +33,6 @@ public class CustomLogoutHandler implements LogoutHandler {
         String token = authHeader.substring(7);
         Token storedToken = iTokenRepository.findByAccessToken(token).orElse(null);
 
-        log.info(String.valueOf(storedToken));
-
         if(storedToken != null) {
             storedToken.setLoggedOut(true);
             iTokenRepository.logOutTokenById(storedToken.getId());

@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,14 +29,14 @@ import java.util.Optional;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountServiceImpl implements IAccountService {
-
-
+    
     IAccountRepository iAccountRepository;
     PasswordEncoder passwordEncoder;
     IEmployeeRepository iEmployeeRepository;
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String createEmployeeAccount(Long employeeId, AccountReqDTO accountReqDTO) {
         // Step_1: Check if account exists
         Optional<Account> existingAccount = iAccountRepository.findByUsername(accountReqDTO.getUsername());

@@ -15,10 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +33,6 @@ public class EmployeeController {
     IEmployeeService iEmployeeService;
 
     //VUNV
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<EmployeeResDTO>> searchEmployees(
             @RequestParam(value = "code", required = false) String code,
@@ -51,22 +52,6 @@ public class EmployeeController {
             @RequestParam(value = "accountUsername", required = false) String accountUsername,
             @RequestParam("page") Optional<Integer> page) {
 
-        System.out.println("Search criteria:");
-        System.out.println("Code: " + code);
-        System.out.println("Name: " + name);
-        System.out.println("DOB: " + dob);
-        System.out.println("DOBFrom: " + dobFrom);
-        System.out.println("DOBTo: " + dobTo);
-        System.out.println("Gender: " + gender);
-        System.out.println("Address: " + address);
-        System.out.println("Phone: " + phone);
-        System.out.println("Email: " + email);
-        System.out.println("WorkDate: " + workDate);
-        System.out.println("WorkDateFrom: " + workDateFrom);
-        System.out.println("WorkDateTo: " + workDateTo);
-        System.out.println("DepartmentId: " + departmentId);
-        System.out.println("SalaryRankId: " + salaryRankId);
-        System.out.println("AccountUsername: " + accountUsername);
 
         int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
         Pageable pageable = PageRequest.of(currentPage, 5);
@@ -89,20 +74,50 @@ public class EmployeeController {
 
     //THIENTV
     @PostMapping("/add")
-    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO) {
+    public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
+        new EmployeeReqDTO().validate(employeeDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new MethodArgumentNotValidException(null, bindingResult);
+        }
+        List<String> allEmailExist = iEmployeeService.findAllExistEmail();
+        if (allEmailExist.contains(employeeDTO.getEmail())) {
+            return new ResponseEntity<>("Employee email exist !.", HttpStatus.BAD_REQUEST);
+        }
         iEmployeeService.addEmployeeByQuery(employeeDTO);
         return new ResponseEntity<>("Employee added.", HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
         if (employee == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Employee not found to delete !", HttpStatus.BAD_REQUEST);
         }
         iEmployeeService.deleteEmployeeById(id);
         return new ResponseEntity<>("Delete employee successfully.", HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
+        new EmployeeReqDTO().validate(employeeDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new MethodArgumentNotValidException(null, bindingResult);
+        }
+        EmployeeResDTO employeeResDTO = iEmployeeService.findEmployeeById(employeeDTO.getId());
+        if (employeeResDTO == null) {
+            return new ResponseEntity<>("Employee not found to update !", HttpStatus.BAD_REQUEST);
+        } else {
+            iEmployeeService.updateEmployeeByQuery(employeeDTO);
+            return new ResponseEntity<>("Employee updated successfully.", HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<String>> findAllExistEmail() {
+        List<String> emails = iEmployeeService.findAllExistEmail();
+        return new ResponseEntity<>(emails, HttpStatus.OK);
+    }
+
 
     @GetMapping("/my-info")
     public ResponseEntity<EmployeeDTO> getMyInfo() {
