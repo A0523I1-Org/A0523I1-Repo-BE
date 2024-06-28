@@ -64,6 +64,8 @@ public class ContractServiceImpl implements IContractService {
         iContractRepository.contractById(id).orElseThrow(() -> new ResourceNotFoundException("Hợp đồng " + id+ " không tồn tại "));
         Long landingId =  iContractRepository.queryLandingId(id);
         iContractRepository.deleteContractById(id,landingId);
+        // set mb ve null
+        iContractRepository.updateContractByLanding(id);
     }
     //anh lq
 // Danh Sách Hợp Đồng : (Hoài NT)
