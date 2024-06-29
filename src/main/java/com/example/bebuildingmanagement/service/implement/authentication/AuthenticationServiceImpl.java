@@ -2,8 +2,6 @@ package com.example.bebuildingmanagement.service.implement.authentication;
 
 
 import com.example.bebuildingmanagement.dto.request.authentication.AuthenticationRequest;
-import com.example.bebuildingmanagement.dto.request.authentication.RegisterRequest;
-import com.example.bebuildingmanagement.dto.response.authentication.AccountResponse;
 import com.example.bebuildingmanagement.dto.response.authentication.AuthenticationResponse;
 import com.example.bebuildingmanagement.entity.Account;
 import com.example.bebuildingmanagement.entity.Role;
@@ -11,7 +9,6 @@ import com.example.bebuildingmanagement.entity.authentication.Token;
 import com.example.bebuildingmanagement.exception.authentication.AccountNotFoundException;
 import com.example.bebuildingmanagement.exception.authentication.InvalidPasswordException;
 import com.example.bebuildingmanagement.repository.IAccountRepository;
-import com.example.bebuildingmanagement.repository.IRoleRepository;
 import com.example.bebuildingmanagement.repository.authentication.ITokenRepository;
 import com.example.bebuildingmanagement.service.interfaces.authentication.IAuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
 

@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,6 +35,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     IAccountService iAccountService;
 
     @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<EmployeeResDTO> searchEmployees(String code, String name, Date dob, Date dobFrom, Date dobTo, String gender,
                                                 String address, String phone, String email, Date workDate, Date workDateFrom,
                                                 Date workDateTo, Long departmentId, Long salaryRankId, String accountUsername,
@@ -44,6 +46,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public EmployeeResDTO findEmployeeById(Long id) {
         Employee employee = iEmployeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
@@ -51,11 +54,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteEmployeeById(Long id) {
         iEmployeeRepository.deleteEmployeeByQuery(id);
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void addEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
         Long number = iEmployeeRepository.getMaxId() + 1;
         String code = "O.E-" + String.format("%04d", number);

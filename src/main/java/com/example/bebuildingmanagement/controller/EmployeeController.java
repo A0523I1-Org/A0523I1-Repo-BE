@@ -31,7 +31,6 @@ public class EmployeeController {
     IEmployeeService iEmployeeService;
 
     //VUNV
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<EmployeeResDTO>> searchEmployees(
             @RequestParam(value = "code", required = false) String code,
@@ -51,22 +50,6 @@ public class EmployeeController {
             @RequestParam(value = "accountUsername", required = false) String accountUsername,
             @RequestParam("page") Optional<Integer> page) {
 
-        System.out.println("Search criteria:");
-        System.out.println("Code: " + code);
-        System.out.println("Name: " + name);
-        System.out.println("DOB: " + dob);
-        System.out.println("DOBFrom: " + dobFrom);
-        System.out.println("DOBTo: " + dobTo);
-        System.out.println("Gender: " + gender);
-        System.out.println("Address: " + address);
-        System.out.println("Phone: " + phone);
-        System.out.println("Email: " + email);
-        System.out.println("WorkDate: " + workDate);
-        System.out.println("WorkDateFrom: " + workDateFrom);
-        System.out.println("WorkDateTo: " + workDateTo);
-        System.out.println("DepartmentId: " + departmentId);
-        System.out.println("SalaryRankId: " + salaryRankId);
-        System.out.println("AccountUsername: " + accountUsername);
 
         int currentPage = page.map(p -> Math.max(p, 0)).orElse(0);
         Pageable pageable = PageRequest.of(currentPage, 5);
