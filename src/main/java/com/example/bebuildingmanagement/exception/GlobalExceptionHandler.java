@@ -20,26 +20,36 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ApiResponseDTO<List<FieldErrorDTO>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        List<FieldErrorDTO> errors = new ArrayList<>();
-        exception.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            ErrorCode errorCode = resolveErrorCode(errorMessage);
-            errors.add(new FieldErrorDTO(fieldName, errorCode.getCode(), errorCode.getMessage()));
-        });
-        return buildErrorResponse(errors);
-    }
+            @ExceptionHandler(MethodArgumentNotValidException.class)
+            @ResponseStatus(HttpStatus.BAD_REQUEST)
+            public ResponseEntity<ApiResponseDTO<List<FieldErrorDTO>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+                List<FieldErrorDTO> errors = new ArrayList<>();
+                exception.getBindingResult().getAllErrors().forEach((error) -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    ErrorCode errorCode = resolveErrorCode(errorMessage);
+                    errors.add(new FieldErrorDTO(fieldName, errorCode.getCode(), errorCode.getMessage()));
+                });
+                return buildErrorResponse(errors);
+            }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((e) -> {
+//            String fieldName = ((FieldError) e).getField();
+//            String errorMessage = e.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -122,10 +132,10 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponseDTO> handleResourceNotFoundException(ResourceNotFoundException exception){
+    public ResponseEntity<ApiResponseDTO> handleResourceNotFoundException(ResourceNotFoundException exception) {
         String messege = exception.getMessage();
         ApiResponseDTO response = ApiResponseDTO.builder().message(messege).status(HttpStatus.NOT_FOUND.value()).build();
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 
@@ -139,24 +149,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
 
     }
+
     // Exception runtime : (Hoài NT)
     @ExceptionHandler(value = RuntimeException.class)
-    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception){
+    ResponseEntity<ApiResponseDTO> handlingRuntimeException(RuntimeException exception) {
         ApiResponseDTO response = ApiResponseDTO.builder()
                 .message(exception.getMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(System.currentTimeMillis())
                 .result(exception.getMessage())
                 .build();
-        return  new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
-        @ExceptionHandler(CustomerNotFoundException.class)
-        public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
 
     @ExceptionHandler(InvalidPasswordException.class)
@@ -174,6 +184,7 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         String errorMessage = "Giá trị bạn đang nhập " + ex.getValue() + " không hợp lệ ";

@@ -88,16 +88,15 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("salaryRankId") Long salaryRankId,
             @Param("accountUsername") String accountUsername,
             Pageable pageable);
-
+    //THIENTV
     @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender, e.address, e.phone, " +
             "e.email, e.work_date, e.position, e.firebase_url, e.is_deleted, " +
             "e.department_id, e.salary_rank_id, e.account_id " +
             "FROM Employee e " +
-            "WHERE e.id = ?1",
+            "WHERE e.id = ?1 AND e.is_deleted = 0",
             nativeQuery = true)
     Employee findEmployeeById(Long id);
 
-    //THIENTV
     @Modifying
     @Transactional
     @Query(value = "insert into employee(code, name, dob, gender, address, phone, email, work_date, firebase_url, department_id, salary_rank_id)" +
@@ -134,5 +133,4 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
                                @Param("department") Long department,
                                @Param("salaryRank") Long salaryRank,
                                @Param("id") long id);
-
 }
