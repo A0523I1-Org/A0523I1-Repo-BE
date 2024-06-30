@@ -65,7 +65,7 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
                             String firebaseUrl,String content,Long landingId,
                             Long customerId,Long employeeId) ;
 
-    // kiểm tra xem mặt bằng đã làm hợp đồng chưa : (Hoài NT)
+
     boolean existsByLandingId(Long landingId);
 
 
@@ -76,4 +76,10 @@ public interface IContractRepository extends JpaRepository<Contract, Long> {
                 )
     Page<IContractProjection> getContracts(Pageable pageable, String customerName, String landingCode, String startDate, String endDate);
 
+    // sét lại mằng về null sau khi xóa
+    @Modifying
+    @Transactional
+    @Query(value = ContractConst.QUERY.UPDATE_CONTRAC_IS_LANDING,
+            nativeQuery = true)
+    void updateContractByLanding(Long id);
 }

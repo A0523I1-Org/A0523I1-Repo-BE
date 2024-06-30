@@ -28,7 +28,7 @@ import java.util.Map;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-            @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*        @ExceptionHandler(MethodArgumentNotValidException.class)
             @ResponseStatus(HttpStatus.BAD_REQUEST)
             public ResponseEntity<ApiResponseDTO<List<FieldErrorDTO>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
                 List<FieldErrorDTO> errors = new ArrayList<>();
@@ -39,17 +39,17 @@ public class GlobalExceptionHandler {
                     errors.add(new FieldErrorDTO(fieldName, errorCode.getCode(), errorCode.getMessage()));
                 });
                 return buildErrorResponse(errors);
-            }
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((e) -> {
-//            String fieldName = ((FieldError) e).getField();
-//            String errorMessage = e.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-//    }
+            }*/
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((e) -> {
+            String fieldName = ((FieldError) e).getField();
+            String errorMessage = e.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -197,4 +197,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-

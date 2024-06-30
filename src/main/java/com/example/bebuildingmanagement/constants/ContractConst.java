@@ -109,6 +109,10 @@ public class ContractConst {
                                 " term as term " +
                                 " from contract " +
                                  " where landing_id = ?1";
+        public static final String UPDATE_CONTRAC_IS_LANDING =
+                            " update contract " +
+                           " set landing_id = NULL " +
+                            " where id = ?1 ";
     }
 
 
