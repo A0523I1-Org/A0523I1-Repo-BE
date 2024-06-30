@@ -33,9 +33,13 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT * FROM Employee WHERE account_id = :accountId", nativeQuery = true)
     Employee findByAccount(@Param("accountId") Long accountId);
 
-    @Query("SELECT e FROM Employee e " +
-            "LEFT JOIN e.account a " +
-            "WHERE e.isDeleted = false " +
+    @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender, " +
+            "e.address, e.phone, e.email, e.work_date, " +
+            "e.position, e.firebase_url, e.is_deleted, " +
+            "e.department_id, e.salary_rank_id, e.account_id " +
+            "FROM Employee e " +
+            "LEFT JOIN Account a ON e.account_id = a.id " +
+            "WHERE e.is_deleted = false " +
             "AND (:code IS NULL OR e.code LIKE %:code%) " +
             "AND (:name IS NULL OR e.name LIKE %:name%) " +
             "AND (:dob IS NULL OR DATE(e.dob) = :dob) " +
@@ -44,11 +48,29 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             "AND (:address IS NULL OR e.address LIKE %:address%) " +
             "AND (:phone IS NULL OR e.phone LIKE %:phone%) " +
             "AND (:email IS NULL OR e.email LIKE %:email%) " +
-            "AND (:workDate IS NULL OR DATE(e.workDate) = :workDate) " +
-            "AND (:workDateFrom IS NULL OR :workDateTo IS NULL OR e.workDate BETWEEN :workDateFrom AND :workDateTo) " +
-            "AND (:departmentId IS NULL OR e.department.id = :departmentId) " +
-            "AND (:salaryRankId IS NULL OR e.salaryRank.id = :salaryRankId) " +
-            "AND (:accountUsername IS NULL OR :accountUsername = '' OR a.username LIKE %:accountUsername%)")
+            "AND (:workDate IS NULL OR DATE(e.work_date) = :workDate) " +
+            "AND (:workDateFrom IS NULL OR :workDateTo IS NULL OR e.work_date BETWEEN :workDateFrom AND :workDateTo) " +
+            "AND (:departmentId IS NULL OR e.department_id = :departmentId) " +
+            "AND (:salaryRankId IS NULL OR e.salary_rank_id = :salaryRankId) " +
+            "AND (:accountUsername IS NULL OR :accountUsername = '' OR a.username LIKE %:accountUsername%)",
+            countQuery = "SELECT COUNT(e.id) " +
+                    "FROM Employee e " +
+                    "LEFT JOIN Account a ON e.account_id = a.id " +
+                    "WHERE e.is_deleted = false " +
+                    "AND (:code IS NULL OR e.code LIKE %:code%) " +
+                    "AND (:name IS NULL OR e.name LIKE %:name%) " +
+                    "AND (:dob IS NULL OR DATE(e.dob) = :dob) " +
+                    "AND (:dobFrom IS NULL OR :dobTo IS NULL OR e.dob BETWEEN :dobFrom AND :dobTo) " +
+                    "AND (:gender IS NULL OR e.gender LIKE %:gender%) " +
+                    "AND (:address IS NULL OR e.address LIKE %:address%) " +
+                    "AND (:phone IS NULL OR e.phone LIKE %:phone%) " +
+                    "AND (:email IS NULL OR e.email LIKE %:email%) " +
+                    "AND (:workDate IS NULL OR DATE(e.work_date) = :workDate) " +
+                    "AND (:workDateFrom IS NULL OR :workDateTo IS NULL OR e.work_date BETWEEN :workDateFrom AND :workDateTo) " +
+                    "AND (:departmentId IS NULL OR e.department_id = :departmentId) " +
+                    "AND (:salaryRankId IS NULL OR e.salary_rank_id = :salaryRankId) " +
+                    "AND (:accountUsername IS NULL OR :accountUsername = '' OR a.username LIKE %:accountUsername%)",
+            nativeQuery = true)
     Page<Employee> search(
             @Param("code") String code,
             @Param("name") String name,
@@ -67,7 +89,12 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("accountUsername") String accountUsername,
             Pageable pageable);
 
-    @Query("SELECT e FROM Employee e WHERE e.id = ?1")
+    @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender, e.address, e.phone, " +
+            "e.email, e.work_date, e.position, e.firebase_url, e.is_deleted, " +
+            "e.department_id, e.salary_rank_id, e.account_id " +
+            "FROM Employee e " +
+            "WHERE e.id = ?1",
+            nativeQuery = true)
     Employee findEmployeeById(Long id);
 
     //THIENTV
