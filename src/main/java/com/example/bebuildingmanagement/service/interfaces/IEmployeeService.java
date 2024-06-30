@@ -25,4 +25,6 @@ public interface IEmployeeService {
     void updateEmployeeByQuery(EmployeeReqDTO employeeReqDTO);
 
     List<String> findAllExistEmail();
+
+    EmployeeReqDTO findEmployeeToUpdate(Long id);
 }

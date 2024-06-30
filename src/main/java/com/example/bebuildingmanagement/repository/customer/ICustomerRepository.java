@@ -58,11 +58,11 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     void deleteCustomersByIds(@Param("ids") List<Long> ids);
 
     @Transactional
-    @Query(value = "select * FROM  Customer  where id= :id", nativeQuery = true)
+    @Query(value = "select * FROM  Customer  where id= :id and is_deleted = 0", nativeQuery = true)
     Customer findCustomerId(@Param("id") long id);
 
     @Transactional
-    @Query(value = "select * FROM  Customer where name like %:name%", nativeQuery = true)
+    @Query(value = "select * FROM  Customer where name like %:name% and is_deleted = 0", nativeQuery = true)
     Page<Customer> searchByName(Pageable pageable, @Param("name") String name);
 
 }
