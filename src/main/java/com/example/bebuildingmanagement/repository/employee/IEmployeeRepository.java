@@ -33,9 +33,9 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT * FROM Employee WHERE account_id = :accountId", nativeQuery = true)
     Employee findByAccount(@Param("accountId") Long accountId);
 
-    @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender, " +
+    @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender " +
             "e.address, e.phone, e.email, e.work_date, " +
-            "e.position, e.firebase_url, e.is_deleted, " +
+            ", e.firebase_url, e.is_deleted, " +
             "e.department_id, e.salary_rank_id, e.account_id " +
             "FROM Employee e " +
             "LEFT JOIN Account a ON e.account_id = a.id " +
@@ -91,7 +91,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
 
     //THIENTV
     @Query(value = "SELECT e.id, e.code, e.name, e.dob, e.gender, e.address, e.phone, " +
-            "e.email, e.work_date, e.position, e.firebase_url, e.is_deleted, " +
+            "e.email, e.work_date, e.firebase_url, e.is_deleted, " +
             "e.department_id, e.salary_rank_id, e.account_id " +
             "FROM Employee e " +
             "WHERE e.id = ?1 AND e.is_deleted = 0",
