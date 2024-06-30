@@ -71,14 +71,15 @@ public class EmployeeReqDTO implements Validator {
             }
         }
 //        Check date start work
-
-        if (employeeReqDTO.getWorkDate() != null) {
+        if (employeeReqDTO.getWorkDate() != null && employeeReqDTO.getId() == null) {
             LocalDate localDate = employeeReqDTO.getWorkDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            int date = Period.between(localDate, LocalDate.now()).getDays();
-            if (date < -31) {
-                errors.rejectValue("workDate", "", "Employee must be at least 18 years old.");
-            } else if (date > 30) {
-                errors.rejectValue("workDate", "", "Employee age cannot exceed 120 years.");
+            int date = Math.abs(Period.between(localDate, LocalDate.now()).getDays());
+
+            Period period = Period.between(localDate, LocalDate.now());
+            int daysBetween = Math.abs(period.getDays()) + Math.abs(period.getMonths() * 30) + Math.abs(period.getYears() * 365);
+            System.out.println(daysBetween);
+            if (daysBetween > 30) {
+                errors.rejectValue("workDate", "", "The working start date must be no more than 30 days before or after the filling date !");
             }
         }
 

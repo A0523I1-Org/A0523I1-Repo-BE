@@ -60,19 +60,19 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+    //THIENTV
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResDTO> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<?> getEmployeeById(@PathVariable Long id) {
         EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
         if (employee == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Employee not found", HttpStatus.BAD_REQUEST);
         }
         if (employee.isDeleted()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Employee is deleted", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    //THIENTV
     @PostMapping("/add")
     public ResponseEntity<String> addEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
         new EmployeeReqDTO().validate(employeeDTO, bindingResult);
@@ -87,29 +87,46 @@ public class EmployeeController {
         return new ResponseEntity<>("Employee added.", HttpStatus.CREATED);
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
-        EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
-        if (employee == null) {
-            return new ResponseEntity<>("Employee not found to delete !", HttpStatus.BAD_REQUEST);
-        }
-        iEmployeeService.deleteEmployeeById(id);
-        return new ResponseEntity<>("Delete employee successfully.", HttpStatus.NO_CONTENT);
-    }
-
     @PutMapping("/update")
-    public ResponseEntity<String> updateEmployee(@Valid @RequestBody EmployeeReqDTO employeeDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
-        new EmployeeReqDTO().validate(employeeDTO, bindingResult);
+    public ResponseEntity<String> updateEmployee(@Valid @RequestBody EmployeeReqDTO employeeReqDTO, BindingResult bindingResult) throws MethodArgumentNotValidException {
+        new EmployeeReqDTO().validate(employeeReqDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             throw new MethodArgumentNotValidException(null, bindingResult);
         }
-        EmployeeResDTO employeeResDTO = iEmployeeService.findEmployeeById(employeeDTO.getId());
+
+        EmployeeResDTO employeeResDTO = iEmployeeService.findEmployeeById(employeeReqDTO.getId());
         if (employeeResDTO == null) {
             return new ResponseEntity<>("Employee not found to update !", HttpStatus.BAD_REQUEST);
-        } else {
-            iEmployeeService.updateEmployeeByQuery(employeeDTO);
-            return new ResponseEntity<>("Employee updated successfully.", HttpStatus.OK);
         }
+        List<String> allEmailExist = iEmployeeService.findAllExistEmail();
+        allEmailExist.remove(employeeResDTO.getEmail());
+
+        if (allEmailExist.contains(employeeReqDTO.getEmail())) {
+            return new ResponseEntity<>("Employee email exist !.", HttpStatus.BAD_REQUEST);
+        }
+
+        iEmployeeService.updateEmployeeByQuery(employeeReqDTO);
+        return new ResponseEntity<>("Employee updated successfully.", HttpStatus.OK);
+    }
+
+
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+        EmployeeResDTO employee = iEmployeeService.findEmployeeById(id);
+        if (employee == null ) {
+            return new ResponseEntity<>("Employee not found to delete !", HttpStatus.BAD_REQUEST);
+        }
+        iEmployeeService.deleteEmployeeById(id);
+        return new ResponseEntity<>("Delete employee successfully.", HttpStatus.OK);
+    }
+
+    @GetMapping("/getUpdate/{id}")
+    public ResponseEntity<?> getEmployeeToUpdate(@PathVariable Long id) {
+        EmployeeReqDTO employee = iEmployeeService.findEmployeeToUpdate(id);
+        if (employee == null) {
+            return new ResponseEntity<>("Employee not found to update", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @GetMapping("/email")

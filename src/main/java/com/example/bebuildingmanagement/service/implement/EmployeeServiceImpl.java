@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @PreAuthorize("hasAuthority('ADMIN')")
     public EmployeeResDTO findEmployeeById(Long id) {
         Employee employee = iEmployeeRepository.findById(id).orElse(null);
-        if (employee == null) {
+        if (employee == null || employee.isDeleted()) {
             return null;
         } else {
             return convertToDTO(employee);
@@ -84,6 +85,26 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return iEmployeeRepository.findAllExistEmail();
     }
 
+    @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public EmployeeReqDTO findEmployeeToUpdate(Long id) {
+        Employee employee = iEmployeeRepository.findById(id).orElse(null);
+        if (employee == null || employee.isDeleted()) return null;
+        return new EmployeeReqDTO(
+                employee.getId(),
+                employee.getCode(),
+                employee.getName(),
+                employee.getDob(),
+                employee.getGender(),
+                employee.getAddress(),
+                employee.getPhone(),
+                employee.getEmail(),
+                employee.getWorkDate(),
+                employee.getFirebaseUrl(),
+                employee.getDepartment().getId(),
+                employee.getSalaryRank().getId()
+        );
+    }
 
     private EmployeeResDTO convertToDTO(Employee employee) {
         EmployeeResDTO employeeResDTO = modelMapper.map(employee, EmployeeResDTO.class);
