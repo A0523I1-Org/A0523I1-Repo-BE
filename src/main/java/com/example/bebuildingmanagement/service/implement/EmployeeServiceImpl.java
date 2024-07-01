@@ -6,7 +6,6 @@ import com.example.bebuildingmanagement.entity.Employee;
 import com.example.bebuildingmanagement.repository.employee.IEmployeeRepository;
 import com.example.bebuildingmanagement.dto.EmployeeDTO;
 import com.example.bebuildingmanagement.entity.Account;
-import com.example.bebuildingmanagement.repository.IAccountRepository;
 import com.example.bebuildingmanagement.service.interfaces.IAccountService;
 import com.example.bebuildingmanagement.service.interfaces.IEmployeeService;
 import lombok.AccessLevel;
@@ -20,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +48,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
     public EmployeeResDTO findEmployeeById(Long id) {
-        Employee employee = iEmployeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        return convertToDTO(employee);
+        Employee employee = iEmployeeRepository.findById(id).orElse(null);
+        if (employee == null) {
+            return null;
+        } else {
+            return convertToDTO(employee);
+        }
     }
 
     @Override
@@ -67,6 +70,20 @@ public class EmployeeServiceImpl implements IEmployeeService {
         employeeReqDTO.setCode(code);
         iEmployeeRepository.addEmployeeByQuery(employeeReqDTO);
     }
+
+    @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void updateEmployeeByQuery(EmployeeReqDTO employeeReqDTO) {
+        iEmployeeRepository.updateEmployeeByQuery(employeeReqDTO.getName(), employeeReqDTO.getDob(), employeeReqDTO.getGender(), employeeReqDTO.getAddress(),
+                employeeReqDTO.getPhone(), employeeReqDTO.getEmail(), employeeReqDTO.getWorkDate(), employeeReqDTO.getFirebaseUrl()
+                , employeeReqDTO.getDepartment(), employeeReqDTO.getSalaryRank(), employeeReqDTO.getId());
+    }
+
+    @Override
+    public List<String> findAllExistEmail() {
+        return iEmployeeRepository.findAllExistEmail();
+    }
+
 
     private EmployeeResDTO convertToDTO(Employee employee) {
         EmployeeResDTO employeeResDTO = modelMapper.map(employee, EmployeeResDTO.class);

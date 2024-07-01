@@ -72,8 +72,8 @@ public class ContractUpdateValidator implements Validator {
         } else if (deposit <= 0) {
             errors.rejectValue("deposit", "", "Tiền đặt cọc ko bằng được bằng 0");
         }
-        else if (deposit < (term * currentFee * 10) / 100) {
-            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu bằng 10% so với tổng tiền (currentFee*term) ! ");
+        else if (deposit < (  currentFee * 10) / 100) {
+            errors.rejectValue("deposit", "", "Tiền đặt cọc tối thiểu bằng 10% so với phí hiện tại ! ");
         }
         else if (deposit > (term * currentFee)){
             errors.rejectValue("deposit", "", "Tiền đặt cọc không được nhập lớn hơn tổng tiền  ");

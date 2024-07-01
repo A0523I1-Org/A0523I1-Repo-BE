@@ -1,6 +1,7 @@
 package com.example.bebuildingmanagement.controller;
 
-import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+
+
 import com.example.bebuildingmanagement.dto.request.LandingRequestDTO;
 import com.example.bebuildingmanagement.dto.response.ApiResponseDTO;
 import com.example.bebuildingmanagement.dto.response.FloorResponseDTO;
@@ -15,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.bebuildingmanagement.dto.response.landing.LandingIsAvailableResponseDTO;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +47,7 @@ public class LandingController {
             @RequestParam(value = "floorLanding", required = false) String floorLanding) {
 
         Page<LandingResponseDTO> landingResponseDTOPage = iLandingService.findAll(page, size, statusLanding, codeLanding, areaLanding, typeLanding, floorLanding);
+
         return new ResponseEntity<>(landingResponseDTOPage, HttpStatus.OK);
     }
 
